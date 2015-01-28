@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import org.michenux.drodrolib.MCXApplication;
+import libs.applib.TDSApplication;
 
 public abstract class AbstractNavDrawerActivity extends ActionBarActivity {
 
