@@ -1,6 +1,6 @@
 package tds.libs.db.util;
 
-import tds.libs.db.SugarRecord;
+import tds.libs.db.DBLibRecord;
 
 public class QueryBuilder {
 
@@ -12,7 +12,7 @@ public class QueryBuilder {
                 (type.equals(Long.class)) ||
                 (type.equals(Long.TYPE)) || (
                 (!type.isPrimitive()) &&
-                        (SugarRecord.class.isAssignableFrom(type))))  {
+                        (DBLibRecord.class.isAssignableFrom(type))))  {
             return "INTEGER";
         }
 

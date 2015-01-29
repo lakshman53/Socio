@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.util.Log;
-import tds.libs.db.SugarRecord;
+import tds.libs.db.DBLibRecord;
 import tds.libs.db.dsl.Ignore;
 import tds.libs.db.dsl.Table;
 import dalvik.system.DexFile;
@@ -22,10 +22,10 @@ import java.util.*;
 public class ReflectionUtil {
 
     public static List<Field> getTableFields(Class table) {
-        List<Field> fieldList = SugarConfig.getFields(table);
+        List<Field> fieldList = DBLibConfig.getFields(table);
         if (fieldList != null) return fieldList;
 
-        Log.d("Sugar", "Fetching properties");
+        Log.d("DBLib", "Fetching properties");
         List<Field> typeFields = new ArrayList<Field>();
 
         getAllFields(typeFields, table);
@@ -37,7 +37,7 @@ public class ReflectionUtil {
             }
         }
 
-        SugarConfig.setFields(table, toStore);
+        DBLibConfig.setFields(table, toStore);
         return toStore;
     }
 
@@ -58,10 +58,10 @@ public class ReflectionUtil {
             String columnName = NamingHelper.toSQLName(column);
             Object columnValue = column.get(object);
 
-            if (SugarRecord.class.isAssignableFrom(columnType)) {
+            if (DBLibRecord.class.isAssignableFrom(columnType)) {
                 values.put(columnName,
                         (columnValue != null)
-                                ? String.valueOf(((SugarRecord) columnValue).getId())
+                                ? String.valueOf(((DBLibRecord) columnValue).getId())
                                 : "0");
             } else {
                 if (columnType.equals(Short.class) || columnType.equals(short.class)) {
@@ -104,7 +104,7 @@ public class ReflectionUtil {
             }
 
         } catch (IllegalAccessException e) {
-            Log.e("Sugar", e.getMessage());
+            Log.e("DBLib", e.getMessage());
         }
     }
 
@@ -165,10 +165,10 @@ public class ReflectionUtil {
                     Object enumVal = valueOf.invoke(field.getType(), strVal);
                     field.set(object, enumVal);
                 } catch (Exception e) {
-                    Log.e("Sugar", "Enum cannot be read from Sqlite3 database. Please check the type of field " + field.getName());
+                    Log.e("DBLib", "Enum cannot be read from Sqlite3 database. Please check the type of field " + field.getName());
                 }
             } else
-                Log.e("Sugar", "Class cannot be read from Sqlite3 database. Please check the type of field " + field.getName() + "(" + field.getType().getName() + ")");
+                Log.e("DBLib", "Class cannot be read from Sqlite3 database. Please check the type of field " + field.getName() + "(" + field.getType().getName() + ")");
         } catch (IllegalArgumentException e) {
             Log.e("field set error", e.getMessage());
         } catch (IllegalAccessException e) {
@@ -200,9 +200,9 @@ public class ReflectionUtil {
                 }
             }
         } catch (IOException e) {
-            Log.e("Sugar", e.getMessage());
+            Log.e("DBLib", e.getMessage());
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e("Sugar", e.getMessage());
+            Log.e("DBLib", e.getMessage());
         }
 
         return domainClasses;
@@ -214,16 +214,16 @@ public class ReflectionUtil {
         try {
             discoveredClass = Class.forName(className, true, context.getClass().getClassLoader());
         } catch (ClassNotFoundException e) {
-            Log.e("Sugar", e.getMessage());
+            Log.e("DBLib", e.getMessage());
         }
 
         if ((discoveredClass != null) &&
-                ((SugarRecord.class.isAssignableFrom(discoveredClass) &&
-                        !SugarRecord.class.equals(discoveredClass)) ||
+                ((DBLibRecord.class.isAssignableFrom(discoveredClass) &&
+                        !DBLibRecord.class.equals(discoveredClass)) ||
                         discoveredClass.isAnnotationPresent(Table.class)) &&
                 !Modifier.isAbstract(discoveredClass.getModifiers())) {
 
-            Log.i("Sugar", "domain class : " + discoveredClass.getSimpleName());
+            Log.i("DBLib", "domain class : " + discoveredClass.getSimpleName());
             return discoveredClass;
 
         } else {

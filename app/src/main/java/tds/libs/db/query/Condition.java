@@ -1,6 +1,6 @@
 package tds.libs.db.query;
 
-import tds.libs.db.SugarRecord;
+import tds.libs.db.DBLibRecord;
 
 public class Condition {
 
@@ -94,8 +94,8 @@ public class Condition {
     }
 
     private void setValue(Object value) {
-        if (value instanceof SugarRecord) {
-            this.value = ((SugarRecord)value).getId();
+        if (value instanceof DBLibRecord) {
+            this.value = ((DBLibRecord)value).getId();
         } else {
             this.value = value;
         }

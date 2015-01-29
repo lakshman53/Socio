@@ -1,21 +1,21 @@
 package tds.libs.db;
 
-import tds.libs.db.SugarContext;
+import tds.libs.db.DBLibContext;
 
 import android.app.Application;
 
-public class SugarApp extends Application {
+public class DBLibApp extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        SugarContext.init(this);
+        DBLibContext.init(this);
     }
 
     @Override
     public void onTerminate() {
         super.onTerminate();
-        SugarContext.terminate();
+        DBLibContext.terminate();
     }
 
 }

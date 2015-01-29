@@ -5,19 +5,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import tds.libs.db.util.ManifestHelper;
-import tds.libs.db.util.SugarCursorFactory;
+import tds.libs.db.util.DBLibCursorFactory;
 
 import static tds.libs.db.util.ManifestHelper.getDatabaseVersion;
 import static tds.libs.db.util.ManifestHelper.getDebugEnabled;
 
-public class SugarDb extends SQLiteOpenHelper {
+public class DBLibDb extends SQLiteOpenHelper {
 
     private final SchemaGenerator schemaGenerator;
     private SQLiteDatabase sqLiteDatabase;
 
-    public SugarDb(Context context) {
+    public DBLibDb(Context context) {
         super(context, ManifestHelper.getDatabaseName(context),
-                new SugarCursorFactory(getDebugEnabled(context)), getDatabaseVersion(context));
+                new DBLibCursorFactory(getDebugEnabled(context)), getDatabaseVersion(context));
         schemaGenerator = new SchemaGenerator(context);
     }
 

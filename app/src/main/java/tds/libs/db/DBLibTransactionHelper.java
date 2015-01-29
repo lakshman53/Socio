@@ -3,21 +3,21 @@ package tds.libs.db;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class SugarTransactionHelper {
+public class DBLibTransactionHelper {
 
-    public static void doInTransaction(SugarTransactionHelper.Callback callback) {
-        SQLiteDatabase database = SugarContext.getSugarContext().getSugarDb().getDB();
+    public static void doInTransaction(DBLibTransactionHelper.Callback callback) {
+        SQLiteDatabase database = DBLibContext.getDBLibContext().getDBLibDb().getDB();
         database.beginTransaction();
 
         try {
-            Log.d(SugarTransactionHelper.class.getSimpleName(),
+            Log.d(DBLibTransactionHelper.class.getSimpleName(),
                     "Callback executing within transaction");
             callback.manipulateInTransaction();
             database.setTransactionSuccessful();
-            Log.d(SugarTransactionHelper.class.getSimpleName(),
+            Log.d(DBLibTransactionHelper.class.getSimpleName(),
                     "Callback successfully executed within transaction");
         } catch (Throwable e) {
-            Log.d(SugarTransactionHelper.class.getSimpleName(),
+            Log.d(DBLibTransactionHelper.class.getSimpleName(),
                     "Could execute callback within transaction", e);
         } finally {
             database.endTransaction();

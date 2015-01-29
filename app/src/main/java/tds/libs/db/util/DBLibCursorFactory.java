@@ -7,15 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQuery;
 import android.util.Log;
 
-public class SugarCursorFactory implements SQLiteDatabase.CursorFactory {
+public class DBLibCursorFactory implements SQLiteDatabase.CursorFactory {
 
     private boolean debugEnabled;
 
-    public SugarCursorFactory() {
+    public DBLibCursorFactory() {
         this.debugEnabled = false;
     }
 
-    public SugarCursorFactory(boolean debugEnabled) {
+    public DBLibCursorFactory(boolean debugEnabled) {
 
         this.debugEnabled = debugEnabled;
     }

@@ -46,12 +46,12 @@ public class SchemaGenerator {
             try {  // we try to do a select, if fails then (?) there isn't the table
                 sqLiteDatabase.query(NamingHelper.toSQLName(domain), null, null, null, null, null, null);
             } catch (SQLiteException e) {
-                Log.i("Sugar", String.format("Creating table on update (error was '%s')",
+                Log.i("DBLib", String.format("Creating table on update (error was '%s')",
                         e.getMessage()));
                 createTable(domain, sqLiteDatabase);
             }
         }
-        executeSugarUpgrade(sqLiteDatabase, oldVersion, newVersion);
+        executeDBLibUpgrade(sqLiteDatabase, oldVersion, newVersion);
     }
 
     public void deleteTables(SQLiteDatabase sqLiteDatabase) {
@@ -61,14 +61,14 @@ public class SchemaGenerator {
         }
     }
 
-    private boolean executeSugarUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    private boolean executeDBLibUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         boolean isSuccess = false;
 
         try {
-            List<String> files = Arrays.asList(this.context.getAssets().list("sugar_upgrades"));
+            List<String> files = Arrays.asList(this.context.getAssets().list("DBLib_upgrades"));
             Collections.sort(files, new NumberComparator());
             for (String file : files) {
-                Log.i("Sugar", "filename : " + file);
+                Log.i("DBLib", "filename : " + file);
 
                 try {
                     int version = Integer.valueOf(file.replace(".sql", ""));
@@ -78,12 +78,12 @@ public class SchemaGenerator {
                         isSuccess = true;
                     }
                 } catch (NumberFormatException e) {
-                    Log.i("Sugar", "not a sugar script. ignored." + file);
+                    Log.i("DBLib", "not a DBLib script. ignored." + file);
                 }
 
             }
         } catch (IOException e) {
-            Log.e("Sugar", e.getMessage());
+            Log.e("DBLib", e.getMessage());
         }
 
         return isSuccess;
@@ -91,22 +91,22 @@ public class SchemaGenerator {
 
     private void executeScript(SQLiteDatabase db, String file) {
         try {
-            InputStream is = this.context.getAssets().open("sugar_upgrades/" + file);
+            InputStream is = this.context.getAssets().open("DBLib_upgrades/" + file);
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = reader.readLine()) != null) {
-                Log.i("Sugar script", line);
+                Log.i("DBLib script", line);
                 db.execSQL(line.toString());
             }
         } catch (IOException e) {
-            Log.e("Sugar", e.getMessage());
+            Log.e("DBLib", e.getMessage());
         }
 
-        Log.i("Sugar", "Script executed");
+        Log.i("DBLib", "Script executed");
     }
 
     private void createTable(Class<?> table, SQLiteDatabase sqLiteDatabase) {
-        Log.i("Sugar", "Create table");
+        Log.i("DBLib", "Create table");
         List<Field> fields = ReflectionUtil.getTableFields(table);
         String tableName = NamingHelper.toSQLName(table);
         StringBuilder sb = new StringBuilder("CREATE TABLE ");
@@ -156,7 +156,7 @@ public class SchemaGenerator {
         }
 
         sb.append(" ) ");
-        Log.i("Sugar", "Creating table " + tableName);
+        Log.i("DBLib", "Creating table " + tableName);
 
         if (!"".equals(sb.toString())) {
             try {

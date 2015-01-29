@@ -23,7 +23,7 @@ public class ManifestHelper {
     /**
      * The default name for the database unless specified in the AndroidManifest.
      */
-    public final static String DATABASE_DEFAULT_NAME = "Sugar.db";
+    public final static String DATABASE_DEFAULT_NAME = "DBLib.db";
 
     /**
      * Grabs the database version from the manifest.
@@ -46,7 +46,7 @@ public class ManifestHelper {
      * Grabs the domain name of the model classes from the manifest. 
      *
      * @param context  the {@link android.content.Context} of the Android application
-     * @return the package String that Sugar uses to search for model classes
+     * @return the package String that DBLib uses to search for model classes
      */
     public static String getDomainPackageName(Context context){
         String domainPackageName = getMetaDataString(context, METADATA_DOMAIN_PACKAGE_NAME);
@@ -94,7 +94,7 @@ public class ManifestHelper {
                     PackageManager.GET_META_DATA);
             value = ai.metaData.getString(name);
         } catch (Exception e) {
-            Log.d("sugar", "Couldn't find config value: " + name);
+            Log.d("DBLib", "Couldn't find config value: " + name);
         }
 
         return value;
@@ -109,7 +109,7 @@ public class ManifestHelper {
                     PackageManager.GET_META_DATA);
             value = ai.metaData.getInt(name);
         } catch (Exception e) {
-            Log.d("sugar", "Couldn't find config value: " + name);
+            Log.d("DBLib", "Couldn't find config value: " + name);
         }
 
         return value;
@@ -124,7 +124,7 @@ public class ManifestHelper {
                     PackageManager.GET_META_DATA);
             value = ai.metaData.getBoolean(name);
         } catch (Exception e) {
-            Log.d("sugar", "Couldn't find config value: " + name);
+            Log.d("DBLib", "Couldn't find config value: " + name);
         }
 
         return value;

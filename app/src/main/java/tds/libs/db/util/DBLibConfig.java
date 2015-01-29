@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class SugarConfig {
+public class DBLibConfig {
 
     static Map<Class<?>, List<Field>> fields = new HashMap<Class<?>, List<Field>>();
 

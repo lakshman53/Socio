@@ -2,26 +2,26 @@ package tds.libs.db;
 
 import android.content.Context;
 
-public class SugarContext {
+public class DBLibContext {
 
-    private static SugarContext instance = null;
-    private SugarDb sugarDb;
+    private static DBLibContext instance = null;
+    private DBLibDb DBLibDb;
     private Context context;
 
-    private SugarContext(Context context) {
+    private DBLibContext(Context context) {
         this.context = context;
-        this.sugarDb = new SugarDb(context);
+        this.DBLibDb = new DBLibDb(context);
     }
     
-    public static SugarContext getSugarContext() {
+    public static DBLibContext getDBLibContext() {
         if (instance == null) {
-            throw new NullPointerException("SugarContext has not been initialized properly. Call SugarContext.init(Context) in your Application.onCreate() method and SugarContext.terminate() in your Application.onTerminate() method.");
+            throw new NullPointerException("DBLibContext has not been initialized properly. Call DBLibContext.init(Context) in your Application.onCreate() method and DBLibContext.terminate() in your Application.onTerminate() method.");
         }
         return instance;
     }
 
     public static void init(Context context) {
-        instance = new SugarContext(context);
+        instance = new DBLibContext(context);
     }
 
     public static void terminate() {
@@ -38,13 +38,13 @@ public class SugarContext {
      * Robolectric Android mock.
      */
     private void doTerminate() {
-        if (this.sugarDb != null) {
-            this.sugarDb.getDB().close();
+        if (this.DBLibDb != null) {
+            this.DBLibDb.getDB().close();
         }
     }
 
-    protected SugarDb getSugarDb() {
-        return sugarDb;
+    protected DBLibDb getDBLibDb() {
+        return DBLibDb;
     }
 
 }

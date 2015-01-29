@@ -1,6 +1,6 @@
 package tds.libs.db.query;
 
-import tds.libs.db.SugarRecord;
+import tds.libs.db.DBLibRecord;
 import tds.libs.db.util.NamingHelper;
 
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class Select<T> implements Iterable {
             arguments = convertArgs(args);
         }
 
-        return SugarRecord.find(record, whereClause, arguments, groupBy, orderBy, limit);
+        return DBLibRecord.find(record, whereClause, arguments, groupBy, orderBy, limit);
     }
     
     public long count() {
@@ -119,7 +119,7 @@ public class Select<T> implements Iterable {
             arguments = convertArgs(args);
         }
     	
-        return SugarRecord.count(record, whereClause, arguments, groupBy, orderBy, limit);
+        return DBLibRecord.count(record, whereClause, arguments, groupBy, orderBy, limit);
     }
 
     public T first() {
@@ -127,7 +127,7 @@ public class Select<T> implements Iterable {
             arguments = convertArgs(args);
         }
 
-        List<T> list = SugarRecord.find(record, whereClause, arguments, groupBy, orderBy, "1");
+        List<T> list = DBLibRecord.find(record, whereClause, arguments, groupBy, orderBy, "1");
         return list.size() > 0 ? list.get(0) : null;
     }
     
@@ -178,7 +178,7 @@ public class Select<T> implements Iterable {
             arguments = convertArgs(args);
         }
 
-        return SugarRecord.findAsIterator(record, whereClause, arguments, groupBy, orderBy, limit);
+        return DBLibRecord.findAsIterator(record, whereClause, arguments, groupBy, orderBy, limit);
     }
 
 }
