@@ -60,8 +60,7 @@ public class AttendanceActivity extends BaseActivity {
         }
     }
 
-    class RetrieveTime extends AsyncTask<Void, Void, Void>
-    {
+    class RetrieveTime extends AsyncTask<Void, Void, Void> {
         protected Void doInBackground(Void... params) {
 
             try {
@@ -81,5 +80,5 @@ public class AttendanceActivity extends BaseActivity {
             }
             return null;
         }
-    }
+    }//
 }
