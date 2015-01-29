@@ -7,7 +7,7 @@ package tds.socio;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Toast;
 
 import tds.libs.GPSTracker;
 
@@ -27,7 +27,6 @@ public class AttendanceActivity extends BaseActivity {
         set(navMenuTitles, navMenuIcons);
     }
 
-
     public void GetLocation(View view)
     {
         GPSTracker gps = new GPSTracker(AttendanceActivity.this);
@@ -36,11 +35,16 @@ public class AttendanceActivity extends BaseActivity {
             double latitude = gps.getLatitude();
             double longitude = gps.getLongitude();
 
-            EditText editTextlat = (EditText)findViewById(R.id.latitude);
-            editTextlat.setText(String.valueOf(latitude));
+//            EditText editTextlat = (EditText)findViewById(R.id.latitude);
+//            editTextlat.setText(String.valueOf(latitude));
+//            EditText editTextlong = (EditText)findViewById(R.id.longitude);
+//            editTextlong.setText(String.valueOf(longitude));
+//            EditText editDistance = (EditText)findViewById(R.id.distance);
+//            editDistance.setText(StrdistBetCoor);
 
-            EditText editTextlong = (EditText)findViewById(R.id.longitude);
-            editTextlong.setText(String.valueOf(longitude));
+            String StrdistBetCoor = Double.toString(gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C'));
+            Toast.makeText(getApplicationContext(),StrdistBetCoor,Toast.LENGTH_LONG).show();
+
         }
         else
         {
