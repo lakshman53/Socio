@@ -27,13 +27,11 @@ public class AttendanceActivity extends BaseActivity {
         setContentView(R.layout.activity_attendance);
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
-        navMenuIcons = getResources()
-                .obtainTypedArray(R.array.nav_drawer_icons);
+        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
         set(navMenuTitles, navMenuIcons);
 
         new RetrieveTime().execute();
-
     }
 
     public void MarkInAttendance(View view)
