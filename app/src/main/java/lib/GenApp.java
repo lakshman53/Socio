@@ -48,7 +48,7 @@ public class GenApp extends Application {
 	}
 	
 	public void buildDaggerModules( List<Object> modules) {
-		modules.add(new MCXModule());
+		modules.add(new GenModule());
 	}
 	
 	public void onObjectGraphCreated( ObjectGraph objectGraph) {
