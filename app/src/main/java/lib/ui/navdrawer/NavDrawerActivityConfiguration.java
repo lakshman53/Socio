@@ -123,7 +123,6 @@ public class NavDrawerActivityConfiguration {
         this.drawerIcon = drawerIcon;
     }
 
-
     public static class Builder {
 
         private NavDrawerActivityConfiguration mConf = new NavDrawerActivityConfiguration();
