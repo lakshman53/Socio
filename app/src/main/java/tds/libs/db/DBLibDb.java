@@ -38,5 +38,4 @@ public class DBLibDb extends SQLiteOpenHelper {
 
         return this.sqLiteDatabase;
     }
-
 }
