@@ -16,15 +16,26 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
 
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:textAppearance="?android:attr/textAppearanceLarge"
+                 android:text="Large Text"
+                 android:id="@+id/DateTimeNow"
+                 android:layout_gravity="center_horizontal" />
+
+
+
              <Button
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:text="Get GPS Location"
-                 android:onClick="GetLocation"
+                 android:onClick="MarkInAttendance"
                  android:id="@+id/button"
                  android:layout_gravity="center_horizontal" />
 
-        </LinearLayout>
+
+         </LinearLayout>
     </LinearLayout>
 
     <!-- The navigation drawer -->
