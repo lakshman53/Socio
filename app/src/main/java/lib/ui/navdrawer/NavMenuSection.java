@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.michenux.drodrolib.R;
+import tds.socio.R;
 
 public class NavMenuSection implements NavDrawerItem {
 

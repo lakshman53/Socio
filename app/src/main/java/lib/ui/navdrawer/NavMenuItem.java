@@ -6,8 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.michenux.drodrolib.R;
-import org.michenux.drodrolib.security.UserHelper;
+import tds.socio.R;
 
 public class NavMenuItem implements NavDrawerItem {
 

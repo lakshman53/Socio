@@ -1,8 +1,6 @@
 package lib.ui.navdrawer;
 
-import android.widget.BaseAdapter;
-
-import org.michenux.drodrolib.R;
+import tds.socio.R;
 
 public class NavDrawerActivityConfiguration {
 
