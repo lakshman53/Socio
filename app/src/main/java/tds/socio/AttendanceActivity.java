@@ -6,6 +6,10 @@ package tds.socio;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+
+import tds.libs.GPSTracker;
 
 public class AttendanceActivity extends BaseActivity {
     private String[] navMenuTitles;
@@ -22,5 +26,27 @@ public class AttendanceActivity extends BaseActivity {
 
         set(navMenuTitles, navMenuIcons);
     }
+
+
+    public void GetLocation(View view)
+    {
+        GPSTracker gps = new GPSTracker(AttendanceActivity.this);
+        if(gps.canGetLocation()){
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+
+            EditText editTextlat = (EditText)findViewById(R.id.latitude);
+            editTextlat.setText(String.valueOf(latitude));
+
+            EditText editTextlong = (EditText)findViewById(R.id.longitude);
+            editTextlong.setText(String.valueOf(longitude));
+        }
+        else
+        {
+            gps.showSettingsAlert();
+        }
+    }
+
 }
 

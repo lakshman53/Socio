@@ -25,5 +25,4 @@ public class MessagingActivity extends BaseActivity {
 
     }
 
-
 }
