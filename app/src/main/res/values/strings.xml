@@ -9,23 +9,18 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string-array name="nav_drawer_items">
-        <item>First</item>
-        <item>Second</item>
-        <item>Third</item>
-        <item>Fourth</item>
-        <item>Fifth</item>
-        <item>Sixth</item>
+        <item>Attendance</item>
+        <item>Messages</item>
+        <item>My Profile</item>
     </string-array>
 
     <array name="nav_drawer_icons">
         <item>@drawable/ic_launcher</item>
         <item>@drawable/ic_launcher</item>
         <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/ic_launcher</item>
     </array>
 
     <string name="title_activity_blank">BlankActivity</string>
+    <string name="title_activity_my_profile">MyProfileActivity</string>
 
 </resources>

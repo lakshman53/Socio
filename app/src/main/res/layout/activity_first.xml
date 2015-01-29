@@ -22,7 +22,7 @@
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="This is the first Activity."
+                android:text="Attendance Activity."
                 android:textAppearance="?android:attr/textAppearanceLarge" />
         </LinearLayout>
     </FrameLayout>
