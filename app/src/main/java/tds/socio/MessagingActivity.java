@@ -14,7 +14,7 @@ public class MessagingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
+        setContentView(R.layout.activity_messaging);
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
         navMenuIcons = getResources()
@@ -23,5 +23,3 @@ public class MessagingActivity extends BaseActivity {
         set(navMenuTitles, navMenuIcons);
     }
 }
-
-

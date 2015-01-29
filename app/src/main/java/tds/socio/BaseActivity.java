@@ -152,26 +152,11 @@ public class BaseActivity extends ActionBarActivity {
                 startActivity(intent1);
                 finish();
                 break;
-//            case 2:
-//                Intent intent2 = new Intent(this, third.class);
-//                startActivity(intent2);
-//                finish();
-//                break;
-//            case 3:
-//                Intent intent3 = new Intent(this, fourth.class);
-//                startActivity(intent3);
-//                finish();
-//                break;
-//            case 4:
-//                Intent intent4 = new Intent(this, fifth.class);
-//                startActivity(intent4);
-//                finish();
-//                break;
-//            case 5:
-//                Intent intent5 = new Intent(this, sixth.class);
-//                startActivity(intent5);
-//                finish();
-//                break;
+            case 2:
+                Intent intent2 = new Intent(this, MyProfileActivity.class);
+                startActivity(intent2);
+                finish();
+                break;
             default:
                 break;
         }
