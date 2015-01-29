@@ -145,17 +145,17 @@ public class BaseActivity extends ActionBarActivity {
             case 0:
                 Intent intent = new Intent(this, AttendanceActivity.class);
                 startActivity(intent);
-                finish();
+//                finish();
                 break;
             case 1:
                 Intent intent1 = new Intent(this, MessagingActivity.class);
                 startActivity(intent1);
-                finish();
+  //              finish();
                 break;
             case 2:
                 Intent intent2 = new Intent(this, MyProfileActivity.class);
                 startActivity(intent2);
-                finish();
+  //              finish();
                 break;
             default:
                 break;

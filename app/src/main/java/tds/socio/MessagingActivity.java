@@ -21,5 +21,9 @@ public class MessagingActivity extends BaseActivity {
                 .obtainTypedArray(R.array.nav_drawer_icons);
 
         set(navMenuTitles, navMenuIcons);
+
+
     }
+
+
 }
