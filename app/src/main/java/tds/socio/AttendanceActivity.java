@@ -80,5 +80,5 @@ public class AttendanceActivity extends BaseActivity {
             }
             return null;
         }
-    }//
+    }
 }
