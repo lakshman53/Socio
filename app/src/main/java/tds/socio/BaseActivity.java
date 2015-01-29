@@ -1,5 +1,6 @@
 package tds.socio;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -72,7 +73,7 @@ public class BaseActivity extends ActionBarActivity {
         // enabling action bar app icon and behaving it as toggle button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_drawer);
+ //       getSupportActionBar().setIcon(R.drawable.ic_drawer);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer,
@@ -121,7 +122,6 @@ public class BaseActivity extends ActionBarActivity {
                 mDrawerLayout.openDrawer(mDrawerList);
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -142,16 +142,16 @@ public class BaseActivity extends ActionBarActivity {
     private void displayView(int position) {
         // update the main content by replacing fragments
         switch (position) {
-//            case 0:
-//                Intent intent = new Intent(this, First.class);
-//                startActivity(intent);
-//                finish();
-//                break;
-//            case 1:
-//                Intent intent1 = new Intent(this, Second.class);
-//                startActivity(intent1);
-//                finish();
-//                break;
+            case 0:
+                Intent intent = new Intent(this, FirstActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case 1:
+                Intent intent1 = new Intent(this, FirstActivity.class);
+                startActivity(intent1);
+                finish();
+                break;
 //            case 2:
 //                Intent intent2 = new Intent(this, third.class);
 //                startActivity(intent2);
