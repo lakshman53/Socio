@@ -16,19 +16,29 @@ import tds.libs.StringEncrypter;
 
 public class LoginActivity extends ActionBarActivity {
     EditText textPassword;
+    EditText textuserName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        textPassword = (EditText)findViewById(R.id.textPassword);
-        textPassword.setVisibility(View.GONE);
+        textPassword = (EditText) findViewById(R.id.textPassword);
+        textuserName = (EditText) findViewById(R.id.textuserName);
+
+        Employee employee = new Employee();
+        String Argu [] = {"Hello"};
+
+        Long cntEmployees = employee.count(Employee.class, "DOB", Argu );
+
+        if (cntEmployees == 0L)  {
+            textPassword.setVisibility(View.GONE);
+        }
 
         final Button button = (Button) findViewById(R.id.btnContinue);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                EditText textuserName = (EditText)findViewById(R.id.textuserName);
 
                 String strEmpNum = textuserName.getText().toString();
                 String strPasswordDecrypted = textPassword.getText().toString();
@@ -44,6 +54,7 @@ public class LoginActivity extends ActionBarActivity {
     private boolean authenticateUser(String userName, String Password)
     {
         String PasswordEncrypted = encryptString(Password);
+
         return true;
     }
 
