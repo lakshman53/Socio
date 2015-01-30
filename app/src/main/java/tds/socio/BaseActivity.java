@@ -21,6 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by laks on 29-01-2015.
  */
+
 public class BaseActivity extends ActionBarActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;

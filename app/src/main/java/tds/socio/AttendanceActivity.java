@@ -30,22 +30,21 @@ public class AttendanceActivity extends BaseActivity {
         navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
         set(navMenuTitles, navMenuIcons);
 
-        try {
-
-            Employee employee = new Employee("12345","Lakshman", "Rao", "Pilaka");
-            employee.save();
-
-            Employee employee1 = employee.findById(Employee.class, 1L);
-
-            Toast.makeText(getApplicationContext(),employee1.getFirstName(),Toast.LENGTH_SHORT).show();
-
-        }
-        catch (Exception e) {
-            Log.e("DBLib ", e.getMessage());
-        }
+//        try {
+//
+//            Employee employee = new Employee("12345","Suresh", "Rao", "Pilaka");
+//            employee.save();
+//
+//            employee.findById(Employee.class, 1L);
+//
+//            Toast.makeText(getApplicationContext(),employee.getFirstName(),Toast.LENGTH_SHORT).show();
+//
+//        }
+//        catch (Exception e) {
+//            Log.e("DBLib ", e.getMessage());
+//        }
 
         new RetrieveTime().execute();
-
     }
 
 
