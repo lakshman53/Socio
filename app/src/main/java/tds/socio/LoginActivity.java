@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -15,6 +16,12 @@ public class LoginActivity extends ActionBarActivity {
         final Button button = (Button) findViewById(R.id.btnContinue);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
+                EditText textuserName = (EditText)findViewById(R.id.textuserName);
+                EditText textPassword = (EditText)findViewById(R.id.textPassword);
+
+                String struserName = textuserName.getText().toString();
+                String strPasswordDecrypted = textPassword.getText().toString();
 
 
             }
