@@ -31,9 +31,9 @@ public class TimestampConvertor {
         Date date = new Date(input);
         Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT+5:30"));
         cal.setTime(date);
-        return(cal.get(Calendar.YEAR)
+        return(cal.get(Calendar.DATE)
                 + "/" + cal.get(Calendar.MONTH)
-                + "/" + cal.get(Calendar.DATE)
+                + "/" + cal.get(Calendar.YEAR)
                 + " " + cal.get(Calendar.HOUR)
                 + ":" + cal.get(Calendar.MINUTE)
                 + ":" + cal.get(Calendar.SECOND)

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -14,7 +14,7 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:textAppearance="?android:attr/textAppearanceLarge"
-                 android:text="Large Text"
+                 android:text="Loading Current Time..."
                  android:id="@+id/DateTimeNow"
                  android:layout_gravity="center_horizontal" />
 
@@ -24,23 +24,28 @@
                  android:text="Get GPS Location"
                  android:onClick="MarkInAttendance"
                  android:id="@+id/button"
-                 android:layout_gravity="center_horizontal" />
+                 android:layout_gravity="center_horizontal"
+                 android:layout_below="@+id/DateTimeNow" />
 
              <Button
                  android:layout_width="265dp"
                  android:layout_height="wrap_content"
                  android:text="In"
                  android:id="@+id/button2"
-                 android:layout_gravity="center_horizontal" />
+                 android:layout_gravity="center_horizontal"
+                 android:layout_below="@+id/button"/>
 
              <Button
-                 android:layout_width="259dp"
+                 android:layout_width="265dp"
                  android:layout_height="wrap_content"
                  android:text="Out"
                  android:id="@+id/button3"
-                 android:layout_gravity="center_horizontal" />
+                 android:layout_gravity="center_horizontal"
+                 android:layout_alignParentLeft="true"
+                 android:layout_alignParentStart="true"
+                 android:layout_below="@+id/button2" />
 
-         </LinearLayout>
+         </RelativeLayout>
 
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"

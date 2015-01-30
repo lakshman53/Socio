@@ -50,18 +50,23 @@ public class LoginActivity extends ActionBarActivity {
                 String strEmpNum = textuserName.getText().toString();
                //TODO: Password Encryption
                 String strPasswordencrypted = textPassword.getText().toString();
-               //TODO: UI validate for username and password
-                if (authenticateUser(strEmpNum,strPasswordencrypted)) {
-               //TODO: In case of first login (password blank) redirect to change password screen
-                    Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
-                    LoginActivity.this.startActivity(mainIntent);
-                    finish();
-                }
-                else {
-                    textPassword.setText("");
-                    Toast.makeText(getApplicationContext(),"Incorrect Credentials, Please try again!!",Toast.LENGTH_SHORT).show();
-                    textPassword.requestFocus();
-                }
+               if (button.getText() == "Continue") {
+                   //TODO: UI validate for username and password
+                   if (authenticateUser(strEmpNum, strPasswordencrypted)) {
+                       //TODO: In case of first login (password blank) redirect to change password screen
+                       Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                       LoginActivity.this.startActivity(mainIntent);
+                       finish();
+                   } else {
+                       textPassword.setText("");
+                       Toast.makeText(getApplicationContext(), "Incorrect Credentials, Please try again!!", Toast.LENGTH_SHORT).show();
+                       textPassword.requestFocus();
+                   }
+               }
+                else
+               {
+                   //TODO: Code for User Registration
+               }
             }
         });
     }
