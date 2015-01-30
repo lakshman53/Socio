@@ -20,8 +20,8 @@
         <item>@drawable/ic_launcher</item>
     </array>
 
-
     <string name="title_activity_my_profile">My Profile </string>
     <string name="error_gps_disabled">GPS is disabled. You need to enable it for marking attendance. Click Settings to enable GPS.</string>
+    <string name="title_activity_login">LoginActivity</string>
 
 </resources>
