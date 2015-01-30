@@ -15,5 +15,4 @@ public class DBLibApp extends Application {
         super.onTerminate();
         DBLibContext.terminate();
     }
-
 }

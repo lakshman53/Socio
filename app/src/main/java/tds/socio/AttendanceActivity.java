@@ -25,14 +25,29 @@ public class AttendanceActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
+
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
         navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
-
         set(navMenuTitles, navMenuIcons);
 
+        try {
+
+            Employee employee = new Employee("12345","Lakshman", "Rao", "Pilaka");
+            employee.save();
+
+            Employee employee1 = employee.findById(Employee.class, 1L);
+
+            Toast.makeText(getApplicationContext(),employee1.getFirstName(),Toast.LENGTH_SHORT).show();
+
+        }
+        catch (Exception e) {
+            Log.e("DBLib ", e.getMessage());
+        }
+
         new RetrieveTime().execute();
+
     }
+
 
     public void MarkInAttendance(View view)
     {
@@ -68,13 +83,12 @@ public class AttendanceActivity extends BaseActivity {
                     lngCurrentTime = currentTime.getNtpTime();
 
                     TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
-                    java.util.Date d = new java.util.Date(lngCurrentTime);
 
                     TimestampConvertor tsc = new TimestampConvertor();
                     TVcurrentTime.setText(tsc.usingDateAndCalendarWithTimeZone(lngCurrentTime));
                 }
             } catch (Exception e) {
-                Log.e("Async Task - ", "Exception Raised: " + e);
+                Log.e("Async Task - Exception ", e.getMessage());
             }
             return null;
         }

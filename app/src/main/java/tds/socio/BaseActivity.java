@@ -39,6 +39,8 @@ public class BaseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer);
+
+
         // if (savedInstanceState == null) {
         // // on first time display view for first nav item
         // // displayView(0);
