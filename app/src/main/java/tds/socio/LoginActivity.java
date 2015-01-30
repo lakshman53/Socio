@@ -26,8 +26,8 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Employee employee = new Employee("1234","1234");
-        employee.save();
+//        Employee employee = new Employee("1234","1234");
+//        employee.save();
 
         textPassword = (EditText) findViewById(R.id.textPassword);
         textuserName = (EditText) findViewById(R.id.textuserName);
@@ -47,16 +47,15 @@ public class LoginActivity extends ActionBarActivity {
 
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 String strEmpNum = textuserName.getText().toString();
-//TODO: Password Encryption
+               //TODO: Password Encryption
                 String strPasswordencrypted = textPassword.getText().toString();
-//TODO: UI validate for username and password
+               //TODO: UI validate for username and password
                 if (authenticateUser(strEmpNum,strPasswordencrypted)) {
-//TODO: In case of first login (password blank) redirect to change password screen
+               //TODO: In case of first login (password blank) redirect to change password screen
                     Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
                     LoginActivity.this.startActivity(mainIntent);
-
+                    finish();
                 }
                 else {
                     textPassword.setText("");

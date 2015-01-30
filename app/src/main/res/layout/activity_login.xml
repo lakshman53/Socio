@@ -33,7 +33,7 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/textMobileNumber"
-        android:layout_below="@+id/textDOB"
+        android:layout_below="@+id/textEmail"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:hint="Mobile Number"/>
@@ -47,16 +47,15 @@
         android:layout_below="@+id/textMobileNumber"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="Mobile Number"/>
+        android:hint="Registered Email Address"/>
 
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Continue"
         android:id="@+id/btnContinue"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textMobileNumber" />
+        android:layout_below="@+id/textEmail" />
 
 </RelativeLayout>
