@@ -1,11 +1,11 @@
 package tds.socio;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,8 +18,7 @@ import javax.crypto.SecretKey;
 import tds.libs.StringEncrypter;
 
 public class LoginActivity extends ActionBarActivity {
-    EditText textPassword, textuserName, textMobileNumber;
-    DatePicker textDOB;
+    EditText textEmail, textPassword, textuserName, textMobileNumber;
     Button button;
 
     @Override
@@ -32,15 +31,14 @@ public class LoginActivity extends ActionBarActivity {
 
         textPassword = (EditText) findViewById(R.id.textPassword);
         textuserName = (EditText) findViewById(R.id.textuserName);
-        textDOB = (DatePicker) findViewById(R.id.textDOB);
+        textEmail = (EditText) findViewById(R.id.textEmail);
         textMobileNumber = (EditText) findViewById(R.id.textMobileNumber);
         button = (Button) findViewById(R.id.btnContinue);
 
         if (isRegistered())  {
-            textDOB.setVisibility(View.GONE);
+            textEmail.setVisibility(View.GONE);
             textMobileNumber.setVisibility(View.GONE);
             button.setText("Continue");
-
         }
         else {
             textPassword.setVisibility(View.GONE);
@@ -55,15 +53,15 @@ public class LoginActivity extends ActionBarActivity {
                 String strPasswordencrypted = textPassword.getText().toString();
 //TODO: UI validate for username and password
                 if (authenticateUser(strEmpNum,strPasswordencrypted)) {
-
-                    // Divert to login screen
-
-                    Toast.makeText(getApplicationContext(),"Congratulations",Toast.LENGTH_LONG).show();
+//TODO: In case of first login (password blank) redirect to change password screen
+                    Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                    LoginActivity.this.startActivity(mainIntent);
 
                 }
                 else {
                     textPassword.setText("");
-                    Toast.makeText(getApplicationContext(),"Incorrect Password, Please try again!!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Incorrect Credentials, Please try again!!",Toast.LENGTH_SHORT).show();
+                    textPassword.requestFocus();
                 }
             }
         });
@@ -71,20 +69,16 @@ public class LoginActivity extends ActionBarActivity {
 
     private boolean isRegistered()
     {
-        /*
-
-         */
-        return true;
+        List<Employee> employees = Employee.listAll(Employee.class);
+        return employees.size() == 0?false:true;
     }
 
     private boolean authenticateUser(String userName, String Password)
     {
-        Employee employee = new Employee();
+       Employee employee = new Employee();
 
-        List<Employee> employees =  employee.find(Employee.class, "emp_number = ? and password = ?", userName, Password);
-
+       List<Employee> employees =  employee.find(Employee.class, "emp_number = ? and password = ?", userName, Password);
        return employees.size() == 0?false:true;
-
     }
 
     private String encryptString(String strPhrase)
