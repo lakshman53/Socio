@@ -15,24 +15,27 @@ import javax.crypto.SecretKey;
 import tds.libs.StringEncrypter;
 
 public class LoginActivity extends ActionBarActivity {
-
+    EditText textPassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        textPassword = (EditText)findViewById(R.id.textPassword);
+        textPassword.setVisibility(View.GONE);
 
         final Button button = (Button) findViewById(R.id.btnContinue);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 EditText textuserName = (EditText)findViewById(R.id.textuserName);
-                EditText textPassword = (EditText)findViewById(R.id.textPassword);
 
                 String strEmpNum = textuserName.getText().toString();
                 String strPasswordDecrypted = textPassword.getText().toString();
 
                 if (authenticateUser(strEmpNum,strPasswordDecrypted)) {
                     //TODO: Validate for username and password
+
                 }
             }
         });
