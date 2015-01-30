@@ -5,9 +5,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -15,63 +18,87 @@ import javax.crypto.SecretKey;
 import tds.libs.StringEncrypter;
 
 public class LoginActivity extends ActionBarActivity {
-    EditText textPassword;
-    EditText textuserName;
+    EditText textPassword, textuserName, textMobileNumber;
+    DatePicker textDOB;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        Employee employee = new Employee("1234","1234");
+        employee.save();
+
         textPassword = (EditText) findViewById(R.id.textPassword);
         textuserName = (EditText) findViewById(R.id.textuserName);
+        textDOB = (DatePicker) findViewById(R.id.textDOB);
+        textMobileNumber = (EditText) findViewById(R.id.textMobileNumber);
+        button = (Button) findViewById(R.id.btnContinue);
 
-        Employee employee = new Employee();
-        String Argu [] = {"Hello"};
+        if (isRegistered())  {
+            textDOB.setVisibility(View.GONE);
+            textMobileNumber.setVisibility(View.GONE);
+            button.setText("Continue");
 
-        Long cntEmployees = employee.count(Employee.class, "DOB", Argu );
-
-        if (cntEmployees == 0L)  {
+        }
+        else {
             textPassword.setVisibility(View.GONE);
+            button.setText("Register");
         }
 
-        final Button button = (Button) findViewById(R.id.btnContinue);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-
                 String strEmpNum = textuserName.getText().toString();
-                String strPasswordDecrypted = textPassword.getText().toString();
+//TODO: Password Encryption
+                String strPasswordencrypted = textPassword.getText().toString();
+//TODO: UI validate for username and password
+                if (authenticateUser(strEmpNum,strPasswordencrypted)) {
 
-                if (authenticateUser(strEmpNum,strPasswordDecrypted)) {
-                    //TODO: Validate for username and password
+                    // Divert to login screen
 
+                    Toast.makeText(getApplicationContext(),"Congratulations",Toast.LENGTH_LONG).show();
+
+                }
+                else {
+                    textPassword.setText("");
+                    Toast.makeText(getApplicationContext(),"Incorrect Password, Please try again!!",Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
+    private boolean isRegistered()
+    {
+        /*
+
+         */
+        return true;
+    }
+
     private boolean authenticateUser(String userName, String Password)
     {
-        String PasswordEncrypted = encryptString(Password);
+        Employee employee = new Employee();
 
-        return true;
+        List<Employee> employees =  employee.find(Employee.class, "emp_number = ? and password = ?", userName, Password);
+
+       return employees.size() == 0?false:true;
+
     }
 
     private String encryptString(String strPhrase)
     {
-        String desEncrypted = "";
-
         try {
             SecretKey desKey = KeyGenerator.getInstance("DES").generateKey();
             StringEncrypter desEncrypter = new StringEncrypter(desKey, desKey.getAlgorithm());
-            desEncrypted = desEncrypter.encrypt(desEncrypted);
+            strPhrase = desEncrypter.encrypt(strPhrase);
 
-            return desEncrypted;
+            return strPhrase;
         }
         catch (NoSuchAlgorithmException e) {
             Log.e("encryptString ", e.getMessage());
         }
-        return desEncrypted;
+        return null;
     }
 }

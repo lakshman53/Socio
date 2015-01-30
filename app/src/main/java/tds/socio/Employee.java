@@ -5,15 +5,41 @@
 package tds.socio;
 
 import com.orm.SugarRecord;
-import java.util.Date;
 
 public class Employee extends SugarRecord<Employee> {
 
     String empNumber;
+    String Password;
+
+    public Employee() { }
+
+    public String getEmpNumber() {
+        return empNumber;
+    }
+
+    public void setEmpNumber(String empNumber) {
+        this.empNumber = empNumber;
+    }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String password) {
+        Password = password;
+    }
+
+    public Employee(String empNumber, String password)
+    {
+        this.empNumber = empNumber;
+        this.Password = password;
+    }
+
+
+/*
     String firstName;
     String middleName;
     String lastName;
-    String Password;
     String MobileNo;
     String EmailAddress;
     Date DOB;
@@ -27,13 +53,7 @@ public class Employee extends SugarRecord<Employee> {
     Date RegisteredDate;
     Date LastLogin;
 
-    public String getEmpNumber() {
-        return empNumber;
-    }
 
-    public void setEmpNumber(String empNumber) {
-        this.empNumber = empNumber;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -57,14 +77,6 @@ public class Employee extends SugarRecord<Employee> {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
     }
 
     public String getMobileNo() {
@@ -163,15 +175,7 @@ public class Employee extends SugarRecord<Employee> {
         LastLogin = lastLogin;
     }
 
-    public Employee() {
-
-    }
-
-    public Employee(String empNumber, String password)
-    {
-        this.empNumber = empNumber;
-        this.firstName = password;
-    }
+*/
 
 
 }
