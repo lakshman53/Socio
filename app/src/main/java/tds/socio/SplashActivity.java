@@ -8,12 +8,12 @@ import android.os.Handler;
 public class SplashActivity extends Activity {
 
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 500;
+    private final int SPLASH_DISPLAY_LENGTH = 3000;
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public void onCreate(Bundle appBundle) {
+        super.onCreate(appBundle);
         setContentView(R.layout.activity_splash);
 
         /* New Handler to start the Menu-Activity 
