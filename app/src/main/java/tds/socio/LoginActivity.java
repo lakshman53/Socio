@@ -40,6 +40,8 @@ public class LoginActivity extends ActionBarActivity {
         {
             textEmail.setVisibility(View.GONE);
             textMobileNumber.setVisibility(View.GONE);
+            textVerify.setVisibility(View.GONE);
+            textPasswordAgain.setVisibility(View.GONE);
             button.setText("Continue");
         }
         else {
@@ -49,97 +51,97 @@ public class LoginActivity extends ActionBarActivity {
             button.setText("Register");
         }
 
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//         );
-    }
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String strEmpNum = textuserName.getText().toString();
 
-    public void clickButton() {
-        String strEmpNum = textuserName.getText().toString();
+               if (button.getText() == "Continue")
+               {
+                   //TODO: Password Encryption
+                   String strPasswordencrypted = textPassword.getText().toString();
+                   //TODO: UI validation for login
+                   if (authenticateUser(strEmpNum, strPasswordencrypted)) {
+                       //TODO: In case of first login (password blank) redirect to change password screen
+                       Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                       LoginActivity.this.startActivity(mainIntent);
+                       finish();
+                   } else {
+                       textPassword.setText("");
+                       Toast.makeText(getApplicationContext(), "Incorrect Credentials, Please try again!!", Toast.LENGTH_SHORT).show();
+                       textPassword.requestFocus();
+                   }
+               }
+                else if (button.getText() == "Register") {
+                   //TODO: UI validation for Registration fields entry
 
-        if (button.getText() == "Continue")
-        {
-            //TODO: Password Encryption
-            String strPasswordencrypted = textPassword.getText().toString();
-            //TODO: UI validation for login
-            if (authenticateUser(strEmpNum, strPasswordencrypted)) {
-                //TODO: In case of first login (password blank) redirect to change password screen
-                Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
-                LoginActivity.this.startActivity(mainIntent);
-                finish();
-            } else {
-                textPassword.setText("");
-                Toast.makeText(getApplicationContext(), "Incorrect Credentials, Please try again!!", Toast.LENGTH_SHORT).show();
-                textPassword.requestFocus();
-            }
-        }
-        else if (button.getText() == "Register") {
-            //TODO: UI validation for Registration fields entry
+                   String strEmail;
+                           String strMobileNumber;
 
-            String strEmail, strMobileNumber;
+                   strMobileNumber = textMobileNumber.getText().toString();
+                   strEmail = textEmail.getText().toString();
 
-            strMobileNumber = textMobileNumber.getText().toString();
-            strEmail = textEmail.getText().toString();
+                   //TODO: Check if user is genuine with employee number, email and mobile number
+                  // Toast.makeText(getApplicationContext(),strEmpNum + " / " + strMobileNumber + " / " + strEmail,Toast.LENGTH_LONG).show();
 
-            //TODO: Check if user is genuine with employee number, email and mobile number
+                   if (isUserGenuine(strEmpNum, strMobileNumber, strEmail)) {
 
-            if (isUserGenuine(strEmpNum, strMobileNumber, strEmail)) {
+                       Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, "abc");
+                       employee.save();
 
-                Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail);
-                employee.save();
+                       //TODO: Send a random code and check if the mobile no. is correct.
+                       //TODO: LOW PRIORITY: Automatically check the sms received.
 
-                //TODO: Send a random code and check if the mobile no. is correct.
-                //TODO: LOW PRIORITY: Automatically check the sms received.
+                       textVerify.setVisibility(View.VISIBLE);
+                       button.setText("Verify");
+                   }
+               }
+               else if (button.getText() == "Verify")
+               {
+                       //TODO: UI validation for verify text entry
 
-                textVerify.setVisibility(View.VISIBLE);
-                button.setText("Verify");
-            }
-        }
-        else if (button.getText() == "Verify")
-        {
-            //TODO: UI validation for verify text entry
+                        String strVerifyText = textVerify.getText().toString();
 
-            String strVerifyText = textVerify.getText().toString();
+                       //TODO: Change 12345 to received verify code
 
-            //TODO: Change 12345 to received verify code
+                       if (checkForSameValues(strVerifyText, "12345")) {
+                           textVerify.setVisibility(View.GONE);
+                           textPassword.setVisibility(View.VISIBLE);
+                           textPasswordAgain.setVisibility(View.VISIBLE);
+                           textEmail.setVisibility(View.GONE);
+                           textMobileNumber.setVisibility(View.GONE);
+                           button.setText("Save");
+                       }
+                       else {
+                           Toast.makeText(getApplicationContext(),"Wrong verification code!!", Toast.LENGTH_SHORT);
+                       }
+               }
+               else if (button.getText() == "Save")
+               {
+                       //TODO: UI validation for password & verify password entry
 
-            if (checkForSameValues(strVerifyText, "12345")) {
-                textVerify.setVisibility(View.GONE);
-                textPassword.setVisibility(View.VISIBLE);
-                textPasswordAgain.setVisibility(View.VISIBLE);
-                button.setText("Save");
-            }
-            else {
-                Toast.makeText(getApplicationContext(),"Wrong verification code!!", Toast.LENGTH_SHORT);
-            }
-        }
-        else if (button.getText() == "Save")
-        {
-            //TODO: UI validation for password & verify password entry
+                       String strPassword, strPasswordAgain;
+                       strPassword = textPassword.getText().toString();
+                       strPasswordAgain = textPasswordAgain.getText().toString();
 
-            String strPassword, strPasswordAgain;
-            strPassword = textPassword.getText().toString();
-            strPasswordAgain = textPasswordAgain.getText().toString();
+                       if(checkForSameValues(strPassword, strPasswordAgain))
+                       {
+                           Employee employee = Employee.findById(Employee.class, 1L);
+                           employee.Password = strPassword;
+                           employee.save();
 
-            if(checkForSameValues(strPassword, strPasswordAgain))
-            {
+                           //TODO: Download user details and save in database
 
-                Employee employee = new Employee();
-                employee.findById(Employee.class, 1L);
-                employee.Password = strPassword;
-                employee.save();
-
-                //TODO: Download user details and save in database
-
-                Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
-                LoginActivity.this.startActivity(mainIntent);
-                finish();
-            }
-            else
-            {
-                Toast.makeText(getApplicationContext(),"Passwords doesn't match.",Toast.LENGTH_SHORT);
-            }
-        }
+                           Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                           LoginActivity.this.startActivity(mainIntent);
+                           finish();
+                       }
+                       else
+                       {
+                        Toast.makeText(getApplicationContext(),"Passwords doesn't match.",Toast.LENGTH_SHORT);
+                       }
+                   }
+               }
+        });
     }
 
     private boolean checkForSameValues(String strEnteredCode, String strReceivedCode)
@@ -160,7 +162,7 @@ public class LoginActivity extends ActionBarActivity {
     {
        Employee employee = new Employee();
 
-       List<Employee> employees =  employee.find(Employee.class, "Emp_Number = ? and password = ?", userName, Password);
+       List<Employee> employees =  employee.find(Employee.class, "emp_number = ? and password = ?", userName, Password);
        return employees.size() == 0?false:true;
     }
 
