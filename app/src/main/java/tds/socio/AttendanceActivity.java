@@ -34,7 +34,6 @@ public class AttendanceActivity extends BaseActivity {
 //
 //            Employee employee = new Employee("12345","Suresh", "Rao", "Pilaka");
 //            employee.save();
-//
 //            employee.findById(Employee.class, 1L);
 //
 //            Toast.makeText(getApplicationContext(),employee.getFirstName(),Toast.LENGTH_SHORT).show();

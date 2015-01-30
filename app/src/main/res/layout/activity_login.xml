@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/editText2"
         android:layout_alignEnd="@+id/editText2"
-        android:hint="User Name"/>
+        android:hint="Employee Number"/>
 
     <EditText
         android:layout_width="wrap_content"
