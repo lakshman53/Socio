@@ -20,6 +20,12 @@ public class Employee extends SugarRecord<Employee> {
     String StoreName;
     Long StoreLatitude;
     Long StoreLongitude;
+    String Address;
+    String City;
+    String State;
+    String Area;
+    Date RegisteredDate;
+    Date LastLogin;
 
     public String getEmpNumber() {
         return empNumber;
@@ -156,15 +162,6 @@ public class Employee extends SugarRecord<Employee> {
     public void setLastLogin(Date lastLogin) {
         LastLogin = lastLogin;
     }
-
-    String Address;
-    String City;
-    String State;
-    String Area;
-    Date RegisteredDate;
-    Date LastLogin;
-
-
 
     public Employee() {
 
