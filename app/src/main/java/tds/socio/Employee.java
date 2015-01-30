@@ -27,6 +27,7 @@ public class Employee extends SugarRecord<Employee> {
     Date RegisteredDate;
     String DeviceId;
     Date LastLogin;
+    Integer Role;
 
     public Employee() { }
 

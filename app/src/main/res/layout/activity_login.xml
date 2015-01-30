@@ -30,10 +30,22 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/textPasswordAgain"
+        android:layout_below="@+id/textPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Retype Password"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/textMobileNumber"
-        android:layout_below="@+id/textPassword"
+        android:layout_below="@+id/textPasswordAgain"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:hint="Mobile Number"/>
@@ -49,6 +61,16 @@
         android:layout_alignParentStart="true"
         android:hint="Email Address"/>
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/textVerify"
+        android:layout_below="@+id/textEmail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Verification Code"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -56,6 +78,7 @@
         android:id="@+id/btnContinue"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textEmail" />
+        android:layout_below="@+id/textVerify"
+        android:onClick="clickButton" />
 
 </RelativeLayout>
