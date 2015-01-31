@@ -1,10 +1,7 @@
 package tds.socio;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -24,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class Messages extends Activity {
 	ListView msgList;
@@ -33,40 +30,60 @@ public class Messages extends Activity {
 		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
-			// TODO Auto-generated method stub
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.main);
 			
 			msgList = (ListView) findViewById(R.id.MessageList);
 			
 			details = new ArrayList<MessageDetails>();
-			    
-			MessageDetails Detail;
-			Detail = new MessageDetails();
-			Detail.setIcon(R.drawable.ic_launcher);
-			Detail.setName("Bob");
-			Detail.setSub("Dinner");
-			Detail.setDesc("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor.");
-			Detail.setTime("12/12/2012 12:12");
-			details.add(Detail);
-			
-			Detail = new MessageDetails();
-			Detail.setIcon(R.drawable.ic_launcher);
-			Detail.setName("Rob");
-			Detail.setSub("Party");
-			Detail.setDesc("Dolor sit amet, consectetur adipiscing elit. Nulla auctor.");
-			Detail.setTime("13/12/2012 10:12");
-			details.add(Detail);
-			
-			Detail = new MessageDetails();
-			Detail.setIcon(R.drawable.ic_launcher);
-			Detail.setName("Mike");
-			Detail.setSub("Mail");
-			Detail.setDesc("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-			Detail.setTime("13/12/2012 02:12");
-			details.add(Detail);		
-			
-			msgList.setAdapter(new CustomAdapter(details , this));
+
+            List<Offers> offers;
+            offers = Offers.listAll(Offers.class);
+
+            MessageDetails Detail;
+
+            Detail = new MessageDetails();
+
+            int offerSize = offers.size();
+
+//            for (int i=0; i<offerSize; i=i+1) {
+//
+//                Detail.setIcon(offers.get(i).getIcon());
+//                Detail.setName(offers.get(i).getSender());
+//                Detail.setSub(offers.get(i).getSubject());
+//                Detail.setDesc(offers.get(i).getDescription());
+//                Detail.setTime(offers.get(i).getReceivedTime().toString());
+//                details.add(Detail);
+//
+//            }
+
+            Detail.setIcon(offers.get(0).getIcon());
+            Detail.setName(offers.get(0).getSender());
+            Detail.setSub(offers.get(0).getSubject());
+            Detail.setDesc(offers.get(0).getDescription());
+            Detail.setTime(offers.get(0).getReceivedTime().toString());
+            details.add(Detail);
+
+
+            Detail.setIcon(offers.get(1).getIcon());
+            Detail.setName(offers.get(1).getSender());
+            Detail.setSub(offers.get(1).getSubject());
+            Detail.setDesc(offers.get(1).getDescription());
+            Detail.setTime(offers.get(1).getReceivedTime().toString());
+            details.add(Detail);
+
+
+            Detail.setIcon(offers.get(2).getIcon());
+            Detail.setName(offers.get(2).getSender());
+            Detail.setSub(offers.get(2).getSubject());
+            Detail.setDesc(offers.get(2).getDescription());
+            Detail.setTime(offers.get(2).getReceivedTime().toString());
+            details.add(Detail);
+
+
+
+
+            msgList.setAdapter(new CustomAdapter(details , this));
 
 			registerForContextMenu(msgList);
 			
@@ -84,39 +101,24 @@ public class Messages extends Activity {
 			super.onCreateContextMenu(menu, v, menuInfo);		
 					
 				info = (AdapterContextMenuInfo) menuInfo;
-	//			// System.out.println("Reached");
-				 
+
 				int id = (int) msgList.getAdapter().getItemId(info.position);			
-	//			// System.out.println("id "+msgList.getAdapter().getItem(id));
-										
-	//			// System.out.println("Msg"+details.get(info.position).getName());
-				
+
+
 				menu.setHeaderTitle(details.get(info.position).getName());		
 				menu.add(Menu.NONE, v.getId(), 0, "Reply");
 				menu.add(Menu.NONE, v.getId(), 0, "Reply All");
 				menu.add(Menu.NONE, v.getId(), 0, "Forward");
 				
-				// System.out.println("ID "+info.id);
-	        	// System.out.println("Pos "+info.position);
-	        	// System.out.println("Info "+info.toString());
 		}
 		
 		@Override
 	    public boolean onContextItemSelected(MenuItem item) {
 	        if (item.getTitle() == "Reply") {
-	  //      	// System.out.println("Id "+info.id);
-	  //      	// System.out.println("Pos "+info.position);
-	  //      	// System.out.println("info "+info.toString());
-	        	}  
+	        	}
 	        else if (item.getTitle() == "Reply All") {
-	        	// System.out.println("Id "+info.id);
-	        	// System.out.println("Pos "+info.position);
-	        	// System.out.println("info "+info.toString());
-	        	}  
+	        	}
 	        else if (item.getTitle() == "Reply All") {
-	        	// System.out.println("Id "+info.id);
-	        	// System.out.println("Pos "+info.position);
-	        	// System.out.println("info "+info.toString());
 	        }
 	        else 	{
 	        	return false;
@@ -126,8 +128,7 @@ public class Messages extends Activity {
 		
 		@Override
 		protected void onResume() {
-			// TODO Auto-generated method stub
-			super.onResume();			
+			super.onResume();
 	}
 		
 		public class CustomAdapter extends BaseAdapter {
@@ -141,22 +142,18 @@ public class Messages extends Activity {
 		    }
 		   
 		    public int getCount() {
-		        // TODO Auto-generated method stub
 		        return _data.size();
 		    }
 		    
 		    public Object getItem(int position) {
-		        // TODO Auto-generated method stub
 		        return _data.get(position);
 		    }
 		
 		    public long getItemId(int position) {
-		        // TODO Auto-generated method stub
 		        return position;
 		    }
 		   
 		    public View getView(final int position, View convertView, ViewGroup parent) {
-		        // TODO Auto-generated method stub
 		         View v = convertView;
 		         if (v == null) 
 		         {
@@ -173,34 +170,31 @@ public class Messages extends Activity {
 		           MessageDetails msg = _data.get(position);
 		           image.setImageResource(msg.icon);
 		           fromView.setText(msg.from);
-		           subView.setText("Subject: "+msg.sub);
+		           subView.setText(msg.sub);
 		           descView.setText(msg.desc);
 		           timeView.setText(msg.time);		              		
 		        
 		           image.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					AlertDialog.Builder adb=new AlertDialog.Builder(Messages.this);
-			        adb.setMessage("Add To Contacts?");
-			        adb.setNegativeButton("Cancel", null);
-			        final int selectedid = position;
-			        final String itemname= (String) _data.get(position).getName();
-
-			        adb.setPositiveButton("OK", new AlertDialog.OnClickListener() {
-			        	public void onClick(DialogInterface dialog, int which) {
-			        				
-			        		// System.out.println("Select " + selectedid);
-			        		// System.out.println("Project " + itemname);
-			        		
-			        		Bundle b = new Bundle();
-			    			b.putString("project", itemname);
-			    			Intent createTask = new Intent("com.loginworks.tasktrek.CREATETASK");
-			    			createTask.putExtras(b);
-			    			startActivity(createTask);    	
-			        		}});
-			        
-			        adb.show();      
+//					AlertDialog.Builder adb=new AlertDialog.Builder(Messages.this);
+//			        adb.setMessage("Add To Contacts?");
+//			        adb.setNegativeButton("Cancel", null);
+//			        final int selectedid = position;
+//			        final String itemname= (String) _data.get(position).getName();
+//
+//			        adb.setPositiveButton("OK", new AlertDialog.OnClickListener() {
+//			        	public void onClick(DialogInterface dialog, int which) {
+//
+//
+//			        		Bundle b = new Bundle();
+//			    			b.putString("project", itemname);
+//			    			Intent createTask = new Intent("com.loginworks.tasktrek.CREATETASK");
+//			    			createTask.putExtras(b);
+//			    			startActivity(createTask);
+//			        		}});
+//
+//			        adb.show();
 				}    						
 			});
 		        
