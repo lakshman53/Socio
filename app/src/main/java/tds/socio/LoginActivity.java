@@ -62,7 +62,7 @@ public class LoginActivity extends ActionBarActivity {
                    //TODO: UI validation for login
                    if (authenticateUser(strEmpNum, strPasswordencrypted)) {
                        //TODO: In case of first login (password blank) redirect to change password screen
-                       Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                       Intent mainIntent = new Intent(LoginActivity.this, Messages.class);
                        LoginActivity.this.startActivity(mainIntent);
                        finish();
                    } else {
