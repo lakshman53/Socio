@@ -34,52 +34,28 @@ public class Messages extends Activity {
 			setContentView(R.layout.main);
 			
 			msgList = (ListView) findViewById(R.id.MessageList);
-			
-			details = new ArrayList<MessageDetails>();
+
+			details = new ArrayList<>();
+
+            MessageDetails Detail;
 
             List<Offers> offers;
             offers = Offers.listAll(Offers.class);
 
-            MessageDetails Detail;
 
-            Detail = new MessageDetails();
+            for (int i=0; i<offers.size(); i=i+1) {
 
-            int offerSize = offers.size();
+                Detail = new MessageDetails();
 
+                Detail.setIcon(offers.get(i).getIcon());
+                Detail.setName(offers.get(i).getSender());
+                Detail.setSub(offers.get(i).getSubject());
+                Detail.setDesc(offers.get(i).getDescription());
+                Detail.setTime(offers.get(i).getReceivedTime().toString());
 
+                details.add(Detail);
 
-//            for (int i=0; i<offerSize; i=i+1) {
-//
-//                Detail.setIcon(offers.get(i).getIcon());
-//                Detail.setName(offers.get(i).getSender());
-//                Detail.setSub(offers.get(i).getSubject());
-//                Detail.setDesc(offers.get(i).getDescription());
-//                Detail.setTime(offers.get(i).getReceivedTime().toString());
-//                details.add(Detail);
-//
-//            }
-
-
-            Detail.setIcon(offers.get(0).getIcon());
-            Detail.setName(offers.get(0).getSender());
-            Detail.setSub(offers.get(0).getSubject());
-            Detail.setDesc(offers.get(0).getDescription());
-            Detail.setTime(offers.get(0).getReceivedTime().toString());
-            details.add(Detail);
-
-            Detail.setIcon(offers.get(1).getIcon());
-            Detail.setName(offers.get(1).getSender());
-            Detail.setSub(offers.get(1).getSubject());
-            Detail.setDesc(offers.get(1).getDescription());
-            Detail.setTime(offers.get(1).getReceivedTime().toString());
-            details.add(Detail);
-
-            Detail.setIcon(offers.get(2).getIcon());
-            Detail.setName(offers.get(2).getSender());
-            Detail.setSub(offers.get(2).getSubject());
-            Detail.setDesc(offers.get(2).getDescription());
-            Detail.setTime(offers.get(2).getReceivedTime().toString());
-            details.add(Detail);
+            }
 
             msgList.setAdapter(new CustomAdapter(details , this));
 			registerForContextMenu(msgList);
@@ -99,11 +75,9 @@ public class Messages extends Activity {
 
 				int id = (int) msgList.getAdapter().getItemId(info.position);			
 
-
-				menu.setHeaderTitle(details.get(info.position).getName());		
+				menu.setHeaderTitle(details.get(info.position).getSub());
 				menu.add(Menu.NONE, v.getId(), 0, "Add to Favourites");
 				menu.add(Menu.NONE, v.getId(), 0, "Delete");
-
 		}
 		
 		@Override
@@ -179,8 +153,6 @@ public class Messages extends Activity {
 //
 //			        adb.setPositiveButton("OK", new AlertDialog.OnClickListener() {
 //			        	public void onClick(DialogInterface dialog, int which) {
-//
-//
 //			        		Bundle b = new Bundle();
 //			    			b.putString("project", itemname);
 //			    			Intent createTask = new Intent("com.loginworks.tasktrek.CREATETASK");
@@ -191,7 +163,7 @@ public class Messages extends Activity {
 //			        adb.show();
 				}    						
 			});
-		        
+
 		        return v; 
 		}
 		}

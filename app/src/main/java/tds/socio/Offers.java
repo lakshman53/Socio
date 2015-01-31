@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Offers extends SugarRecord<Offers> {
 
-    Long OfferId;
+    String OfferId;
     Integer Icon;
     String Sender;
     String Subject;
@@ -22,7 +22,7 @@ public class Offers extends SugarRecord<Offers> {
 
     public Offers() {}
 
-    public Offers(Long offerId, Integer icon, String sender, String subject, String description, Date receivedTime, Boolean isRead, Boolean isFavourite) {
+    public Offers(String offerId, Integer icon, String sender, String subject, String description, Date receivedTime, Boolean isRead, Boolean isFavourite) {
         OfferId = offerId;
         Icon = icon;
         Sender = sender;
@@ -33,11 +33,11 @@ public class Offers extends SugarRecord<Offers> {
         this.isFavourite = isFavourite;
     }
 
-    public Long getOfferId() {
+    public String getOfferId() {
         return OfferId;
     }
 
-    public void setOfferId(Long offerId) {
+    public void setOfferId(String offerId) {
         OfferId = offerId;
     }
 
