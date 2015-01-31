@@ -46,6 +46,8 @@ public class Messages extends Activity {
 
             int offerSize = offers.size();
 
+
+
 //            for (int i=0; i<offerSize; i=i+1) {
 //
 //                Detail.setIcon(offers.get(i).getIcon());
@@ -57,13 +59,13 @@ public class Messages extends Activity {
 //
 //            }
 
+
             Detail.setIcon(offers.get(0).getIcon());
             Detail.setName(offers.get(0).getSender());
             Detail.setSub(offers.get(0).getSubject());
             Detail.setDesc(offers.get(0).getDescription());
             Detail.setTime(offers.get(0).getReceivedTime().toString());
             details.add(Detail);
-
 
             Detail.setIcon(offers.get(1).getIcon());
             Detail.setName(offers.get(1).getSender());
@@ -72,7 +74,6 @@ public class Messages extends Activity {
             Detail.setTime(offers.get(1).getReceivedTime().toString());
             details.add(Detail);
 
-
             Detail.setIcon(offers.get(2).getIcon());
             Detail.setName(offers.get(2).getSender());
             Detail.setSub(offers.get(2).getSubject());
@@ -80,16 +81,10 @@ public class Messages extends Activity {
             Detail.setTime(offers.get(2).getReceivedTime().toString());
             details.add(Detail);
 
-
-
-
             msgList.setAdapter(new CustomAdapter(details , this));
-
 			registerForContextMenu(msgList);
-			
 			msgList.setOnItemClickListener(new OnItemClickListener() {
 				   public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-					   // System.out.println("Name: "+details.get(position).getName());
 					   String s =(String) ((TextView) v.findViewById(R.id.From)).getText();
 					   Toast.makeText(Messages.this, s, Toast.LENGTH_LONG).show();
 				   }
@@ -106,23 +101,22 @@ public class Messages extends Activity {
 
 
 				menu.setHeaderTitle(details.get(info.position).getName());		
-				menu.add(Menu.NONE, v.getId(), 0, "Reply");
-				menu.add(Menu.NONE, v.getId(), 0, "Reply All");
-				menu.add(Menu.NONE, v.getId(), 0, "Forward");
-				
+				menu.add(Menu.NONE, v.getId(), 0, "Add to Favourites");
+				menu.add(Menu.NONE, v.getId(), 0, "Delete");
+
 		}
 		
 		@Override
 	    public boolean onContextItemSelected(MenuItem item) {
-	        if (item.getTitle() == "Reply") {
-	        	}
-	        else if (item.getTitle() == "Reply All") {
-	        	}
-	        else if (item.getTitle() == "Reply All") {
-	        }
+	        if (item.getTitle() == "Add to Favourites") {
+
+            }
+	        else if (item.getTitle() == "Delete") {
+
+       		}
 	        else 	{
 	        	return false;
-	        	}  
+        	}
 	    return true;  
 	    }
 		
