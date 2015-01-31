@@ -66,7 +66,7 @@ public class LoginActivity extends ActionBarActivity {
                        finish();
                    } else {
                        textPassword.setText("");
-                       Toast.makeText(getApplicationContext(), "Incorrect Credentials, Please try again!!", Toast.LENGTH_SHORT).show();
+                       Toast.makeText(getApplicationContext(), "Incorrect Credentials, Please enter again!!", Toast.LENGTH_SHORT).show();
                        textPassword.requestFocus();
                    }
                }
