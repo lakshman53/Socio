@@ -1,6 +1,7 @@
 package tds.socio;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -8,6 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -20,6 +28,7 @@ import tds.libs.StringEncrypter;
 public class LoginActivity extends ActionBarActivity {
     EditText textEmail, textPassword, textuserName, textMobileNumber, textVerify, textPasswordAgain;
     Button button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,16 +83,19 @@ public class LoginActivity extends ActionBarActivity {
                    //TODO: UI validation for Registration fields entry
 
                    String strEmail;
-                           String strMobileNumber;
+                   String strMobileNumber;
 
                    strMobileNumber = textMobileNumber.getText().toString();
                    strEmail = textEmail.getText().toString();
 
-                   //TODO: Check if user is genuine with employee number, email and mobile number
-                  // Toast.makeText(getApplicationContext(),strEmpNum + " / " + strMobileNumber + " / " + strEmail,Toast.LENGTH_LONG).show();
+                 //  if (isUserGenuine(strEmpNum, strMobileNumber, strEmail)) {
+                AsyncCallWS isUserGenuineTask = new AsyncCallWS();
+                try {
+                Boolean isUserGenuine = isUserGenuineTask.execute().get();
 
-                   if (isUserGenuine(strEmpNum, strMobileNumber, strEmail)) {
+                if (isUserGenuine){
 
+                       //Toast.makeText(getApplicationContext(),"Congratulations, Cheer Up buddy!!",Toast.LENGTH_LONG).show();
                        Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, "abc");
                        employee.save();
 
@@ -93,6 +105,15 @@ public class LoginActivity extends ActionBarActivity {
                        textVerify.setVisibility(View.VISIBLE);
                        button.setText("Verify");
                    }
+                   else
+                   {
+                       Toast.makeText(getApplicationContext(),"No employee exists with these credentials!!",Toast.LENGTH_LONG).show();
+                   }
+                   }
+                    catch (Exception e)
+                    {
+                        Log.e("Employee Registration Async ", e.getMessage());
+                    }
                }
                else if (button.getText() == "Verify")
                {
@@ -147,8 +168,64 @@ public class LoginActivity extends ActionBarActivity {
     {
         return strEnteredCode.equals(strReceivedCode)?true:false;
     }
-    private boolean isUserGenuine(String strEmpNum, String strMobileNumber, String strEmail) {
-        return true;
+    private static String NAMESPACE = "http://tempuri.org/";
+    private static String URL = "http://sociowebservice.azurewebsites.net/RegAuthenticate.asmx";
+    private static String SOAP_ACTION = "http://tempuri.org/";
+
+    public static class WebService {
+
+        public static boolean isUserGenuine(String strEmpNum, String strMobileNumber, String strEmail) {
+
+        Boolean resTxt = false;
+        SoapObject request = new SoapObject(NAMESPACE, "isEmployeeExists");
+        PropertyInfo sayHelloPI;
+
+        sayHelloPI = new PropertyInfo();
+        sayHelloPI.setName("EmpId");
+        sayHelloPI.setValue(strEmpNum);
+        sayHelloPI.setType(String.class);
+        request.addProperty(sayHelloPI);
+
+        sayHelloPI = new PropertyInfo();
+        sayHelloPI.setName("MobileNo");
+        sayHelloPI.setValue(strMobileNumber);
+        sayHelloPI.setType(String.class);
+        request.addProperty(sayHelloPI);
+
+        sayHelloPI = new PropertyInfo();
+        sayHelloPI.setName("Email");
+        sayHelloPI.setValue(strEmail);
+        sayHelloPI.setType(String.class);
+        request.addProperty(sayHelloPI);
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(request);
+        HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+
+        try {
+            androidHttpTransport.call(SOAP_ACTION + "isEmployeeExists", envelope);
+            SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+            resTxt = Boolean.valueOf(response.toString());
+
+        } catch (Exception e) {
+            Log.e("Check User Geniune:", e.getMessage());
+        }
+        //Return resTxt to calling object
+        return resTxt;
+       }
+    }
+
+    private class AsyncCallWS extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            return  WebService.isUserGenuine("555","7032906292", "lakshman@hp.com");
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
     }
 
     private boolean isRegistered()
