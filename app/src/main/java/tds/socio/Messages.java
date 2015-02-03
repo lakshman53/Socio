@@ -1,7 +1,7 @@
 package tds.socio;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -23,25 +23,31 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Messages extends Activity {
+public class Messages extends BaseActivity {
 	ListView msgList;
 	ArrayList<MessageDetails> details;
 	AdapterView.AdapterContextMenuInfo info;
+    private String[] navMenuTitles;
+    private TypedArray navMenuIcons;
 		
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.main);
-			
-			msgList = (ListView) findViewById(R.id.MessageList);
 
+            navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
+            navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+            set(navMenuTitles, navMenuIcons);
+
+            Toast.makeText(getApplicationContext(),"Long press the message for more features",Toast.LENGTH_LONG ).show();
+
+            msgList = (ListView) findViewById(R.id.MessageList);
 			details = new ArrayList<>();
 
             MessageDetails Detail;
 
             List<Offers> offers;
             offers = Offers.listAll(Offers.class);
-
 
             for (int i=0; i<offers.size(); i=i+1) {
 
@@ -54,7 +60,6 @@ public class Messages extends Activity {
                 Detail.setTime(offers.get(i).getReceivedTime().toString());
 
                 details.add(Detail);
-
             }
 
             msgList.setAdapter(new CustomAdapter(details , this));
@@ -163,8 +168,7 @@ public class Messages extends Activity {
 //			        adb.show();
 				}    						
 			});
-
-		        return v; 
+		        return v;
 		}
 		}
 

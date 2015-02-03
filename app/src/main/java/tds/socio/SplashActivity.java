@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import java.util.Date;
+
 public class SplashActivity extends Activity {
 
     /** Duration of wait **/
@@ -22,6 +24,8 @@ public class SplashActivity extends Activity {
 
         //TODO: Check if internet connection exists.
 
+        Offers offers = new Offers("1", R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
+        offers.save();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -32,6 +36,5 @@ public class SplashActivity extends Activity {
                 SplashActivity.this.finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
-
     }
 }
