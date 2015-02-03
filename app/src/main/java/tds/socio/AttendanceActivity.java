@@ -55,13 +55,15 @@ public class AttendanceActivity extends BaseActivity {
     }
 
     static final int REQUEST_TAKE_PHOTO = 1;
-
+    String path;
+    Intent takePictureIntent;
+    File photoFile = null;
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
-            File photoFile = null;
+
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
@@ -70,12 +72,70 @@ public class AttendanceActivity extends BaseActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+
+//                Boolean photoTaken = new TakePhoto.execute().get();
+//                if(photoTaken) {
+//                    path = photoFile.getAbsolutePath();
+//                    decodeFile(path, 100, 200);
+//                }
             }
-        }
+    }
     }
 
+//    private String decodeFile(String path, int DESIREDWIDTH, int DESIREDHEIGHT) {
+//        String strMyImagePath = null;
+//        Bitmap scaledBitmap = null;
+//
+//        try {
+//            // Part 1: Decode image
+//            Bitmap unscaledBitmap = ScalingUtilities.decodeFile(path, DESIREDWIDTH, DESIREDHEIGHT, ScalingUtilities.ScalingLogic.FIT);
+//
+//            if (!(unscaledBitmap.getWidth() <= DESIREDWIDTH && unscaledBitmap.getHeight() <= DESIREDHEIGHT)) {
+//                // Part 2: Scale image
+//                scaledBitmap = ScalingUtilities.createScaledBitmap(unscaledBitmap, DESIREDWIDTH, DESIREDHEIGHT, ScalingUtilities.ScalingLogic.FIT);
+//            } else {
+//                unscaledBitmap.recycle();
+//                return path;
+//            }
+//
+//            // Store to tmp file
+//
+//            String extr = Environment.getExternalStorageDirectory().toString();
+//            File mFolder = new File(extr + "/Socio");
+//            if (!mFolder.exists()) {
+//                mFolder.mkdir();
+//            }
+//
+//            String s = "tmp.png";
+//
+//            File f = new File(mFolder.getAbsolutePath(), s);
+//
+//            strMyImagePath = f.getAbsolutePath();
+//            FileOutputStream fos = null;
+//            try {
+//                fos = new FileOutputStream(f);
+//                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 75, fos);
+//                fos.flush();
+//                fos.close();
+//            } catch (FileNotFoundException e) {
+//
+//
+//            } catch (Exception e) {
+//
+//            }
+//
+//            scaledBitmap.recycle();
+//        } catch (Throwable e) {
+//        }
+//
+//        if (strMyImagePath == null) {
+//            return path;
+//        }
+//        return strMyImagePath;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +165,7 @@ public class AttendanceActivity extends BaseActivity {
             {
                 dispatchTakePictureIntent();
             }
+
            catch (Exception e) {
                Log.e("Capture Image Error: " , e.getMessage());
            }
