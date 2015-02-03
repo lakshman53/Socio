@@ -95,7 +95,7 @@ public class LoginActivity extends ActionBarActivity {
 
                 if (verifyCode != -1){
 
-                       //TODO: Send a random code and check if the mobile no. is correct.
+                       //TODO: Send a random code as SMS and check if the mobile no. is correct.
                        //TODO: LOW PRIORITY: Automatically check the sms received.
 
                        textVerify.setVisibility(View.VISIBLE);
