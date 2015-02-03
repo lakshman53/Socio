@@ -1,5 +1,6 @@
 package tds.socio;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -70,7 +71,7 @@ public class LoginActivity extends ActionBarActivity {
                    //TODO: UI validation for login
                    if (authenticateUser(strEmpNum, strPasswordencrypted)) {
                        //TODO: In case of first login (password blank) redirect to change password screen
-                       Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                       Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
                        LoginActivity.this.startActivity(mainIntent);
                        finish();
                    } else {
@@ -91,12 +92,13 @@ public class LoginActivity extends ActionBarActivity {
                  //  if (isUserGenuine(strEmpNum, strMobileNumber, strEmail)) {
                 AsyncCallWS isUserGenuineTask = new AsyncCallWS();
                 try {
-                Boolean isUserGenuine = isUserGenuineTask.execute().get();
+
+                Boolean isUserGenuine = isUserGenuineTask.execute(new String[]{strEmpNum,strMobileNumber,strEmail }).get();
 
                 if (isUserGenuine){
 
                        //Toast.makeText(getApplicationContext(),"Congratulations, Cheer Up buddy!!",Toast.LENGTH_LONG).show();
-                       Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, "abc");
+                       Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, "");
                        employee.save();
 
                        //TODO: Send a random code and check if the mobile no. is correct.
@@ -112,7 +114,7 @@ public class LoginActivity extends ActionBarActivity {
                    }
                     catch (Exception e)
                     {
-                        Log.e("Employee Registration Async ", e.getMessage());
+                        Log.e("Employee Registration Async", e.getMessage());
                     }
                }
                else if (button.getText() == "Verify")
@@ -151,7 +153,7 @@ public class LoginActivity extends ActionBarActivity {
 
                            //TODO: Download user details and save in database
 
-                           Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                           Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
                            LoginActivity.this.startActivity(mainIntent);
                            finish();
                        }
@@ -216,11 +218,28 @@ public class LoginActivity extends ActionBarActivity {
        }
     }
 
-    private class AsyncCallWS extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Void... params) {
+    private class AsyncCallWS extends AsyncTask<String, Void, Boolean> {
 
-            return  WebService.isUserGenuine("555","7032906292", "lakshman@hp.com");
+        ProgressDialog dialog;
+
+//        @Override
+//        protected void onPreExecute() {
+//            dialog = new ProgressDialog(LoginActivity.this);
+//            dialog.setTitle("Checking...");
+//            dialog.setMessage("Please wait...");
+//            dialog.setIndeterminate(true);
+//            dialog.show();
+//        }
+
+//        @Override
+//        protected Boolean onPostExecute() {
+//            dialog.hide();
+//            return true;
+//        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            return  WebService.isUserGenuine(params[0],params[1], params[2]);
         }
 
         @Override
