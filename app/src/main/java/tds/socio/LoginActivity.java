@@ -1,6 +1,5 @@
 package tds.socio;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,10 +28,12 @@ import tds.libs.StringEncrypter;
 public class LoginActivity extends ActionBarActivity {
     EditText textEmail, textPassword, textuserName, textMobileNumber, textVerify, textPasswordAgain;
     Button button;
-
+    String strEmail = "", strMobileNumber = "";
+    Integer verifyCode = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -83,9 +84,6 @@ public class LoginActivity extends ActionBarActivity {
                 else if (button.getText() == "Register") {
                    //TODO: UI validation for Registration fields entry
 
-                   String strEmail;
-                   String strMobileNumber;
-
                    strMobileNumber = textMobileNumber.getText().toString();
                    strEmail = textEmail.getText().toString();
 
@@ -93,20 +91,17 @@ public class LoginActivity extends ActionBarActivity {
                 AsyncCallWS isUserGenuineTask = new AsyncCallWS();
                 try {
 
-                Boolean isUserGenuine = isUserGenuineTask.execute(new String[]{strEmpNum,strMobileNumber,strEmail }).get();
+                verifyCode = isUserGenuineTask.execute(new String[]{strEmpNum,strMobileNumber,strEmail }).get();
 
-                if (isUserGenuine){
-
-                       //Toast.makeText(getApplicationContext(),"Congratulations, Cheer Up buddy!!",Toast.LENGTH_LONG).show();
-                       Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, "");
-                       employee.save();
+                if (verifyCode != -1){
 
                        //TODO: Send a random code and check if the mobile no. is correct.
                        //TODO: LOW PRIORITY: Automatically check the sms received.
 
                        textVerify.setVisibility(View.VISIBLE);
                        button.setText("Verify");
-                   }
+                       Toast.makeText(getApplicationContext(),"Verification Code: " + verifyCode, Toast.LENGTH_LONG).show();
+                }
                    else
                    {
                        Toast.makeText(getApplicationContext(),"No employee exists with these credentials!!",Toast.LENGTH_LONG).show();
@@ -123,9 +118,8 @@ public class LoginActivity extends ActionBarActivity {
 
                         String strVerifyText = textVerify.getText().toString();
 
-                       //TODO: Change 12345 to received verify code
+                       if (checkForSameValues(strVerifyText, verifyCode+"")) {
 
-                       if (checkForSameValues(strVerifyText, "12345")) {
                            textVerify.setVisibility(View.GONE);
                            textPassword.setVisibility(View.VISIBLE);
                            textPasswordAgain.setVisibility(View.VISIBLE);
@@ -147,8 +141,7 @@ public class LoginActivity extends ActionBarActivity {
 
                        if(checkForSameValues(strPassword, strPasswordAgain))
                        {
-                           Employee employee = Employee.findById(Employee.class, 1L);
-                           employee.Password = strPassword;
+                           Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword);
                            employee.save();
 
                            //TODO: Download user details and save in database
@@ -176,9 +169,9 @@ public class LoginActivity extends ActionBarActivity {
 
     public static class WebService {
 
-        public static boolean isUserGenuine(String strEmpNum, String strMobileNumber, String strEmail) {
+        public static Integer isUserGenuine(String strEmpNum, String strMobileNumber, String strEmail) {
 
-        Boolean resTxt = false;
+        Integer resTxt = -1;
         SoapObject request = new SoapObject(NAMESPACE, "isEmployeeExists");
         PropertyInfo sayHelloPI;
 
@@ -208,7 +201,7 @@ public class LoginActivity extends ActionBarActivity {
         try {
             androidHttpTransport.call(SOAP_ACTION + "isEmployeeExists", envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-            resTxt = Boolean.valueOf(response.toString());
+            resTxt = Integer.valueOf(response.toString());
 
         } catch (Exception e) {
             Log.e("Check User Geniune:", e.getMessage());
@@ -218,9 +211,9 @@ public class LoginActivity extends ActionBarActivity {
        }
     }
 
-    private class AsyncCallWS extends AsyncTask<String, Void, Boolean> {
+    private class AsyncCallWS extends AsyncTask<String, Void, Integer> {
 
-        ProgressDialog dialog;
+//        ProgressDialog dialog;
 
 //        @Override
 //        protected void onPreExecute() {
@@ -238,7 +231,7 @@ public class LoginActivity extends ActionBarActivity {
 //        }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Integer doInBackground(String... params) {
             return  WebService.isUserGenuine(params[0],params[1], params[2]);
         }
 

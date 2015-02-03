@@ -4,8 +4,11 @@ package tds.socio;
  * Created by laks on 29-01-2015.
  */
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -30,6 +34,7 @@ public class AttendanceActivity extends BaseActivity {
     long lngCurrentTime = -1;
 
     String mCurrentPhotoPath;
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -55,10 +60,11 @@ public class AttendanceActivity extends BaseActivity {
     }
 
     static final int REQUEST_TAKE_PHOTO = 1;
-    String path;
-    Intent takePictureIntent;
-    File photoFile = null;
+
     private void dispatchTakePictureIntent() {
+        Intent takePictureIntent;
+        File photoFile = null;
+
         takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -76,66 +82,42 @@ public class AttendanceActivity extends BaseActivity {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
-//                Boolean photoTaken = new TakePhoto.execute().get();
-//                if(photoTaken) {
-//                    path = photoFile.getAbsolutePath();
-//                    decodeFile(path, 100, 200);
-//                }
             }
     }
     }
 
-//    private String decodeFile(String path, int DESIREDWIDTH, int DESIREDHEIGHT) {
-//        String strMyImagePath = null;
-//        Bitmap scaledBitmap = null;
-//
-//        try {
-//            // Part 1: Decode image
-//            Bitmap unscaledBitmap = ScalingUtilities.decodeFile(path, DESIREDWIDTH, DESIREDHEIGHT, ScalingUtilities.ScalingLogic.FIT);
-//
-//            if (!(unscaledBitmap.getWidth() <= DESIREDWIDTH && unscaledBitmap.getHeight() <= DESIREDHEIGHT)) {
-//                // Part 2: Scale image
-//                scaledBitmap = ScalingUtilities.createScaledBitmap(unscaledBitmap, DESIREDWIDTH, DESIREDHEIGHT, ScalingUtilities.ScalingLogic.FIT);
-//            } else {
-//                unscaledBitmap.recycle();
-//                return path;
-//            }
-//
-//            // Store to tmp file
-//
-//            String extr = Environment.getExternalStorageDirectory().toString();
-//            File mFolder = new File(extr + "/Socio");
-//            if (!mFolder.exists()) {
-//                mFolder.mkdir();
-//            }
-//
-//            String s = "tmp.png";
-//
-//            File f = new File(mFolder.getAbsolutePath(), s);
-//
-//            strMyImagePath = f.getAbsolutePath();
-//            FileOutputStream fos = null;
-//            try {
-//                fos = new FileOutputStream(f);
-//                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 75, fos);
-//                fos.flush();
-//                fos.close();
-//            } catch (FileNotFoundException e) {
-//
-//
-//            } catch (Exception e) {
-//
-//            }
-//
-//            scaledBitmap.recycle();
-//        } catch (Throwable e) {
-//        }
-//
-//        if (strMyImagePath == null) {
-//            return path;
-//        }
-//        return strMyImagePath;
-//    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+            setPic();
+        }
+    }
+
+    private void setPic() {
+
+        ImageView picture = (ImageView) findViewById(R.id.picture);
+        // Get the dimensions of the View
+
+        int targetW = picture.getWidth();
+        int targetH = picture.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        picture.setImageBitmap(bitmap);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +129,9 @@ public class AttendanceActivity extends BaseActivity {
         set(navMenuTitles, navMenuIcons);
 
         new RetrieveTime().execute();
+
+
+
     }
 
     public void MarkInAttendance(View view)
