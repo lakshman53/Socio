@@ -158,7 +158,7 @@ public class AttendanceActivity extends BaseActivity {
 
                 String internalEmpId = employees.get(0).getInternalEmpId();
 
-                new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "1" );
+                new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A" );
             }
 
            catch (Exception e) {
@@ -192,10 +192,8 @@ public class AttendanceActivity extends BaseActivity {
 
                 String internalEmpId = employees.get(0).getInternalEmpId();
 
-                new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "2" );
+                new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "P" );
             }
-
-
 
 
             catch (Exception e) {

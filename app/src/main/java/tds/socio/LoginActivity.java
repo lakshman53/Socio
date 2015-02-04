@@ -135,7 +135,7 @@ public class LoginActivity extends ActionBarActivity {
                            button.setText("Save");
                        }
                        else {
-                           Toast.makeText(getApplicationContext(),"Wrong verification code!!", Toast.LENGTH_SHORT);
+                           Toast.makeText(getApplicationContext(),"Wrong verification code!!", Toast.LENGTH_SHORT).show();
                        }
                }
                else if (button.getText() == "Save")
