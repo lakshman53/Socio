@@ -93,8 +93,6 @@ public class LoginActivity extends ActionBarActivity {
 
                 verifyCode = isUserGenuineTask.execute(new String[]{strEmpNum,strMobileNumber,strEmail }).get();
 
-                    Toast.makeText(getApplicationContext(),verifyCode,Toast.LENGTH_LONG).show();
-
                 if (!verifyCode.equals("wrong")){
 
                        //TODO: Send a random code as SMS and check if the mobile no. is correct.
@@ -128,10 +126,6 @@ public class LoginActivity extends ActionBarActivity {
                            textEmail.setVisibility(View.GONE);
                            textMobileNumber.setVisibility(View.GONE);
 
-                            //SharedPreferences.Editor editor = getSharedPreferences("EMP_DETAIL", MODE_PRIVATE).edit();
-                            //editor.putString("intEmpId", verifyCode.split(",",2)[0]);
-                            //editor.commit();
-
                            button.setText("Save");
                        }
                        else {
@@ -148,11 +142,10 @@ public class LoginActivity extends ActionBarActivity {
 
                        if(checkForSameValues(strPassword, strPasswordAgain))
                        {
-                           Toast.makeText(getApplicationContext(), verifyCode.split(",",2)[0], Toast.LENGTH_LONG).show();
+                           //TODO: Downloaded basic details; user's all detail needs to be saved
+
                            Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword, verifyCode.split(",",2)[0].toString());
                            employee.save();
-
-                           //TODO: Download user details and save in database
 
                            Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
                            LoginActivity.this.startActivity(mainIntent);
