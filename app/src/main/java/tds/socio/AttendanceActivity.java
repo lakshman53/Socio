@@ -16,13 +16,20 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import tds.libs.GPSTracker;
 import tds.libs.SntpClient;
@@ -94,11 +101,10 @@ public class AttendanceActivity extends BaseActivity {
 
     private void setPic() {
 
-        ImageView picture = (ImageView) findViewById(R.id.picture);
         // Get the dimensions of the View
 
-        int targetW = picture.getWidth();
-        int targetH = picture.getHeight();
+        int targetW = 50;
+        int targetH = 100;
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -116,7 +122,6 @@ public class AttendanceActivity extends BaseActivity {
         bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        picture.setImageBitmap(bitmap);
     }
 
     @Override
@@ -128,9 +133,7 @@ public class AttendanceActivity extends BaseActivity {
         navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
         set(navMenuTitles, navMenuIcons);
 
-        new RetrieveTime().execute();
-
-
+        new RetrieveTimeWS().execute();
 
     }
 
@@ -149,6 +152,13 @@ public class AttendanceActivity extends BaseActivity {
             try
             {
                 dispatchTakePictureIntent();
+
+                List<Employee> employees;
+                employees = Employee.listAll(Employee.class);
+
+                String internalEmpId = employees.get(0).getInternalEmpId();
+
+                new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "1" );
             }
 
            catch (Exception e) {
@@ -161,7 +171,106 @@ public class AttendanceActivity extends BaseActivity {
         }
     }
 
-    class RetrieveTime extends AsyncTask<Void, Void, Void> {
+    public void MarkOutAttendance(View view)
+    {
+        GPSTracker gps = new GPSTracker(AttendanceActivity.this);
+
+        if(gps.canGetLocation())
+        {
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+
+//          String StrdistBetCoor = Double.toString(gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C'));
+//          Toast.makeText(getApplicationContext(),StrdistBetCoor,Toast.LENGTH_LONG).show();
+
+            try
+            {
+                dispatchTakePictureIntent();
+
+                List<Employee> employees;
+                employees = Employee.listAll(Employee.class);
+
+                String internalEmpId = employees.get(0).getInternalEmpId();
+
+                new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "2" );
+            }
+
+
+
+
+            catch (Exception e) {
+                Log.e("Capture Image Error: " , e.getMessage());
+            }
+        }
+        else
+        {
+            gps.showSettingsAlert();
+        }
+    }
+
+    private static String NAMESPACE = "http://tempuri.org/";
+    private static String URL = "http://sociowebservice.azurewebsites.net/RegAuthenticate.asmx";
+    private static String SOAP_ACTION = "http://tempuri.org/";
+
+    public static class AttendanceMarking {
+
+        public static String logAttendance(String latitude, String longitude, String empId, String LogFlag) {
+
+            String resTxt = "this should not come";
+            SoapObject request = new SoapObject(NAMESPACE, "logAttendance");
+            PropertyInfo sayHelloPI;
+
+            sayHelloPI = new PropertyInfo();
+            sayHelloPI.setName("Latitude");
+            sayHelloPI.setValue(latitude);
+            sayHelloPI.setType(String.class);
+            request.addProperty(sayHelloPI);
+
+            sayHelloPI = new PropertyInfo();
+            sayHelloPI.setName("Longitude");
+            sayHelloPI.setValue(longitude);
+            sayHelloPI.setType(String.class);
+            request.addProperty(sayHelloPI);
+
+            sayHelloPI = new PropertyInfo();
+            sayHelloPI.setName("EmpId");
+            sayHelloPI.setValue(empId);
+            sayHelloPI.setType(String.class);
+            request.addProperty(sayHelloPI);
+
+            sayHelloPI = new PropertyInfo();
+            sayHelloPI.setName("LogFlag");
+            sayHelloPI.setValue(LogFlag);
+            sayHelloPI.setType(String.class);
+            request.addProperty(sayHelloPI);
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+
+            try {
+                androidHttpTransport.call(SOAP_ACTION + "logAttendance", envelope);
+                SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+                resTxt = response.toString();
+
+            } catch (Exception e) {
+                resTxt = e.getMessage();
+            }
+            //Return resTxt to calling object
+            return resTxt;
+        }
+    }
+
+    private class AttendanceWS extends AsyncTask<String, Void, String> {
+
+        protected String doInBackground(String... params) {
+            return  AttendanceMarking.logAttendance(params[0],params[1],params[2],params[3] );
+        }
+    }
+
+    class RetrieveTimeWS extends AsyncTask<Void, Void, Void> {
         protected Void doInBackground(Void... params) {
 
             try {

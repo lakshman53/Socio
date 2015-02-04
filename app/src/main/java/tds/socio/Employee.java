@@ -11,6 +11,7 @@ public class Employee extends SugarRecord<Employee> {
     String EmpNumber;
     String MobileNo;
     String EmailAddress;
+    String InternalEmpId;
 
     public String getEmpNumber() {
         return EmpNumber;
@@ -35,7 +36,6 @@ public class Employee extends SugarRecord<Employee> {
     public void setEmailAddress(String emailAddress) {
         EmailAddress = emailAddress;
     }
-
 
     public String getPassword() {
         return Password;
@@ -67,10 +67,19 @@ public class Employee extends SugarRecord<Employee> {
 
     public Employee() { }
 
-    public Employee(String EmpNumber, String MobileNo, String EmailAddress, String Password){
+    public Employee(String EmpNumber, String MobileNo, String EmailAddress, String Password, String internalEmpId){
         this.EmpNumber = EmpNumber;
         this.MobileNo = MobileNo;
         this.EmailAddress = EmailAddress;
         this.Password = Password;
+        this.InternalEmpId = internalEmpId;
+    }
+
+    public String getInternalEmpId() {
+        return InternalEmpId;
+    }
+
+    public void setInternalEmpId(String internalEmpId) {
+        InternalEmpId = internalEmpId;
     }
 }

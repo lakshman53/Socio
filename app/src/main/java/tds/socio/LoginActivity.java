@@ -29,7 +29,7 @@ public class LoginActivity extends ActionBarActivity {
     EditText textEmail, textPassword, textuserName, textMobileNumber, textVerify, textPasswordAgain;
     Button button;
     String strEmail = "", strMobileNumber = "";
-    Integer verifyCode = 0;
+    String verifyCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +93,16 @@ public class LoginActivity extends ActionBarActivity {
 
                 verifyCode = isUserGenuineTask.execute(new String[]{strEmpNum,strMobileNumber,strEmail }).get();
 
-                if (verifyCode != -1){
+                    Toast.makeText(getApplicationContext(),verifyCode,Toast.LENGTH_LONG).show();
+
+                if (!verifyCode.equals("wrong")){
 
                        //TODO: Send a random code as SMS and check if the mobile no. is correct.
                        //TODO: LOW PRIORITY: Automatically check the sms received.
 
                        textVerify.setVisibility(View.VISIBLE);
                        button.setText("Verify");
-                       Toast.makeText(getApplicationContext(),"Verification Code: " + verifyCode, Toast.LENGTH_LONG).show();
+                       Toast.makeText(getApplicationContext(),"Verification Code: " + verifyCode.split(",",2)[1], Toast.LENGTH_LONG).show();
                 }
                    else
                    {
@@ -118,13 +120,18 @@ public class LoginActivity extends ActionBarActivity {
 
                         String strVerifyText = textVerify.getText().toString();
 
-                       if (checkForSameValues(strVerifyText, verifyCode+"")) {
+                        if (checkForSameValues(strVerifyText, verifyCode.split(",",2)[1])) {
 
                            textVerify.setVisibility(View.GONE);
                            textPassword.setVisibility(View.VISIBLE);
                            textPasswordAgain.setVisibility(View.VISIBLE);
                            textEmail.setVisibility(View.GONE);
                            textMobileNumber.setVisibility(View.GONE);
+
+                            //SharedPreferences.Editor editor = getSharedPreferences("EMP_DETAIL", MODE_PRIVATE).edit();
+                            //editor.putString("intEmpId", verifyCode.split(",",2)[0]);
+                            //editor.commit();
+
                            button.setText("Save");
                        }
                        else {
@@ -141,7 +148,8 @@ public class LoginActivity extends ActionBarActivity {
 
                        if(checkForSameValues(strPassword, strPasswordAgain))
                        {
-                           Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword);
+                           Toast.makeText(getApplicationContext(), verifyCode.split(",",2)[0], Toast.LENGTH_LONG).show();
+                           Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword, verifyCode.split(",",2)[0].toString());
                            employee.save();
 
                            //TODO: Download user details and save in database
@@ -169,9 +177,9 @@ public class LoginActivity extends ActionBarActivity {
 
     public static class WebService {
 
-        public static Integer isUserGenuine(String strEmpNum, String strMobileNumber, String strEmail) {
+        public static String isUserGenuine(String strEmpNum, String strMobileNumber, String strEmail) {
 
-        Integer resTxt = -1;
+        String resTxt = "-1";
         SoapObject request = new SoapObject(NAMESPACE, "isEmployeeExists");
         PropertyInfo sayHelloPI;
 
@@ -201,7 +209,7 @@ public class LoginActivity extends ActionBarActivity {
         try {
             androidHttpTransport.call(SOAP_ACTION + "isEmployeeExists", envelope);
             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-            resTxt = Integer.valueOf(response.toString());
+            resTxt = response.toString();
 
         } catch (Exception e) {
             Log.e("Check User Geniune:", e.getMessage());
@@ -211,7 +219,7 @@ public class LoginActivity extends ActionBarActivity {
        }
     }
 
-    private class AsyncCallWS extends AsyncTask<String, Void, Integer> {
+    private class AsyncCallWS extends AsyncTask<String, Void, String> {
 
 //        ProgressDialog dialog;
 
@@ -231,7 +239,7 @@ public class LoginActivity extends ActionBarActivity {
 //        }
 
         @Override
-        protected Integer doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             return  WebService.isUserGenuine(params[0],params[1], params[2]);
         }
 
