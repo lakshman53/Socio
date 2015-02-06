@@ -178,8 +178,17 @@ public class Messages extends BaseActivity {
 		    String sub;
 		    String desc;
 		    String time;
+            String msgId;
 
-		    public String getName() {
+            public String getMsgId() {
+                return msgId;
+            }
+
+            public void setMsgId(String msgId) {
+                this.msgId = msgId;
+            }
+
+            public String getName() {
 		        return from;
 		    }
 

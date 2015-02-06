@@ -32,13 +32,11 @@ import java.util.Date;
 import java.util.List;
 
 import tds.libs.GPSTracker;
-import tds.libs.SntpClient;
-import tds.libs.TimestampConvertor;
 
 public class AttendanceActivity extends BaseActivity {
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-    long lngCurrentTime = -1;
+//    long lngCurrentTime = -1;
 
     String mCurrentPhotoPath;
 
@@ -90,7 +88,7 @@ public class AttendanceActivity extends BaseActivity {
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 
             }
-    }
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -133,8 +131,36 @@ public class AttendanceActivity extends BaseActivity {
         navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
         set(navMenuTitles, navMenuIcons);
 
-        new RetrieveTimeWS().execute();
+        try {
 
+            new RetrieveTimeWS().execute();
+        }
+        catch (Exception e)
+        {
+            Log.e("Current Time", e.getMessage());
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+
+          super.onDestroy();
     }
 
     public void MarkInAttendance(View view)
@@ -161,9 +187,9 @@ public class AttendanceActivity extends BaseActivity {
                 new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A" );
             }
 
-           catch (Exception e) {
-               Log.e("Capture Image Error: " , e.getMessage());
-           }
+            catch (Exception e) {
+                Log.e("Capture Image Error: " , e.getMessage());
+            }
         }
         else
         {
@@ -209,6 +235,29 @@ public class AttendanceActivity extends BaseActivity {
     private static String NAMESPACE = "http://tempuri.org/";
     private static String URL = "http://sociowebservice.azurewebsites.net/RegAuthenticate.asmx";
     private static String SOAP_ACTION = "http://tempuri.org/";
+
+    public static class getDateTimeClass {
+        public static String getDateTime() {
+            String resTxt = "";
+            SoapObject request = new SoapObject(NAMESPACE, "getcurrentDateTime");
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+
+            try {
+                androidHttpTransport.call(SOAP_ACTION + "getcurrentDateTime", envelope);
+                SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+
+                resTxt = response.toString();
+
+            } catch (Exception e) {
+                resTxt = e.getMessage();
+            }
+            return  resTxt;
+        }
+    }
 
     public static class AttendanceMarking {
 
@@ -268,24 +317,34 @@ public class AttendanceActivity extends BaseActivity {
         }
     }
 
-    class RetrieveTimeWS extends AsyncTask<Void, Void, Void> {
-        protected Void doInBackground(Void... params) {
+    class RetrieveTimeWS extends AsyncTask<Void, Void, String> {
 
+        TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
+        String datetime = "";
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            TVcurrentTime.setText("Loading...");
+        }
+
+        protected String doInBackground(Void... params) {
             try {
-                SntpClient currentTime = new SntpClient();
+                datetime = getDateTimeClass.getDateTime();
 
-                if (currentTime.requestTime("2.in.pool.ntp.org", 60000)) {
-                    lngCurrentTime = currentTime.getNtpTime();
-
-                    TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
-
-                    TimestampConvertor tsc = new TimestampConvertor();
-                    TVcurrentTime.setText(tsc.usingDateAndCalendarWithTimeZone(lngCurrentTime));
-                }
             } catch (Exception e) {
-                Log.e("Async Task - Exception ", e.getMessage());
+                Log.e("Async Task - GetDateTime ", e.getMessage());
             }
-            return null;
+            return datetime;
+        }
+
+        @Override
+        protected void onPostExecute(final String s) {
+            super.onPostExecute(s);
+
+            if (s != null) {
+                TVcurrentTime.setText(datetime);
+            }
         }
     }
 }
+
