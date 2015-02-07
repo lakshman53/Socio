@@ -165,7 +165,7 @@ public class LoginActivity extends ActionBarActivity {
         return strEnteredCode.equals(strReceivedCode)?true:false;
     }
     private static String NAMESPACE = "http://tempuri.org/";
-    private static String URL = "http://sociowebservice.azurewebsites.net/RegAuthenticate.asmx";
+    private static String URL = "http://sociowebservice.azurewebsites.net/GenMethods.asmx";
     private static String SOAP_ACTION = "http://tempuri.org/";
 
     public static class WebService {

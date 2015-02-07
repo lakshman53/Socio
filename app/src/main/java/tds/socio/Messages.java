@@ -29,7 +29,9 @@ public class Messages extends BaseActivity {
 	AdapterView.AdapterContextMenuInfo info;
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-		
+    MessageDetails Detail;
+    List<Offers> offers;
+
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -44,15 +46,13 @@ public class Messages extends BaseActivity {
             msgList = (ListView) findViewById(R.id.MessageList);
 			details = new ArrayList<>();
 
-            MessageDetails Detail;
-
-            List<Offers> offers;
             offers = Offers.listAll(Offers.class);
 
             for (int i=0; i<offers.size(); i=i+1) {
 
                 Detail = new MessageDetails();
 
+                Detail.setofferId((offers.get(i).getOfferId()));
                 Detail.setIcon(offers.get(i).getIcon());
                 Detail.setName(offers.get(i).getSender());
                 Detail.setSub(offers.get(i).getSubject());
@@ -78,16 +78,22 @@ public class Messages extends BaseActivity {
 					
 				info = (AdapterContextMenuInfo) menuInfo;
 
-				int id = (int) msgList.getAdapter().getItemId(info.position);			
+				//int id = (int) msgList.getAdapter().getItemId(info.position);
 
-				menu.setHeaderTitle(details.get(info.position).getSub());
-				menu.add(Menu.NONE, v.getId(), 0, "Add to Favourites");
-				menu.add(Menu.NONE, v.getId(), 0, "Delete");
+			menu.setHeaderTitle(details.get(info.position).getSub());
+
+            menu.add(Menu.NONE, v.getId(), 0, "Add to Favourites");
+			menu.add(Menu.NONE, v.getId(), 0, "Delete");
 		}
 		
 		@Override
 	    public boolean onContextItemSelected(MenuItem item) {
 	        if (item.getTitle() == "Add to Favourites") {
+                AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+                int index = info.position;
+
+                details.get(index).setName ("success");
+                msgList.setAdapter(new CustomAdapter(details , this));
 
             }
 	        else if (item.getTitle() == "Delete") {
@@ -150,6 +156,8 @@ public class Messages extends BaseActivity {
 		           image.setOnClickListener(new OnClickListener() {
 				
 				public void onClick(View v) {
+
+
 //					AlertDialog.Builder adb=new AlertDialog.Builder(Messages.this);
 //			        adb.setMessage("Add To Contacts?");
 //			        adb.setNegativeButton("Cancel", null);
@@ -178,14 +186,14 @@ public class Messages extends BaseActivity {
 		    String sub;
 		    String desc;
 		    String time;
-            String msgId;
+            String offerId;
 
-            public String getMsgId() {
-                return msgId;
+            public String getofferId() {
+                return offerId;
             }
 
-            public void setMsgId(String msgId) {
-                this.msgId = msgId;
+            public void setofferId(String offerId) {
+                this.offerId = offerId;
             }
 
             public String getName() {

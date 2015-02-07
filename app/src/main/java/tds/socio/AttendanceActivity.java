@@ -184,7 +184,7 @@ public class AttendanceActivity extends BaseActivity {
 
                 String internalEmpId = employees.get(0).getInternalEmpId();
 
-                new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A" );
+                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A", 1).execute( );
             }
 
             catch (Exception e) {
@@ -211,16 +211,15 @@ public class AttendanceActivity extends BaseActivity {
 
             try
             {
-                dispatchTakePictureIntent();
+            //    dispatchTakePictureIntent();
 
                 List<Employee> employees;
                 employees = Employee.listAll(Employee.class);
 
                 String internalEmpId = employees.get(0).getInternalEmpId();
 
-                new AttendanceWS().execute(Double.toString(latitude), Double.toString(longitude),internalEmpId, "P" );
+                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "P", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C')).execute( );
             }
-
 
             catch (Exception e) {
                 Log.e("Capture Image Error: " , e.getMessage());
@@ -233,7 +232,7 @@ public class AttendanceActivity extends BaseActivity {
     }
 
     private static String NAMESPACE = "http://tempuri.org/";
-    private static String URL = "http://sociowebservice.azurewebsites.net/RegAuthenticate.asmx";
+    private static String URL = "http://sociowebservice.azurewebsites.net/GenMethods.asmx";
     private static String SOAP_ACTION = "http://tempuri.org/";
 
     public static class getDateTimeClass {
@@ -261,9 +260,9 @@ public class AttendanceActivity extends BaseActivity {
 
     public static class AttendanceMarking {
 
-        public static String logAttendance(String latitude, String longitude, String empId, String LogFlag) {
+        public static Integer logAttendance(String latitude, String longitude, String empId, String LogFlag, Integer DistanceFromStore) {
 
-            String resTxt = "this should not come";
+            Integer resTxt = 1;
             SoapObject request = new SoapObject(NAMESPACE, "logAttendance");
             PropertyInfo sayHelloPI;
 
@@ -291,6 +290,12 @@ public class AttendanceActivity extends BaseActivity {
             sayHelloPI.setType(String.class);
             request.addProperty(sayHelloPI);
 
+            sayHelloPI = new PropertyInfo();
+            sayHelloPI.setName("DistanceFromStore");
+            sayHelloPI.setValue(DistanceFromStore);
+            sayHelloPI.setType(Integer.class);
+            request.addProperty(sayHelloPI);
+
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
@@ -300,20 +305,35 @@ public class AttendanceActivity extends BaseActivity {
                 androidHttpTransport.call(SOAP_ACTION + "logAttendance", envelope);
                 SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
 
-                resTxt = response.toString();
+                resTxt = Integer.parseInt(response.toString());
 
             } catch (Exception e) {
-                resTxt = e.getMessage();
+               // resTxt = e.getMessage();
             }
             //Return resTxt to calling object
             return resTxt;
         }
     }
 
-    private class AttendanceWS extends AsyncTask<String, Void, String> {
+    private class AttendanceWS extends AsyncTask<String, Void, Integer> {
 
-        protected String doInBackground(String... params) {
-            return  AttendanceMarking.logAttendance(params[0],params[1],params[2],params[3] );
+        String latitude;
+        String longitude;
+        String empId;
+        String LogFlag;
+        Integer DistanceFromStore;
+
+        public AttendanceWS(String latitude, String longitude, String empId, String logFlag, Integer distanceFromStore) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.empId = empId;
+            LogFlag = logFlag;
+            DistanceFromStore = distanceFromStore;
+        }
+
+
+        protected Integer doInBackground(String... params) {
+            return  AttendanceMarking.logAttendance(latitude,longitude,empId,LogFlag,DistanceFromStore );
         }
     }
 
