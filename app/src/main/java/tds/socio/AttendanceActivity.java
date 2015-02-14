@@ -308,7 +308,8 @@ public class AttendanceActivity extends BaseActivity {
                 resTxt = Integer.parseInt(response.toString());
 
             } catch (Exception e) {
-               // resTxt = e.getMessage();
+               Log.e("resTxt" , e.getMessage());
+
             }
             //Return resTxt to calling object
             return resTxt;
