@@ -160,10 +160,10 @@ public class LoginActivity extends ActionBarActivity {
         });
     }
 
-    private boolean checkForSameValues(String strEnteredCode, String strReceivedCode)
-    {
+    private boolean checkForSameValues(String strEnteredCode, String strReceivedCode)     {
         return strEnteredCode.equals(strReceivedCode)?true:false;
     }
+
     private static String NAMESPACE = "http://tempuri.org/";
     private static String URL = "http://sociowebservice.azurewebsites.net/GenMethods.asmx";
     private static String SOAP_ACTION = "http://tempuri.org/";
@@ -247,16 +247,14 @@ public class LoginActivity extends ActionBarActivity {
         return employees.size() == 0?false:true;
     }
 
-    private boolean authenticateUser(String userName, String Password)
-    {
+    private boolean authenticateUser(String userName, String Password) {
        Employee employee = new Employee();
 
        List<Employee> employees =  employee.find(Employee.class, "emp_number = ? and password = ?", userName, Password);
        return employees.size() == 0?false:true;
     }
 
-    private String encryptString(String strPhrase)
-    {
+    private String encryptString(String strPhrase) {
         try {
             SecretKey desKey = KeyGenerator.getInstance("DES").generateKey();
             StringEncrypter desEncrypter = new StringEncrypter(desKey, desKey.getAlgorithm());

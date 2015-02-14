@@ -12,6 +12,16 @@ public class Employee extends SugarRecord<Employee> {
     String MobileNo;
     String EmailAddress;
     String InternalEmpId;
+    String Password;
+    String attendanceRetValue;
+
+    public String getAttendanceRetValue() {
+        return attendanceRetValue;
+    }
+
+    public void setAttendanceRetValue(String attendanceRetValue) {
+        this.attendanceRetValue = attendanceRetValue;
+    }
 
     public String getEmpNumber() {
         return EmpNumber;
@@ -45,9 +55,7 @@ public class Employee extends SugarRecord<Employee> {
         Password = password;
     }
 
-
-    String Password;
-/*    String FirstName;
+/*  String FirstName;
     String MiddleName;
     String LastName;
 

@@ -17,6 +17,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -36,9 +37,12 @@ import tds.libs.GPSTracker;
 public class AttendanceActivity extends BaseActivity {
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
+
+
 //    long lngCurrentTime = -1;
 
     String mCurrentPhotoPath;
+
 
 
     private File createImageFile() throws IOException {
@@ -177,14 +181,20 @@ public class AttendanceActivity extends BaseActivity {
 
             try
             {
-                dispatchTakePictureIntent();
+        //        dispatchTakePictureIntent();
 
                 List<Employee> employees;
                 employees = Employee.listAll(Employee.class);
 
                 String internalEmpId = employees.get(0).getInternalEmpId();
 
-                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A", 1).execute( );
+
+                Integer getval = new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C')).execute( ).get();
+
+                //employees.get(0).setAttendanceRetValue();
+                Employee emp = Employee.findById(Employee.class, 1L);
+                emp.setAttendanceRetValue(Integer.toString(getval));
+                emp.save();
             }
 
             catch (Exception e) {
@@ -199,26 +209,32 @@ public class AttendanceActivity extends BaseActivity {
 
     public void MarkOutAttendance(View view)
     {
+  //      dispatchTakePictureIntent();
+
         GPSTracker gps = new GPSTracker(AttendanceActivity.this);
 
         if(gps.canGetLocation())
         {
+            Employee emp = Employee.findById(Employee.class, 1L);
+
+
+
             double latitude = gps.getLatitude();
             double longitude = gps.getLongitude();
+
+            Toast.makeText(getApplication(), emp.getAttendanceRetValue(),Toast.LENGTH_LONG).show();
 
 //          String StrdistBetCoor = Double.toString(gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C'));
 //          Toast.makeText(getApplicationContext(),StrdistBetCoor,Toast.LENGTH_LONG).show();
 
             try
             {
-            //    dispatchTakePictureIntent();
+                //dispatchTakePictureIntent();
 
-                List<Employee> employees;
-                employees = Employee.listAll(Employee.class);
+                //TODO: Get store coordinates and remove hard coding
 
-                String internalEmpId = employees.get(0).getInternalEmpId();
+                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),emp.getAttendanceRetValue(), "P", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C')).execute().get();
 
-                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "P", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C')).execute( );
             }
 
             catch (Exception e) {
@@ -279,7 +295,7 @@ public class AttendanceActivity extends BaseActivity {
             request.addProperty(sayHelloPI);
 
             sayHelloPI = new PropertyInfo();
-            sayHelloPI.setName("EmpId");
+            sayHelloPI.setName("GPID");
             sayHelloPI.setValue(empId);
             sayHelloPI.setType(String.class);
             request.addProperty(sayHelloPI);
@@ -323,6 +339,7 @@ public class AttendanceActivity extends BaseActivity {
         String empId;
         String LogFlag;
         Integer DistanceFromStore;
+        public Integer retNum;
 
         public AttendanceWS(String latitude, String longitude, String empId, String logFlag, Integer distanceFromStore) {
             this.latitude = latitude;
@@ -330,13 +347,17 @@ public class AttendanceActivity extends BaseActivity {
             this.empId = empId;
             LogFlag = logFlag;
             DistanceFromStore = distanceFromStore;
-        }
 
+        }
 
         protected Integer doInBackground(String... params) {
-            return  AttendanceMarking.logAttendance(latitude,longitude,empId,LogFlag,DistanceFromStore );
+            retNum =   AttendanceMarking.logAttendance(latitude,longitude,empId,LogFlag,DistanceFromStore );
+            return retNum;
         }
-    }
+
+
+
+  }
 
     class RetrieveTimeWS extends AsyncTask<Void, Void, String> {
 
