@@ -189,7 +189,7 @@ public class AttendanceActivity extends BaseActivity {
                 String internalEmpId = employees.get(0).getInternalEmpId();
 
 
-                Integer getval = new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C')).execute( ).get();
+                Integer getval = new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 0.0,0.0)).execute().get();
 
                 //employees.get(0).setAttendanceRetValue();
                 Employee emp = Employee.findById(Employee.class, 1L);
@@ -233,7 +233,7 @@ public class AttendanceActivity extends BaseActivity {
 
                 //TODO: Get store coordinates and remove hard coding
 
-                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),emp.getAttendanceRetValue(), "P", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C')).execute().get();
+                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),emp.getAttendanceRetValue(), "P", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 0.0,0.0)).execute().get();
 
             }
 
@@ -276,7 +276,7 @@ public class AttendanceActivity extends BaseActivity {
 
     public static class AttendanceMarking {
 
-        public static Integer logAttendance(String latitude, String longitude, String empId, String LogFlag, Integer DistanceFromStore) {
+        public static Integer logAttendance(String latitude, String longitude, String empId, String LogFlag, Double DistanceFromStore) {
 
             Integer resTxt = 1;
             SoapObject request = new SoapObject(NAMESPACE, "logAttendance");
@@ -309,7 +309,7 @@ public class AttendanceActivity extends BaseActivity {
             sayHelloPI = new PropertyInfo();
             sayHelloPI.setName("DistanceFromStore");
             sayHelloPI.setValue(DistanceFromStore);
-            sayHelloPI.setType(Integer.class);
+            sayHelloPI.setType(Double.class);
             request.addProperty(sayHelloPI);
 
             SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -338,10 +338,10 @@ public class AttendanceActivity extends BaseActivity {
         String longitude;
         String empId;
         String LogFlag;
-        Integer DistanceFromStore;
+        Double DistanceFromStore;
         public Integer retNum;
 
-        public AttendanceWS(String latitude, String longitude, String empId, String logFlag, Integer distanceFromStore) {
+        public AttendanceWS(String latitude, String longitude, String empId, String logFlag, Double distanceFromStore) {
             this.latitude = latitude;
             this.longitude = longitude;
             this.empId = empId;

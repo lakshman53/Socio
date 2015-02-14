@@ -58,7 +58,6 @@ public class Employee extends SugarRecord<Employee> {
 /*  String FirstName;
     String MiddleName;
     String LastName;
-
     Date DateOfBirth;
     String StoreName;
     Long StoreLatitude;
