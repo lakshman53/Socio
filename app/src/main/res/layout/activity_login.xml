@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:text="7032906292"
+
         android:id="@+id/textMobileNumber"
         android:layout_below="@+id/textPasswordAgain"
         android:layout_alignParentLeft="true"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:text="lakshman@hp.com"
+
         android:id="@+id/textEmail"
         android:layout_below="@+id/textMobileNumber"
         android:layout_alignParentLeft="true"
