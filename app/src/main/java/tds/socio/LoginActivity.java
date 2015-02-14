@@ -177,7 +177,7 @@ public class LoginActivity extends ActionBarActivity {
         PropertyInfo sayHelloPI;
 
         sayHelloPI = new PropertyInfo();
-        sayHelloPI.setName("EmpId");
+        sayHelloPI.setName("EmpNum");
         sayHelloPI.setValue(strEmpNum);
         sayHelloPI.setType(String.class);
         request.addProperty(sayHelloPI);
