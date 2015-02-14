@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import tds.libs.GPSTracker;
+import tds.libs.MarshalDouble;
 
 public class AttendanceActivity extends BaseActivity {
     private String[] navMenuTitles;
@@ -318,6 +319,10 @@ public class AttendanceActivity extends BaseActivity {
             HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
 
             try {
+
+                MarshalDouble md = new MarshalDouble();
+                md.register(envelope);
+
                 androidHttpTransport.call(SOAP_ACTION + "logAttendance", envelope);
                 SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
 
