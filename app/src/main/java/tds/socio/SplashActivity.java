@@ -35,15 +35,25 @@ public class SplashActivity extends Activity {
 
         offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
         offers.save();
-        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Kumar","This is a subject", "This is Description",new Date(),false,false);
         offers.save();
-        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Suresh","This is a subject", "This is Description",new Date(),false,false);
         offers.save();
-        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Hari","This is a subject", "This is Description",new Date(),false,false);
         offers.save();
-        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Madhu","This is a subject", "This is Description",new Date(),false,false);
         offers.save();
 
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
+        offers.save();
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Kumar","This is a subject", "This is Description",new Date(),false,false);
+        offers.save();
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Suresh","This is a subject", "This is Description",new Date(),false,false);
+        offers.save();
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Hari","This is a subject", "This is Description",new Date(),false,false);
+        offers.save();
+        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Madhu","This is a subject", "This is Description",new Date(),false,false);
+        offers.save();
 
         new Handler().postDelayed(new Runnable() {
             @Override

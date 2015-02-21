@@ -17,7 +17,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -182,7 +181,7 @@ public class AttendanceActivity extends BaseActivity {
 
             try
             {
-        //        dispatchTakePictureIntent();
+                dispatchTakePictureIntent();
 
                 List<Employee> employees;
                 employees = Employee.listAll(Employee.class);
@@ -190,7 +189,7 @@ public class AttendanceActivity extends BaseActivity {
                 String internalEmpId = employees.get(0).getInternalEmpId();
 
 
-                Integer getval = new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 0.0,0.0)).execute().get();
+                Integer getval = new AttendanceWS(Double.toString(latitude), Double.toString(longitude),internalEmpId, "A", gps.distFrom(latitude,longitude, 16.7414888,81.0831915)).execute().get();
 
                 //employees.get(0).setAttendanceRetValue();
                 Employee emp = Employee.findById(Employee.class, 1L);
@@ -210,7 +209,7 @@ public class AttendanceActivity extends BaseActivity {
 
     public void MarkOutAttendance(View view)
     {
-  //      dispatchTakePictureIntent();
+        dispatchTakePictureIntent();
 
         GPSTracker gps = new GPSTracker(AttendanceActivity.this);
 
@@ -223,18 +222,18 @@ public class AttendanceActivity extends BaseActivity {
             double latitude = gps.getLatitude();
             double longitude = gps.getLongitude();
 
-            Toast.makeText(getApplication(), emp.getAttendanceRetValue(),Toast.LENGTH_LONG).show();
+          //  Toast.makeText(getApplication(), emp.getAttendanceRetValue(),Toast.LENGTH_LONG).show();
 
 //          String StrdistBetCoor = Double.toString(gps.distance(latitude, longitude, 17.3986852, 78.3896163, 'C'));
 //          Toast.makeText(getApplicationContext(),StrdistBetCoor,Toast.LENGTH_LONG).show();
 
             try
             {
-                //dispatchTakePictureIntent();
+                dispatchTakePictureIntent();
 
                 //TODO: Get store coordinates and remove hard coding
 
-                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),emp.getAttendanceRetValue(), "P", gps.distance(latitude, longitude, 17.3986852, 78.3896163, 0.0,0.0)).execute().get();
+                new AttendanceWS(Double.toString(latitude), Double.toString(longitude),emp.getAttendanceRetValue(), "P", gps.distance(latitude, longitude, 16.7414888, 81.0831915, 0.0, 0.0)).execute().get();
 
             }
 
