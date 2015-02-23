@@ -16,4 +16,6 @@
         style="?android:attr/listSeparatorTextViewStyle"
         android:background="@color/purple_dark"/>
 
+    <!--sociotheme_ic_navigation_drawer-->
+
 </RelativeLayout>
