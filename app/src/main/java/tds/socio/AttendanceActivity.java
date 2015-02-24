@@ -370,7 +370,7 @@ public class AttendanceActivity extends BaseActivity {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            TVcurrentTime.setText("Loading...");
+            TVcurrentTime.setText("Loading Current Time...");
         }
 
         protected String doInBackground(Void... params) {
