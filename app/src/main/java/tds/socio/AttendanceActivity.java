@@ -359,8 +359,6 @@ public class AttendanceActivity extends BaseActivity {
             return retNum;
         }
 
-
-
   }
 
     class RetrieveTimeWS extends AsyncTask<Void, Void, String> {

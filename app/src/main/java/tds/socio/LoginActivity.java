@@ -18,7 +18,9 @@ import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -109,7 +111,7 @@ public class LoginActivity extends ActionBarActivity {
                    }
                     catch (Exception e)
                     {
-                        Log.e("Employee Registration Async", e.getMessage());
+                        Log.e("Employee Reg: ", e.getMessage());
                     }
                }
                else if (button.getText() == "Verify")
@@ -147,6 +149,8 @@ public class LoginActivity extends ActionBarActivity {
                            Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword, verifyCode.split(",",2)[0].toString());
                            employee.save();
 
+                           new AsyncGetEmpDetail(Integer.parseInt(verifyCode.split(",",2)[0].toString()));
+
                            Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
                            LoginActivity.this.startActivity(mainIntent);
                            finish();
@@ -167,6 +171,85 @@ public class LoginActivity extends ActionBarActivity {
     private static String NAMESPACE = "http://tempuri.org/";
     private static String URL = "http://sociowebservice.azurewebsites.net/GenMethods.asmx";
     private static String SOAP_ACTION = "http://tempuri.org/";
+
+    public static class getEmployeeProfile {
+
+        public static List<String> getUserdetails(Integer EmpId ) {
+            SoapObject request = new SoapObject(NAMESPACE, "getProfile");
+            PropertyInfo sayHelloPI;
+
+            sayHelloPI = new PropertyInfo();
+            sayHelloPI.setName("EmpId");
+            sayHelloPI.setValue(EmpId);
+            sayHelloPI.setType(Integer.class);
+            request.addProperty(sayHelloPI);
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.dotNet = true;
+            envelope.setOutputSoapObject(request);
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+
+            List<String> list = new ArrayList<String>();
+
+            try {
+                androidHttpTransport.call(SOAP_ACTION + "getProfile", envelope);
+
+                Vector xx = (Vector) envelope.getResponse();
+                SoapObject soapObject = (SoapObject) xx.get(0);
+
+                list.add(soapObject.getProperty("FirstName").toString());
+                list.add(soapObject.getProperty("MiddleName").toString());
+                list.add(soapObject.getProperty("LastName").toString());
+                list.add(soapObject.getProperty("Designation").toString());
+                list.add(soapObject.getProperty("StoreName").toString());
+                list.add(soapObject.getProperty("StoreAddress").toString());
+                list.add(soapObject.getProperty("Area").toString());
+                list.add(soapObject.getProperty("City").toString());
+                list.add(soapObject.getProperty("Region").toString());
+                list.add(soapObject.getProperty("Timings").toString());
+
+            }
+                catch (Exception e) {
+                Log.e("List:", e.getMessage());
+            }
+            return list;
+        }
+    }
+
+    private class AsyncGetEmpDetail extends AsyncTask<Void,Void,Void> {
+
+        Integer EmpId;
+
+        protected AsyncGetEmpDetail(Integer EmpId) {
+            this.EmpId = EmpId;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            List<String> list;
+            list = getEmployeeProfile.getUserdetails(EmpId);
+
+            Employee employee = new Employee();
+
+            employee.findById(Employee.class, EmpId*1L);
+
+            employee.setFirstName(list.get(0).toString());
+            employee.setMiddleName(list.get(1).toString());
+            employee.setLastName(list.get(2).toString());
+            employee.setDesignation(list.get(3).toString());
+            employee.setStoreName(list.get(4).toString());
+            employee.setAddress(list.get(5).toString());
+            employee.setArea(list.get(6).toString());
+            employee.setCity(list.get(7).toString());
+            employee.setRegion(list.get(8).toString());
+            employee.setTimings(list.get(9).toString());
+
+            employee.save();
+
+            return null;
+        }
+    }
 
     public static class WebService {
 

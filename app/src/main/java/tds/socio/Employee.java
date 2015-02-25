@@ -55,19 +55,117 @@ public class Employee extends SugarRecord<Employee> {
         Password = password;
     }
 
-/*  String FirstName;
+    String FirstName;
     String MiddleName;
     String LastName;
-    Date DateOfBirth;
     String StoreName;
     Long StoreLatitude;
     Long StoreLongitude;
     String Address;
     String City;
-    String State;
     String Area;
+    String Region;
+    String Timings;
+    String Designation;
+
+    public String getDesignation() {
+        return Designation;
+    }
+
+    public void setDesignation(String designation) {
+        Designation = designation;
+    }
+
+    public String getTimings() {
+        return Timings;
+    }
+
+    public void setTimings(String timings) {
+        Timings = timings;
+    }
+
+    public String getRegion() {
+        return Region;
+    }
+
+    public void setRegion(String region) {
+        Region = region;
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return MiddleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        MiddleName = middleName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
+    }
+
+    public String getStoreName() {
+        return StoreName;
+    }
+
+    public void setStoreName(String storeName) {
+        StoreName = storeName;
+    }
+
+    public Long getStoreLatitude() {
+        return StoreLatitude;
+    }
+
+    public void setStoreLatitude(Long storeLatitude) {
+        StoreLatitude = storeLatitude;
+    }
+
+    public Long getStoreLongitude() {
+        return StoreLongitude;
+    }
+
+    public void setStoreLongitude(Long storeLongitude) {
+        StoreLongitude = storeLongitude;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public String getArea() {
+        return Area;
+    }
+
+    public void setArea(String area) {
+        Area = area;
+    }
+/*    String DeviceId;
+
     Date RegisteredDate;
-    String DeviceId;
     Date LastLogin;
     Integer Role;
 */
@@ -80,6 +178,24 @@ public class Employee extends SugarRecord<Employee> {
         this.EmailAddress = EmailAddress;
         this.Password = Password;
         this.InternalEmpId = internalEmpId;
+    }
+
+    public Employee(String empNumber, String mobileNo, String emailAddress, String internalEmpId, String password, String attendanceRetValue, String firstName, String middleName, String lastName, String storeName, Long storeLatitude, Long storeLongitude, String address, String city, String area) {
+        EmpNumber = empNumber;
+        MobileNo = mobileNo;
+        EmailAddress = emailAddress;
+        InternalEmpId = internalEmpId;
+        Password = password;
+        this.attendanceRetValue = attendanceRetValue;
+        FirstName = firstName;
+        MiddleName = middleName;
+        LastName = lastName;
+        StoreName = storeName;
+        StoreLatitude = storeLatitude;
+        StoreLongitude = storeLongitude;
+        Address = address;
+        City = city;
+        Area = area;
     }
 
     public String getInternalEmpId() {
