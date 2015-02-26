@@ -14,6 +14,18 @@ public class Employee extends SugarRecord<Employee> {
     String InternalEmpId;
     String Password;
     String attendanceRetValue;
+    String FirstName;
+    String MiddleName;
+    String LastName;
+    String StoreName;
+    Long StoreLatitude;
+    Long StoreLongitude;
+    String Address;
+    String City;
+    String Area;
+    String Region;
+    String Timings;
+    String Designation;
 
     public String getAttendanceRetValue() {
         return attendanceRetValue;
@@ -55,18 +67,6 @@ public class Employee extends SugarRecord<Employee> {
         Password = password;
     }
 
-    String FirstName;
-    String MiddleName;
-    String LastName;
-    String StoreName;
-    Long StoreLatitude;
-    Long StoreLongitude;
-    String Address;
-    String City;
-    String Area;
-    String Region;
-    String Timings;
-    String Designation;
 
     public String getDesignation() {
         return Designation;
@@ -163,8 +163,8 @@ public class Employee extends SugarRecord<Employee> {
     public void setArea(String area) {
         Area = area;
     }
-/*    String DeviceId;
 
+/*    String DeviceId;
     Date RegisteredDate;
     Date LastLogin;
     Integer Role;

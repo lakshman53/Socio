@@ -81,6 +81,22 @@ public class LoginActivity extends ActionBarActivity {
                        textPassword.setText("");
                        Toast.makeText(getApplicationContext(), "Incorrect Credentials, Please enter again!!", Toast.LENGTH_SHORT).show();
                        textPassword.requestFocus();
+try {
+
+    Employee e = new Employee();
+
+    e.findById(Employee.class,1L);
+    e.setFirstName("Manual Before");
+    e.save();
+
+    List<Employee> emp1 = Employee.listAll(Employee.class);
+
+    Toast.makeText(getApplicationContext(), emp1.get(0).FirstName, Toast.LENGTH_LONG).show();
+
+}catch (Exception e)
+{
+    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+}
                    }
                }
                 else if (button.getText() == "Register") {
@@ -149,7 +165,16 @@ public class LoginActivity extends ActionBarActivity {
                            Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword, verifyCode.split(",",2)[0].toString());
                            employee.save();
 
+
+                           Employee employee1 = new Employee();
+                           employee1.findById(Employee.class, 1L);
+                           employee1.setAttendanceRetValue("manualatt");
+                           //employee1.setAttendanceRetValue();
+                           employee1.save();
+
+
                            new AsyncGetEmpDetail(Integer.parseInt(verifyCode.split(",",2)[0].toString()));
+
 
                            Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
                            LoginActivity.this.startActivity(mainIntent);
@@ -232,18 +257,18 @@ public class LoginActivity extends ActionBarActivity {
 
             Employee employee = new Employee();
 
-            employee.findById(Employee.class, EmpId*1L);
+            employee.findById(Employee.class, EmpId.longValue());
 
-            employee.setFirstName(list.get(0).toString());
-            employee.setMiddleName(list.get(1).toString());
-            employee.setLastName(list.get(2).toString());
-            employee.setDesignation(list.get(3).toString());
-            employee.setStoreName(list.get(4).toString());
-            employee.setAddress(list.get(5).toString());
-            employee.setArea(list.get(6).toString());
-            employee.setCity(list.get(7).toString());
-            employee.setRegion(list.get(8).toString());
-            employee.setTimings(list.get(9).toString());
+            employee.setFirstName(list.get(0));
+            employee.setMiddleName(list.get(1));
+            employee.setLastName(list.get(2));
+            employee.setDesignation(list.get(3));
+            employee.setStoreName(list.get(4));
+            employee.setAddress(list.get(5));
+            employee.setArea(list.get(6));
+            employee.setCity(list.get(7));
+            employee.setRegion(list.get(8));
+            employee.setTimings(list.get(9));
 
             employee.save();
 
