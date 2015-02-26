@@ -1,5 +1,6 @@
 package tds.socio;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import org.ksoap2.transport.HttpTransportSE;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -81,22 +81,10 @@ public class LoginActivity extends ActionBarActivity {
                        textPassword.setText("");
                        Toast.makeText(getApplicationContext(), "Incorrect Credentials, Please enter again!!", Toast.LENGTH_SHORT).show();
                        textPassword.requestFocus();
-try {
 
-    Employee e = new Employee();
+                    List<Employee> emp1 = Employee.listAll(Employee.class);
+                    Toast.makeText(getApplicationContext(), emp1.get(0).FirstName, Toast.LENGTH_LONG).show();
 
-    e.findById(Employee.class,1L);
-    e.setFirstName("Manual Before");
-    e.save();
-
-    List<Employee> emp1 = Employee.listAll(Employee.class);
-
-    Toast.makeText(getApplicationContext(), emp1.get(0).FirstName, Toast.LENGTH_LONG).show();
-
-}catch (Exception e)
-{
-    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
-}
                    }
                }
                 else if (button.getText() == "Register") {
@@ -158,27 +146,23 @@ try {
                        strPassword = textPassword.getText().toString();
                        strPasswordAgain = textPasswordAgain.getText().toString();
 
-                       if(checkForSameValues(strPassword, strPasswordAgain))
-                       {
-                           //TODO: Downloaded basic details; user's all detail needs to be saved
+                       if(checkForSameValues(strPassword, strPasswordAgain)) {
+                           //TODO: Download basic details; user's all detail needs to be saved
+                           try {
 
-                           Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword, verifyCode.split(",",2)[0].toString());
-                           employee.save();
+                            new AsyncGetEmpDetail(Integer.parseInt(verifyCode.split(",", 2)[0].toString()),LoginActivity.this).execute();
 
-
-                           Employee employee1 = new Employee();
-                           employee1.findById(Employee.class, 1L);
-                           employee1.setAttendanceRetValue("manualatt");
-                           //employee1.setAttendanceRetValue();
-                           employee1.save();
+                           //Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword, verifyCode.split(",", 2)[0].toString(),list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(6), list.get(7));
+                           //employee.save();
 
 
-                           new AsyncGetEmpDetail(Integer.parseInt(verifyCode.split(",",2)[0].toString()));
+                       }   catch (Exception e){
 
+                       }
 
-                           Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
-                           LoginActivity.this.startActivity(mainIntent);
-                           finish();
+                           //Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
+                           //LoginActivity.this.startActivity(mainIntent);
+                           //finish();
                        }
                        else
                        {
@@ -200,6 +184,12 @@ try {
     public static class getEmployeeProfile {
 
         public static List<String> getUserdetails(Integer EmpId ) {
+
+
+            List<String> list = new ArrayList();
+
+            try {
+
             SoapObject request = new SoapObject(NAMESPACE, "getProfile");
             PropertyInfo sayHelloPI;
 
@@ -214,67 +204,120 @@ try {
             envelope.setOutputSoapObject(request);
             HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
 
-            List<String> list = new ArrayList<String>();
-
-            try {
                 androidHttpTransport.call(SOAP_ACTION + "getProfile", envelope);
 
-                Vector xx = (Vector) envelope.getResponse();
-                SoapObject soapObject = (SoapObject) xx.get(0);
+                SoapObject response = (SoapObject) envelope.bodyIn;
 
-                list.add(soapObject.getProperty("FirstName").toString());
-                list.add(soapObject.getProperty("MiddleName").toString());
-                list.add(soapObject.getProperty("LastName").toString());
-                list.add(soapObject.getProperty("Designation").toString());
-                list.add(soapObject.getProperty("StoreName").toString());
-                list.add(soapObject.getProperty("StoreAddress").toString());
-                list.add(soapObject.getProperty("Area").toString());
-                list.add(soapObject.getProperty("City").toString());
-                list.add(soapObject.getProperty("Region").toString());
-                list.add(soapObject.getProperty("Timings").toString());
+                SoapObject array = (SoapObject) response.getProperty(0);
+                SoapObject FirstName = (SoapObject) array.getProperty(0);
+
+                Log.i("FirstNameValue", FirstName.toString());
+
+//
+//                SoapObject yourResponseObject = (SoapObject) soapEnvelope.bodyIn;
+//                SoapObject array = (SoapObject) yourResponseObject .getProperty(0);// this is -->anyType //property 0
+//
+//                SoapObject NewDataSetArray= (SoapObject)array .getProperty(0);// this is--> // property 0 [0]
+//
+//                String temp = null;
+//                temp = NewDataSetArray.getProperty(0).toString();// this is 77777
+
+//                list.add(soapObject.getProperty(0).toString());
+//                list.add(soapObject.getProperty("MiddleName").toString());
+//                list.add(soapObject.getProperty("LastName").toString());
+//                list.add(soapObject.getProperty("Designation").toString());
+//                list.add(soapObject.getProperty("StoreName").toString());
+//                list.add(soapObject.getProperty("StoreAddress").toString());
+//                list.add(soapObject.getProperty("Area").toString());
+//                list.add(soapObject.getProperty("City").toString());
+//                list.add(soapObject.getProperty("Region").toString());
+//                list.add(soapObject.getProperty("Timings").toString());
+
 
             }
                 catch (Exception e) {
                 Log.e("List:", e.getMessage());
             }
-            return list;
+            finally {
+                list.add("1");
+                list.add("1");
+                list.add("1");
+                list.add("1");
+                list.add("1");
+                list.add("1");
+                list.add("1");
+                list.add("1");
+                list.add("1");
+
+                return list;
+
+            }
         }
     }
 
-    private class AsyncGetEmpDetail extends AsyncTask<Void,Void,Void> {
+    private class AsyncGetEmpDetail extends AsyncTask<Void,Void,Integer> {
 
         Integer EmpId;
+        private ProgressDialog progDailog;
 
-        protected AsyncGetEmpDetail(Integer EmpId) {
+        protected AsyncGetEmpDetail(Integer EmpId, LoginActivity activity) {
             this.EmpId = EmpId;
+            progDailog = new ProgressDialog(activity);
+
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog.setMessage("Please wait...!!");
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.show();
 
-            List<String> list;
+        }
+
+        List<String> list;
+
+        @Override
+
+//        protected List<String> doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
+
+            Log.i("EmpId", EmpId.toString());
+
             list = getEmployeeProfile.getUserdetails(EmpId);
 
-            Employee employee = new Employee();
+//            Employee employee = new Employee();
+//
+//            employee.findById(Employee.class, EmpId.longValue());
+//
+//            employee.setFirstName(list.get(0));
+//            employee.setMiddleName(list.get(1));
+//            employee.setLastName(list.get(2));
+//            employee.setDesignation(list.get(3));
+//            employee.setStoreName(list.get(4));
+//            employee.setAddress(list.get(5));
+//            employee.setArea(list.get(6));
+//            employee.setCity(list.get(7));
+//            employee.setRegion(list.get(8));
+//            employee.setTimings(list.get(9));
+//
+//            employee.save();
 
-            employee.findById(Employee.class, EmpId.longValue());
-
-            employee.setFirstName(list.get(0));
-            employee.setMiddleName(list.get(1));
-            employee.setLastName(list.get(2));
-            employee.setDesignation(list.get(3));
-            employee.setStoreName(list.get(4));
-            employee.setAddress(list.get(5));
-            employee.setArea(list.get(6));
-            employee.setCity(list.get(7));
-            employee.setRegion(list.get(8));
-            employee.setTimings(list.get(9));
-
-            employee.save();
-
-            return null;
+            return 1;
         }
-    }
+
+
+        protected void onPostExecute(Integer result) {
+//
+
+           Toast.makeText(getApplicationContext(),list.size(),Toast.LENGTH_LONG).show();
+
+            //Employee employee = new Employee("123", "7032906292", "lakshman.pilaka@gmail.com", "q", "3",list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(6), list.get(7));
+            //employee.save();
+
+        }
+
+        }
 
     public static class WebService {
 

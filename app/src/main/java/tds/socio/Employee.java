@@ -18,8 +18,8 @@ public class Employee extends SugarRecord<Employee> {
     String MiddleName;
     String LastName;
     String StoreName;
-    Long StoreLatitude;
-    Long StoreLongitude;
+//    Long StoreLatitude;
+//    Long StoreLongitude;
     String Address;
     String City;
     String Area;
@@ -66,7 +66,6 @@ public class Employee extends SugarRecord<Employee> {
     public void setPassword(String password) {
         Password = password;
     }
-
 
     public String getDesignation() {
         return Designation;
@@ -124,21 +123,21 @@ public class Employee extends SugarRecord<Employee> {
         StoreName = storeName;
     }
 
-    public Long getStoreLatitude() {
-        return StoreLatitude;
-    }
+//    public Long getStoreLatitude() {
+//        return StoreLatitude;
+//    }
+//
+//    public void setStoreLatitude(Long storeLatitude) {
+//        StoreLatitude = storeLatitude;
+//    }
 
-    public void setStoreLatitude(Long storeLatitude) {
-        StoreLatitude = storeLatitude;
-    }
-
-    public Long getStoreLongitude() {
-        return StoreLongitude;
-    }
-
-    public void setStoreLongitude(Long storeLongitude) {
-        StoreLongitude = storeLongitude;
-    }
+//    public Long getStoreLongitude() {
+//        return StoreLongitude;
+//    }
+//
+//    public void setStoreLongitude(Long storeLongitude) {
+//        StoreLongitude = storeLongitude;
+//    }
 
     public String getAddress() {
         return Address;
@@ -172,27 +171,27 @@ public class Employee extends SugarRecord<Employee> {
 
     public Employee() { }
 
-    public Employee(String EmpNumber, String MobileNo, String EmailAddress, String Password, String internalEmpId){
-        this.EmpNumber = EmpNumber;
-        this.MobileNo = MobileNo;
-        this.EmailAddress = EmailAddress;
-        this.Password = Password;
-        this.InternalEmpId = internalEmpId;
-    }
+//    public Employee(String EmpNumber, String MobileNo, String EmailAddress, String Password, String internalEmpId){
+//        this.EmpNumber = EmpNumber;
+//        this.MobileNo = MobileNo;
+//        this.EmailAddress = EmailAddress;
+//        this.Password = Password;
+//        this.InternalEmpId = internalEmpId;
+//    }
 
-    public Employee(String empNumber, String mobileNo, String emailAddress, String internalEmpId, String password, String attendanceRetValue, String firstName, String middleName, String lastName, String storeName, Long storeLatitude, Long storeLongitude, String address, String city, String area) {
+    public Employee(String empNumber, String mobileNo, String emailAddress,  String password, String internalEmpId, String firstName, String middleName, String lastName, String storeName,  String address, String city, String area) {
         EmpNumber = empNumber;
         MobileNo = mobileNo;
         EmailAddress = emailAddress;
         InternalEmpId = internalEmpId;
         Password = password;
-        this.attendanceRetValue = attendanceRetValue;
+       // this.attendanceRetValue = attendanceRetValue;
         FirstName = firstName;
         MiddleName = middleName;
         LastName = lastName;
         StoreName = storeName;
-        StoreLatitude = storeLatitude;
-        StoreLongitude = storeLongitude;
+//        StoreLatitude = storeLatitude;
+//        StoreLongitude = storeLongitude;
         Address = address;
         City = city;
         Area = area;
