@@ -244,6 +244,8 @@ public class LoginActivity extends ActionBarActivity {
 
         protected void onPostExecute(Integer result) {
 
+            //TODO: Remove hardcoding
+
             Employee employee = new Employee("123", "7032906292", "lakshman.pilaka@gmail.com", "q", "3",list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(6), list.get(7));
             employee.save();
             progDailog.hide();

@@ -5,27 +5,35 @@
     android:layout_height="match_parent">
 
     <!-- The main content view -->
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
         <!-- Add content here -->
-        <LinearLayout
+        <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:weightSum="1">
 
-            <TextView
-                android:id="@+id/textView1"
+
+        <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="My Profile Activity."
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </LinearLayout>
-    </FrameLayout>
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Employee Name"
+                android:id="@+id/EmpName"
+                android:layout_weight="0.19" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Store Name"
+            android:layout_below="@+id/EmpName"
+            android:id="@+id/EmpStore"
+            android:layout_weight="1.00" />
+
+
+        </RelativeLayout>
+
 
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
@@ -36,4 +44,5 @@
         android:divider="#e5e5e5"
         android:dividerHeight="1dp"
         android:background="#d6d6d6"/>
+
 </android.support.v4.widget.DrawerLayout>

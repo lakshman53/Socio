@@ -2,6 +2,9 @@ package tds.socio;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.widget.TextView;
+
+import java.util.List;
 
 /**
  * Created by laks on 29-01-2015.
@@ -21,5 +24,21 @@ public class MyProfileActivity extends BaseActivity {
                 .obtainTypedArray(R.array.nav_drawer_icons);
 
         set(navMenuTitles, navMenuIcons);
+
+        List<Employee> employees;
+        employees = Employee.listAll(Employee.class);
+
+
+
+        TextView TVEmpName = (TextView) findViewById(R.id.EmpName);
+        String EmpName = employees.get(0).getFirstName() + " " + employees.get(0).getLastName();
+        TVEmpName.setText(EmpName);
+
+
+        TextView TVStoreName = (TextView) findViewById(R.id.EmpStore);
+        String StoreName = employees.get(0).getStoreName();
+        TVStoreName.setText(StoreName);
+
+
     }
 }
