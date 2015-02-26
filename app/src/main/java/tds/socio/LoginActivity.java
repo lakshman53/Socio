@@ -82,9 +82,6 @@ public class LoginActivity extends ActionBarActivity {
                        Toast.makeText(getApplicationContext(), "Incorrect Credentials, Please enter again!!", Toast.LENGTH_SHORT).show();
                        textPassword.requestFocus();
 
-                    List<Employee> emp1 = Employee.listAll(Employee.class);
-                    Toast.makeText(getApplicationContext(), emp1.get(0).FirstName, Toast.LENGTH_LONG).show();
-
                    }
                }
                 else if (button.getText() == "Register") {
@@ -147,22 +144,16 @@ public class LoginActivity extends ActionBarActivity {
                        strPasswordAgain = textPasswordAgain.getText().toString();
 
                        if(checkForSameValues(strPassword, strPasswordAgain)) {
-                           //TODO: Download basic details; user's all detail needs to be saved
                            try {
 
                             new AsyncGetEmpDetail(Integer.parseInt(verifyCode.split(",", 2)[0].toString()),LoginActivity.this).execute();
 
-                           //Employee employee = new Employee(strEmpNum, strMobileNumber, strEmail, strPassword, verifyCode.split(",", 2)[0].toString(),list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(6), list.get(7));
-                           //employee.save();
-
-
                        }   catch (Exception e){
 
                        }
-
-                           //Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
-                           //LoginActivity.this.startActivity(mainIntent);
-                           //finish();
+                           Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
+                           LoginActivity.this.startActivity(mainIntent);
+                           finish();
                        }
                        else
                        {
@@ -185,7 +176,6 @@ public class LoginActivity extends ActionBarActivity {
 
         public static List<String> getUserdetails(Integer EmpId ) {
 
-
             List<String> list = new ArrayList();
 
             try {
@@ -203,55 +193,24 @@ public class LoginActivity extends ActionBarActivity {
             envelope.dotNet = true;
             envelope.setOutputSoapObject(request);
             HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+            androidHttpTransport.call(SOAP_ACTION + "getProfile", envelope);
+            SoapObject response = (SoapObject) envelope.bodyIn;
+            SoapObject array = (SoapObject) response.getProperty(0);
 
-                androidHttpTransport.call(SOAP_ACTION + "getProfile", envelope);
-
-                SoapObject response = (SoapObject) envelope.bodyIn;
-
-                SoapObject array = (SoapObject) response.getProperty(0);
-                SoapObject FirstName = (SoapObject) array.getProperty(0);
-
-                Log.i("FirstNameValue", FirstName.toString());
-
-//
-//                SoapObject yourResponseObject = (SoapObject) soapEnvelope.bodyIn;
-//                SoapObject array = (SoapObject) yourResponseObject .getProperty(0);// this is -->anyType //property 0
-//
-//                SoapObject NewDataSetArray= (SoapObject)array .getProperty(0);// this is--> // property 0 [0]
-//
-//                String temp = null;
-//                temp = NewDataSetArray.getProperty(0).toString();// this is 77777
-
-//                list.add(soapObject.getProperty(0).toString());
-//                list.add(soapObject.getProperty("MiddleName").toString());
-//                list.add(soapObject.getProperty("LastName").toString());
-//                list.add(soapObject.getProperty("Designation").toString());
-//                list.add(soapObject.getProperty("StoreName").toString());
-//                list.add(soapObject.getProperty("StoreAddress").toString());
-//                list.add(soapObject.getProperty("Area").toString());
-//                list.add(soapObject.getProperty("City").toString());
-//                list.add(soapObject.getProperty("Region").toString());
-//                list.add(soapObject.getProperty("Timings").toString());
-
+            list.add(array.getProperty(0).toString());
+            list.add(array.getProperty(1).toString());
+            list.add(array.getProperty(2).toString());
+            list.add(array.getProperty(3).toString());
+            list.add(array.getProperty(4).toString());
+            list.add(array.getProperty(5).toString());
+            list.add(array.getProperty(6).toString());
+            list.add(array.getProperty(7).toString());
 
             }
                 catch (Exception e) {
                 Log.e("List:", e.getMessage());
             }
-            finally {
-                list.add("1");
-                list.add("1");
-                list.add("1");
-                list.add("1");
-                list.add("1");
-                list.add("1");
-                list.add("1");
-                list.add("1");
-                list.add("1");
-
-                return list;
-
-            }
+            return list;
         }
     }
 
@@ -263,57 +222,31 @@ public class LoginActivity extends ActionBarActivity {
         protected AsyncGetEmpDetail(Integer EmpId, LoginActivity activity) {
             this.EmpId = EmpId;
             progDailog = new ProgressDialog(activity);
-
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progDailog.setMessage("Please wait...!!");
+            progDailog.setMessage("Downloading profile, Please wait...!!");
             progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progDailog.show();
-
         }
 
         List<String> list;
 
         @Override
-
-//        protected List<String> doInBackground(Void... params) {
         protected Integer doInBackground(Void... params) {
 
-            Log.i("EmpId", EmpId.toString());
-
             list = getEmployeeProfile.getUserdetails(EmpId);
-
-//            Employee employee = new Employee();
-//
-//            employee.findById(Employee.class, EmpId.longValue());
-//
-//            employee.setFirstName(list.get(0));
-//            employee.setMiddleName(list.get(1));
-//            employee.setLastName(list.get(2));
-//            employee.setDesignation(list.get(3));
-//            employee.setStoreName(list.get(4));
-//            employee.setAddress(list.get(5));
-//            employee.setArea(list.get(6));
-//            employee.setCity(list.get(7));
-//            employee.setRegion(list.get(8));
-//            employee.setTimings(list.get(9));
-//
-//            employee.save();
-
-            return 1;
+            return 0;
         }
 
 
         protected void onPostExecute(Integer result) {
-//
 
-           Toast.makeText(getApplicationContext(),list.size(),Toast.LENGTH_LONG).show();
-
-            //Employee employee = new Employee("123", "7032906292", "lakshman.pilaka@gmail.com", "q", "3",list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(6), list.get(7));
-            //employee.save();
+            Employee employee = new Employee("123", "7032906292", "lakshman.pilaka@gmail.com", "q", "3",list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(6), list.get(7));
+            employee.save();
+            progDailog.hide();
 
         }
 
@@ -364,22 +297,20 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     private class AsyncCallWS extends AsyncTask<String, Void, String> {
-
-//        ProgressDialog dialog;
-
-//        @Override
+//
+//        ProgressDialog progDailog;
+//
 //        protected void onPreExecute() {
-//            dialog = new ProgressDialog(LoginActivity.this);
-//            dialog.setTitle("Checking...");
-//            dialog.setMessage("Please wait...");
-//            dialog.setIndeterminate(true);
-//            dialog.show();
+//            super.onPreExecute();
+//            progDailog.setMessage("Checking your details, Please wait...!!");
+//            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//            progDailog.show();
 //        }
-
+//
 //        @Override
-//        protected Boolean onPostExecute() {
-//            dialog.hide();
-//            return true;
+//        protected void onPostExecute(String result) {
+//            progDailog.hide();
+//
 //        }
 
         @Override
