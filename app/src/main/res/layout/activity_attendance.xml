@@ -23,7 +23,7 @@
 
         <CalendarView
             android:layout_width="match_parent"
-            android:layout_height="452dp"
+            android:layout_height="400dp"
             android:id="@+id/calendar"
             android:layout_gravity="center_horizontal"
             android:selectedWeekBackgroundColor="@color/green"
@@ -31,43 +31,33 @@
             android:focusedMonthDateColor="@color/purple_dark"
             />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText"
-            android:layout_gravity="center_horizontal"
-            />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:background="@color/grey"
+    android:layout_marginTop="10dp"
+    >
 
+<Button
+    android:layout_width="100dp"
+    android:layout_height="50dp"
+    android:id="@+id/inButton"
+    android:enabled="false"
+    android:text="Mark In"
+    />
 
-        <!--<ImageButton-->
-                 <!--android:layout_width="265dp"-->
-                 <!--android:layout_height="wrap_content"-->
-                 <!--android:text="In"-->
-                 <!--android:layout_below="@+id/DateTimeNow"-->
-                 <!--android:id="@+id/button2"-->
-                 <!--android:layout_gravity="center_horizontal"-->
-                 <!--android:onClick="MarkInAttendance"-->
-                 <!--android:src="@drawable/login"-->
-                 <!--android:background="@null"-->
-                 <!--/>-->
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:id="@+id/outButton"
+        android:enabled="false"
+        android:text="Mark Out"
+        />
 
-             <!--<ImageButton-->
-                 <!--android:layout_width="265dp"-->
-                 <!--android:layout_height="wrap_content"-->
-                 <!--android:text="Out"-->
-                 <!--android:id="@+id/button3"-->
-                 <!--android:layout_gravity="center_horizontal"-->
-                 <!--android:layout_alignParentLeft="true"-->
-                 <!--android:layout_alignParentStart="true"-->
-                 <!--android:layout_below="@+id/button2"-->
-                 <!--android:onClick="MarkOutAttendance"-->
-                 <!--android:src="@drawable/logout"-->
-                 <!--android:background="@null"-->
-                 <!--/>-->
+</LinearLayout>
 
-
-    </LinearLayout>
-
+</LinearLayout>
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
         android:layout_width="260dp"

@@ -156,8 +156,8 @@ public class AttendanceActivity extends BaseActivity {
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-                TextView selectedDate = (TextView) findViewById(R.id.editText);
-                selectedDate.setText(day + "/" + month + "/" + year);
+      //  TextView selectedDate = (TextView) findViewById(R.id.editText);
+      //  selectedDate.setText(day + "/" + month + "/" + year);
 
             }
         });
@@ -234,8 +234,6 @@ public class AttendanceActivity extends BaseActivity {
         if(gps.canGetLocation())
         {
             Employee emp = Employee.findById(Employee.class, 1L);
-
-
 
             double latitude = gps.getLatitude();
             double longitude = gps.getLongitude();
