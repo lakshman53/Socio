@@ -18,14 +18,16 @@ public class Employee extends SugarRecord<Employee> {
     String MiddleName;
     String LastName;
     String StoreName;
-//    Long StoreLatitude;
-//    Long StoreLongitude;
     String Address;
     String City;
     String Area;
     String Region;
-    String Timings;
+    String StoreOpen;
+    String StoreClose;
     String Designation;
+//    Long StoreLatitude;
+//    Long StoreLongitude;
+
 
     public String getAttendanceRetValue() {
         return attendanceRetValue;
@@ -75,16 +77,24 @@ public class Employee extends SugarRecord<Employee> {
         Designation = designation;
     }
 
-    public String getTimings() {
-        return Timings;
+    public String getStoreOpen() {
+        return StoreOpen;
     }
 
-    public void setTimings(String timings) {
-        Timings = timings;
+    public void setStoreOpen(String storeOpen) {
+        StoreOpen = storeOpen;
     }
 
     public String getRegion() {
         return Region;
+    }
+
+    public String getStoreClose() {
+        return StoreClose;
+    }
+
+    public void setStoreClose(String storeClose) {
+        StoreClose = storeClose;
     }
 
     public void setRegion(String region) {
@@ -123,22 +133,6 @@ public class Employee extends SugarRecord<Employee> {
         StoreName = storeName;
     }
 
-//    public Long getStoreLatitude() {
-//        return StoreLatitude;
-//    }
-//
-//    public void setStoreLatitude(Long storeLatitude) {
-//        StoreLatitude = storeLatitude;
-//    }
-
-//    public Long getStoreLongitude() {
-//        return StoreLongitude;
-//    }
-//
-//    public void setStoreLongitude(Long storeLongitude) {
-//        StoreLongitude = storeLongitude;
-//    }
-
     public String getAddress() {
         return Address;
     }
@@ -163,6 +157,15 @@ public class Employee extends SugarRecord<Employee> {
         Area = area;
     }
 
+    public String getInternalEmpId() {
+        return InternalEmpId;
+    }
+
+    public void setInternalEmpId(String internalEmpId) {
+        InternalEmpId = internalEmpId;
+    }
+
+
 /*    String DeviceId;
     Date RegisteredDate;
     Date LastLogin;
@@ -171,37 +174,24 @@ public class Employee extends SugarRecord<Employee> {
 
     public Employee() { }
 
-//    public Employee(String EmpNumber, String MobileNo, String EmailAddress, String Password, String internalEmpId){
-//        this.EmpNumber = EmpNumber;
-//        this.MobileNo = MobileNo;
-//        this.EmailAddress = EmailAddress;
-//        this.Password = Password;
-//        this.InternalEmpId = internalEmpId;
-//    }
 
-    public Employee(String empNumber, String mobileNo, String emailAddress,  String password, String internalEmpId, String firstName, String middleName, String lastName, String storeName,  String address, String city, String area) {
+
+    public Employee(String empNumber, String mobileNo, String emailAddress,  String password, String internalEmpId, String firstName, String middleName, String lastName, String storeName,  String address, String city, String area, String storeOpen, String storeClose, String designation)   {
         EmpNumber = empNumber;
         MobileNo = mobileNo;
         EmailAddress = emailAddress;
         InternalEmpId = internalEmpId;
         Password = password;
-       // this.attendanceRetValue = attendanceRetValue;
         FirstName = firstName;
         MiddleName = middleName;
         LastName = lastName;
         StoreName = storeName;
-//        StoreLatitude = storeLatitude;
-//        StoreLongitude = storeLongitude;
         Address = address;
         City = city;
         Area = area;
+        StoreOpen = storeOpen;
+        StoreClose = storeClose;
+        Designation = designation;
     }
 
-    public String getInternalEmpId() {
-        return InternalEmpId;
-    }
-
-    public void setInternalEmpId(String internalEmpId) {
-        InternalEmpId = internalEmpId;
-    }
 }

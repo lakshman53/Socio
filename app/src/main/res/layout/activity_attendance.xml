@@ -13,8 +13,6 @@
 
         <!-- Add content here -->
 
-
-
              <TextView
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
@@ -23,32 +21,49 @@
                  android:id="@+id/DateTimeNow"
                  android:layout_gravity="center_horizontal" />
 
+        <CalendarView
+            android:layout_width="match_parent"
+            android:layout_height="452dp"
+            android:id="@+id/calendar"
+            android:layout_gravity="center_horizontal"
+            android:selectedWeekBackgroundColor="@color/green"
+            android:selectedDateVerticalBar="@color/darkgreen"
+            android:focusedMonthDateColor="@color/purple_dark"
+            />
 
-             <ImageButton
-                 android:layout_width="265dp"
-                 android:layout_height="wrap_content"
-                 android:text="In"
-                 android:layout_below="@+id/DateTimeNow"
-                 android:id="@+id/button2"
-                 android:layout_gravity="center_horizontal"
-                 android:onClick="MarkInAttendance"
-                 android:src="@drawable/login"
-                 android:background="@null"
-                 />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText"
+            android:layout_gravity="center_horizontal"
+            />
 
-             <ImageButton
-                 android:layout_width="265dp"
-                 android:layout_height="wrap_content"
-                 android:text="Out"
-                 android:id="@+id/button3"
-                 android:layout_gravity="center_horizontal"
-                 android:layout_alignParentLeft="true"
-                 android:layout_alignParentStart="true"
-                 android:layout_below="@+id/button2"
-                 android:onClick="MarkOutAttendance"
-                 android:src="@drawable/logout"
-                 android:background="@null"
-                 />
+
+        <!--<ImageButton-->
+                 <!--android:layout_width="265dp"-->
+                 <!--android:layout_height="wrap_content"-->
+                 <!--android:text="In"-->
+                 <!--android:layout_below="@+id/DateTimeNow"-->
+                 <!--android:id="@+id/button2"-->
+                 <!--android:layout_gravity="center_horizontal"-->
+                 <!--android:onClick="MarkInAttendance"-->
+                 <!--android:src="@drawable/login"-->
+                 <!--android:background="@null"-->
+                 <!--/>-->
+
+             <!--<ImageButton-->
+                 <!--android:layout_width="265dp"-->
+                 <!--android:layout_height="wrap_content"-->
+                 <!--android:text="Out"-->
+                 <!--android:id="@+id/button3"-->
+                 <!--android:layout_gravity="center_horizontal"-->
+                 <!--android:layout_alignParentLeft="true"-->
+                 <!--android:layout_alignParentStart="true"-->
+                 <!--android:layout_below="@+id/button2"-->
+                 <!--android:onClick="MarkOutAttendance"-->
+                 <!--android:src="@drawable/logout"-->
+                 <!--android:background="@null"-->
+                 <!--/>-->
 
 
     </LinearLayout>

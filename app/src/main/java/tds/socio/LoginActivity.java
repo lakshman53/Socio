@@ -146,7 +146,7 @@ public class LoginActivity extends ActionBarActivity {
                        if(checkForSameValues(strPassword, strPasswordAgain)) {
                            try {
 
-                            new AsyncGetEmpDetail(Integer.parseInt(verifyCode.split(",", 2)[0].toString()),LoginActivity.this).execute();
+                            new AsyncGetEmpDetail(Integer.parseInt(verifyCode.split(",", 2)[0].toString()),LoginActivity.this).execute().get();
 
                        }   catch (Exception e){
 
@@ -197,6 +197,7 @@ public class LoginActivity extends ActionBarActivity {
             SoapObject response = (SoapObject) envelope.bodyIn;
             SoapObject array = (SoapObject) response.getProperty(0);
 
+
             list.add(array.getProperty(0).toString());
             list.add(array.getProperty(1).toString());
             list.add(array.getProperty(2).toString());
@@ -238,15 +239,15 @@ public class LoginActivity extends ActionBarActivity {
         protected Integer doInBackground(Void... params) {
 
             list = getEmployeeProfile.getUserdetails(EmpId);
-            return 0;
+            return 1;
         }
 
 
         protected void onPostExecute(Integer result) {
 
             //TODO: Remove hardcoding
-
-            Employee employee = new Employee("123", "7032906292", "lakshman.pilaka@gmail.com", "q", "3",list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(6), list.get(7));
+            Toast.makeText(getApplicationContext(),list.get(0),Toast.LENGTH_LONG).show();
+            Employee employee = new Employee("123", "7032906292", "lakshman.pilaka@gmail.com", "q", "1", list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(7), list.get(6), list.get(7), list.get(8), list.get(9));
             employee.save();
             progDailog.hide();
 

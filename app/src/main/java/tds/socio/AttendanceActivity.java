@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
 import org.ksoap2.SoapEnvelope;
@@ -35,15 +36,18 @@ import tds.libs.GPSTracker;
 import tds.libs.MarshalDouble;
 
 public class AttendanceActivity extends BaseActivity {
+
+
+    CalendarView calendar;
+
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-
 
 //    long lngCurrentTime = -1;
 
     String mCurrentPhotoPath;
 
-
+    static final int REQUEST_TAKE_PHOTO = 1;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -67,9 +71,6 @@ public class AttendanceActivity extends BaseActivity {
         return image;
 
     }
-
-    static final int REQUEST_TAKE_PHOTO = 1;
-
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent;
         File photoFile = null;
@@ -94,13 +95,11 @@ public class AttendanceActivity extends BaseActivity {
             }
         }
     }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             setPic();
         }
     }
-
     private void setPic() {
 
         // Get the dimensions of the View
@@ -135,6 +134,8 @@ public class AttendanceActivity extends BaseActivity {
         navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
         set(navMenuTitles, navMenuIcons);
 
+        initializeCalendar();
+
         try {
 
             new RetrieveTimeWS().execute();
@@ -143,6 +144,23 @@ public class AttendanceActivity extends BaseActivity {
         {
             Log.e("Current Time", e.getMessage());
         }
+    }
+
+    public void initializeCalendar() {
+        calendar = (CalendarView) findViewById(R.id.calendar);
+
+        calendar.setShowWeekNumber(false);
+
+        calendar.setFirstDayOfWeek(2);
+
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+                TextView selectedDate = (TextView) findViewById(R.id.editText);
+                selectedDate.setText(day + "/" + month + "/" + year);
+
+            }
+        });
     }
 
     @Override
