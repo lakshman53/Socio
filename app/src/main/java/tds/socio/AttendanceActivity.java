@@ -156,7 +156,7 @@ public class AttendanceActivity extends BaseActivity {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
 
-                Logattendance logAttendance = new Logattendance();
+                LogAttendance LogAttendance = new LogAttendance();
 
                 Button markInButton, markOutButton;
 
@@ -165,14 +165,14 @@ public class AttendanceActivity extends BaseActivity {
 
                 Today = Integer.toString(year)+"/"+Integer.toString(month)+"/"+Integer.toString(day);
 
-                List<Logattendance> findAttendanceIn =  logAttendance.find(Logattendance.class, "today = ? and logflag = ?", Today, "A");
+                List<LogAttendance> findAttendanceIn =  LogAttendance.find(LogAttendance.class, "today = ? and logflag = ?", Today, "A");
                 if (findAttendanceIn.size() == 1)
                 {
                     markInButton.setEnabled(false);
                     markInButton.setText(findAttendanceIn.get(0).getMarkedtime().toString());
 
 
-                    List<Logattendance> findAttendanceOut =  logAttendance.find(Logattendance.class, "today = ? and logflag = ?", Today, "P");
+                    List<LogAttendance> findAttendanceOut =  LogAttendance.find(LogAttendance.class, "today = ? and logflag = ?", Today, "P");
                     if (findAttendanceOut.size() == 1)
                     {
                         markOutButton.setEnabled(false);
@@ -223,9 +223,9 @@ public class AttendanceActivity extends BaseActivity {
         TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
         String time = TVcurrentTime.getText().toString();
 
-        Logattendance logattendance = new Logattendance(Today,time.substring(time.length()-7,time.length()),"A");
+        LogAttendance LogAttendance = new LogAttendance(Today,time.substring(time.length()-7,time.length()),"A");
 
-        logattendance.save();
+        LogAttendance.save();
 
         Button MarkIn = (Button) findViewById(R.id.inButton);
         MarkIn.setEnabled(false);
@@ -241,8 +241,8 @@ public class AttendanceActivity extends BaseActivity {
         TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
         String time = TVcurrentTime.getText().toString();
 
-        Logattendance logattendance = new Logattendance(Today,time.substring(time.length()-7,time.length()),"P");
-        logattendance.save();
+        LogAttendance LogAttendance = new LogAttendance(Today,time.substring(time.length()-7,time.length()),"P");
+        LogAttendance.save();
 
         Button MarkOut = (Button) findViewById(R.id.outButton);
         MarkOut.setEnabled(false);
@@ -359,10 +359,10 @@ public class AttendanceActivity extends BaseActivity {
 
     public static class AttendanceMarking {
 
-        public static Integer logAttendance(String latitude, String longitude, String empId, String LogFlag, Double DistanceFromStore) {
+        public static Integer LogAttendance(String latitude, String longitude, String empId, String LogFlag, Double DistanceFromStore) {
 
             Integer resTxt = 1;
-            SoapObject request = new SoapObject(NAMESPACE, "logAttendance");
+            SoapObject request = new SoapObject(NAMESPACE, "LogAttendance");
             PropertyInfo sayHelloPI;
 
             sayHelloPI = new PropertyInfo();
@@ -405,7 +405,7 @@ public class AttendanceActivity extends BaseActivity {
                 MarshalDouble md = new MarshalDouble();
                 md.register(envelope);
 
-                androidHttpTransport.call(SOAP_ACTION + "logAttendance", envelope);
+                androidHttpTransport.call(SOAP_ACTION + "LogAttendance", envelope);
                 SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
 
                 resTxt = Integer.parseInt(response.toString());
@@ -438,7 +438,7 @@ public class AttendanceActivity extends BaseActivity {
         }
 
         protected Integer doInBackground(String... params) {
-            retNum =   AttendanceMarking.logAttendance(latitude,longitude,empId,LogFlag,DistanceFromStore );
+            retNum =   AttendanceMarking.LogAttendance(latitude,longitude,empId,LogFlag,DistanceFromStore );
             return retNum;
         }
 
