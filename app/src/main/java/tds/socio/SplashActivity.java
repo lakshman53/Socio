@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import java.util.List;
+
 public class SplashActivity extends Activity {
 
     /** Duration of wait **/
@@ -22,41 +24,16 @@ public class SplashActivity extends Activity {
 
         //TODO: Check if internet connection exists.
 
-//        List<Offers> offer = Offers.listAll(Offers.class);
-//
-//        Offers.deleteAll(Offers.class);
-//
-//        Random randomGenerator = new Random();
-//        Offers offers;
-//
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Kumar","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Suresh","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Hari","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Madhu","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Lakshman","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Kumar","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Suresh","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Hari","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
-//        offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher,"Madhu","This is a subject", "This is Description",new Date(),false,false);
-//        offers.save();
+        List<Offers> offer = Offers.listAll(Offers.class);
+
+        Offers.deleteAll(Offers.class);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity.*/
 
-                //startService(new Intent(SplashActivity.this, OfferService.class));
+                startService(new Intent(SplashActivity.this, OfferService.class));
 
                 Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                 SplashActivity.this.startActivity(mainIntent);

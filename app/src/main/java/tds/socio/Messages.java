@@ -1,8 +1,11 @@
 package tds.socio;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -20,6 +23,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +41,8 @@ public class Messages extends BaseActivity {
     MessageDetails Detail;
     List<Offers> offers;
 
+
+
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -40,6 +51,8 @@ public class Messages extends BaseActivity {
             navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
             navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
             set(navMenuTitles, navMenuIcons);
+
+
 
             Toast.makeText(getApplicationContext(),"Long press the message for more features",Toast.LENGTH_LONG ).show();
 
@@ -66,8 +79,8 @@ public class Messages extends BaseActivity {
 			registerForContextMenu(msgList);
 			msgList.setOnItemClickListener(new OnItemClickListener() {
 				   public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-					   String s =(String) ((TextView) v.findViewById(R.id.From)).getText();
-					   Toast.makeText(Messages.this, s, Toast.LENGTH_LONG).show();
+					  // String s =(String) ((TextView) v.findViewById(R.id.From)).getText();
+					  // Toast.makeText(Messages.this, s, Toast.LENGTH_LONG).show();
 				   }
 		   });	
 }
@@ -109,7 +122,8 @@ public class Messages extends BaseActivity {
 		protected void onResume() {
 			super.onResume();
 	}
-		
+
+
 		public class CustomAdapter extends BaseAdapter {
 
 		    private ArrayList<MessageDetails> _data;
@@ -141,14 +155,14 @@ public class Messages extends BaseActivity {
 		         }
 
 		           ImageView image = (ImageView) v.findViewById(R.id.icon);
-		           TextView fromView = (TextView)v.findViewById(R.id.From);
+		           //TextView fromView = (TextView)v.findViewById(R.id.From);
 		           TextView subView = (TextView)v.findViewById(R.id.subject);
 		           TextView descView = (TextView)v.findViewById(R.id.description);
 		           TextView timeView = (TextView)v.findViewById(R.id.time);
 
 		           MessageDetails msg = _data.get(position);
 		           image.setImageResource(msg.icon);
-		           fromView.setText(msg.from);
+		           //fromView.setText(msg.from);
 		           subView.setText(msg.sub);
 		           descView.setText(msg.desc);
 		           timeView.setText(msg.time);		              		
@@ -178,6 +192,7 @@ public class Messages extends BaseActivity {
 			});
 		        return v;
 		}
+
 		}
 
 		public class MessageDetails {
@@ -236,4 +251,6 @@ public class Messages extends BaseActivity {
 		        this.desc = desc;
 		    }
 		}
+
+
 }

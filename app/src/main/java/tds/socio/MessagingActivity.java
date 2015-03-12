@@ -29,6 +29,8 @@ public class MessagingActivity extends BaseActivity {
 //        [Group] ON EmpGroups.GroupId = [Group].GroupId ON OfferGroups.GroupId = [Group].GroupId
 //        WHERE Offer.OfferId > 0 and Employee.EmpId = 3
 
+
+
     }
 
 }
