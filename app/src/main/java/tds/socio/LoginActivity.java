@@ -74,7 +74,7 @@ public class LoginActivity extends ActionBarActivity {
                    //TODO: UI validation for login
                    if (authenticateUser(strEmpNum, strPasswordencrypted)) {
                        //TODO: In case of first login (password blank) redirect to change password screen
-                       Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
+                       Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
                        LoginActivity.this.startActivity(mainIntent);
                        finish();
                    } else {
@@ -146,12 +146,12 @@ public class LoginActivity extends ActionBarActivity {
                        if(checkForSameValues(strPassword, strPasswordAgain)) {
                            try {
 
-                            new AsyncGetEmpDetail(Integer.parseInt(verifyCode.split(",", 2)[0].toString()),LoginActivity.this).execute().get();
+                               Integer i = new AsyncGetEmpDetail(strEmpNum,Integer.parseInt(verifyCode.split(",", 2)[0].toString()),strMobileNumber,strEmail,strPassword, LoginActivity.this).execute().get();
 
                        }   catch (Exception e){
 
                        }
-                           Intent mainIntent = new Intent(LoginActivity.this, MyProfileActivity.class);
+                           Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
                            LoginActivity.this.startActivity(mainIntent);
                            finish();
                        }
@@ -206,6 +206,9 @@ public class LoginActivity extends ActionBarActivity {
             list.add(array.getProperty(5).toString());
             list.add(array.getProperty(6).toString());
             list.add(array.getProperty(7).toString());
+            list.add(array.getProperty(8).toString());
+            list.add(array.getProperty(9).toString());
+            list.add(array.getProperty(10).toString());
 
             }
                 catch (Exception e) {
@@ -217,11 +220,17 @@ public class LoginActivity extends ActionBarActivity {
 
     private class AsyncGetEmpDetail extends AsyncTask<Void,Void,Integer> {
 
-        Integer EmpId;
+        Integer internalEmpId;
+        String EmpId, MobileNo, Email, Password  ;
         private ProgressDialog progDailog;
 
-        protected AsyncGetEmpDetail(Integer EmpId, LoginActivity activity) {
+        protected AsyncGetEmpDetail(String EmpId, Integer internalEmpId, String mobileNo, String email, String password, LoginActivity activity) {
             this.EmpId = EmpId;
+            this.internalEmpId = internalEmpId;
+            this.MobileNo = mobileNo;
+            this.Email = email;
+            this.Password = password;
+
             progDailog = new ProgressDialog(activity);
         }
 
@@ -238,7 +247,7 @@ public class LoginActivity extends ActionBarActivity {
         @Override
         protected Integer doInBackground(Void... params) {
 
-            list = getEmployeeProfile.getUserdetails(EmpId);
+            list = getEmployeeProfile.getUserdetails(internalEmpId);
             return 1;
         }
 
@@ -247,7 +256,7 @@ public class LoginActivity extends ActionBarActivity {
 
             //TODO: Remove hardcoding
             Toast.makeText(getApplicationContext(),list.get(0),Toast.LENGTH_LONG).show();
-            Employee employee = new Employee("123", "7032906292", "lakshman.pilaka@gmail.com", "q", "1", list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(7), list.get(6), list.get(7), list.get(8), list.get(9));
+            Employee employee = new Employee(EmpId.toString(), MobileNo, Email, Password, internalEmpId.toString(), list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(7), list.get(6), list.get(7), list.get(8), list.get(9));
             employee.save();
             progDailog.hide();
 

@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
@@ -37,8 +38,8 @@ import tds.libs.MarshalDouble;
 
 public class AttendanceActivity extends BaseActivity {
 
-
     CalendarView calendar;
+    String Today = "2015-2-3";
 
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
@@ -148,17 +149,48 @@ public class AttendanceActivity extends BaseActivity {
 
     public void initializeCalendar() {
         calendar = (CalendarView) findViewById(R.id.calendar);
-
         calendar.setShowWeekNumber(false);
-
         calendar.setFirstDayOfWeek(2);
 
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
-      //  TextView selectedDate = (TextView) findViewById(R.id.editText);
-      //  selectedDate.setText(day + "/" + month + "/" + year);
 
+                Logattendance logAttendance = new Logattendance();
+
+                Button markInButton, markOutButton;
+
+                markInButton = (Button) findViewById(R.id.inButton);
+                markOutButton = (Button) findViewById(R.id.outButton);
+
+                Today = Integer.toString(year)+"/"+Integer.toString(month)+"/"+Integer.toString(day);
+
+                List<Logattendance> findAttendanceIn =  logAttendance.find(Logattendance.class, "today = ? and logflag = ?", Today, "A");
+                if (findAttendanceIn.size() == 1)
+                {
+                    markInButton.setEnabled(false);
+                    markInButton.setText(findAttendanceIn.get(0).getMarkedtime().toString());
+
+
+                    List<Logattendance> findAttendanceOut =  logAttendance.find(Logattendance.class, "today = ? and logflag = ?", Today, "P");
+                    if (findAttendanceOut.size() == 1)
+                    {
+                        markOutButton.setEnabled(false);
+                        markOutButton.setText(findAttendanceOut.get(0).getMarkedtime().toString());
+                    }
+                    else
+                    {
+                        markOutButton.setEnabled(true);
+                        markOutButton.setText("Mark Out");
+                    }
+                }
+                else
+                {
+                    markInButton.setEnabled(true);
+                    markInButton.setText("Mark In");
+                    markOutButton.setText("Mark Out");
+
+                }
             }
         });
     }
@@ -181,8 +213,43 @@ public class AttendanceActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-
           super.onDestroy();
+    }
+
+    public void MarkIn(View view) {
+
+        dispatchTakePictureIntent();
+
+        TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
+        String time = TVcurrentTime.getText().toString();
+
+        Logattendance logattendance = new Logattendance(Today,time.substring(time.length()-7,time.length()),"A");
+
+        logattendance.save();
+
+        Button MarkIn = (Button) findViewById(R.id.inButton);
+        MarkIn.setEnabled(false);
+        MarkIn.setText(time.substring(time.length()-7));
+
+//        Toast.makeText(getApplicationContext(),"Attendance logged succesfully @" + time.substring(time.length()-7), Toast.LENGTH_LONG).show();
+    }
+
+    public void MarkOut(View view) {
+
+        dispatchTakePictureIntent();
+
+        TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
+        String time = TVcurrentTime.getText().toString();
+
+        Logattendance logattendance = new Logattendance(Today,time.substring(time.length()-7,time.length()),"P");
+        logattendance.save();
+
+        Button MarkOut = (Button) findViewById(R.id.outButton);
+        MarkOut.setEnabled(false);
+        MarkOut.setText(time.substring(time.length()-7));
+
+//        Toast.makeText(getApplicationContext(),"Attendance logged succesfully @" + time.substring(time.length()-7), Toast.LENGTH_LONG).show();
+
     }
 
     public void MarkInAttendance(View view)
@@ -384,7 +451,7 @@ public class AttendanceActivity extends BaseActivity {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            TVcurrentTime.setText("Loading Current Time...");
+            TVcurrentTime.setText("Loading Calander...");
         }
 
         protected String doInBackground(Void... params) {
@@ -392,7 +459,7 @@ public class AttendanceActivity extends BaseActivity {
                 datetime = getDateTimeClass.getDateTime();
 
             } catch (Exception e) {
-                Log.e("Async Task - GetDateTime ", e.getMessage());
+                Log.e("Async Task", e.getMessage());
             }
             return datetime;
         }
@@ -403,6 +470,8 @@ public class AttendanceActivity extends BaseActivity {
 
             if (s != null) {
                 TVcurrentTime.setText(datetime);
+                calendar.setEnabled(true);
+
             }
         }
     }

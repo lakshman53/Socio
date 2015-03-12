@@ -28,14 +28,14 @@ public class MyProfileActivity extends BaseActivity {
         List<Employee> employees;
         employees = Employee.listAll(Employee.class);
 
-        TextView TVEmpName = (TextView) findViewById(R.id.EmpName);
-        String EmpName = employees.get(0).getFirstName() + " " + employees.get(0).getLastName();
-        TVEmpName.setText(EmpName);
+        if (employees.size() > 0) {
+            TextView TVEmpName = (TextView) findViewById(R.id.EmpName);
+            String EmpName = "Name: " + employees.get(0).getFirstName() + " " + employees.get(0).getLastName();
+            TVEmpName.setText(EmpName);
 
-        TextView TVStoreName = (TextView) findViewById(R.id.EmpStore);
-        String StoreName = employees.get(0).getStoreName();
-        TVStoreName.setText(StoreName);
-
-
+            TextView TVStoreName = (TextView) findViewById(R.id.EmpStore);
+            String StoreName = "Store: " + employees.get(0).getStoreName();
+            TVStoreName.setText(StoreName);
+        }
     }
 }
