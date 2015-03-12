@@ -1,16 +1,26 @@
-package tds.socio;
-
-import com.orm.SugarRecord;
-
 /**
  * Created by laks on 03-03-2015.
  */
+
+package tds.socio;
+import com.orm.SugarRecord;
+
 public class LogAttendance extends SugarRecord<LogAttendance> {
     String Today;
-    String Logintime;
-    String Logouttime;
+    String Markedtime;
+    String Logflag;
+
+    public LogAttendance() {
+    }
+
+    public LogAttendance(String today, String markedtime, String logflag ) {
+        Today = today;
+        Logflag = logflag;
+        Markedtime = markedtime;
+    }
 
     public String getToday() {
+
         return Today;
     }
 
@@ -18,26 +28,19 @@ public class LogAttendance extends SugarRecord<LogAttendance> {
         Today = today;
     }
 
-    public String getLogintime() {
-        return Logintime;
+    public String getMarkedtime() {
+        return Markedtime;
     }
 
-    public void setLogintime(String logintime) {
-        Logintime = logintime;
+    public void setMarkedtime(String markedtime) {
+        Markedtime = markedtime;
     }
 
-    public String getLogouttime() {
-        return Logouttime;
+    public String getLogflag() {
+        return Logflag;
     }
 
-    public void setLogouttime(String logouttime) {
-        Logouttime = logouttime;
-    }
-
-    public LogAttendance() {}
-    public LogAttendance(String today, String logintime, String logouttime) {
-        Today = today;
-        Logintime = logintime;
-        Logouttime = logouttime;
+    public void setLogflag(String logflag) {
+        Logflag = logflag;
     }
 }
