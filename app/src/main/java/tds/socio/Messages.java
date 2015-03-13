@@ -1,11 +1,8 @@
 package tds.socio;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -23,12 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.ksoap2.SoapEnvelope;
-import org.ksoap2.serialization.PropertyInfo;
-import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapSerializationEnvelope;
-import org.ksoap2.transport.HttpTransportSE;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +62,11 @@ public class Messages extends BaseActivity {
                 Detail.setName(offers.get(i).getSender());
                 Detail.setSub(offers.get(i).getSubject());
                 Detail.setDesc(offers.get(i).getDescription());
-                Detail.setTime(offers.get(i).getReceivedTime().toString());
+
+                String DATE_FORMAT_NOW = "dd/MM h:mm a";
+                SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+                String stringDate = sdf.format(offers.get(i).getReceivedTime() );
+                Detail.setTime(stringDate);
 
                 details.add(Detail);
             }

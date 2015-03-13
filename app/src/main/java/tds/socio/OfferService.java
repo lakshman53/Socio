@@ -1,10 +1,16 @@
 package tds.socio;
 
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import org.ksoap2.SoapEnvelope;
@@ -12,6 +18,10 @@ import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
+
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by laks on 12-03-2015.
@@ -25,14 +35,55 @@ public class OfferService extends Service{
     @Override
     public void onCreate() {
 
-        //Toast.makeText(this, "Congrats! MyService Created", Toast.LENGTH_LONG).show();
-        new AsyncGetEmpDetail().execute();
+        callAsynchronousTask();
     }
 
     @Override
     public void onStart(Intent intent, int startId) {
-        //Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
 
+    }
+    public void callAsynchronousTask() {
+        final Handler handler = new Handler();
+        Timer timer = new Timer();
+        TimerTask doAsynchronousTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        try {
+                           Integer offerCount = new AsyncGetEmpDetail().execute().get();
+                            if (offerCount > 0){
+                                Random randomGenerator = new Random();
+                                int randomInt = randomGenerator.nextInt(100);
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(getApplicationContext())
+                                                .setSmallIcon(R.drawable.ic_launcher)
+                                                .setContentTitle("Socio")
+                                                .setContentText("You've got " + Integer.valueOf(randomInt).toString() + " messages");
+                                Intent resultIntent = new Intent(getApplicationContext(),Messages.class);
+                                TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+                                stackBuilder.addParentStack(Messages.class);
+                                stackBuilder.addNextIntent(resultIntent);
+                                PendingIntent resultPendingIntent =
+                                        stackBuilder.getPendingIntent(
+                                                0,
+                                                PendingIntent.FLAG_UPDATE_CURRENT
+                                        );
+                                mBuilder.setContentIntent(resultPendingIntent);
+                                NotificationManager mNotificationManager =
+                                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+                                mNotificationManager.notify(0, mBuilder.build());
+                            }
+
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(doAsynchronousTask, 0, 20000); //execute in every 20000 ms
     }
 
     @Override
@@ -46,7 +97,7 @@ public class OfferService extends Service{
 
     public static class getEmployeeOffers {
 
-        public static Void getOffers(Integer EmpId, Integer LastOfferId ) {
+        public static Integer getOffers(Integer EmpId, Integer LastOfferId ) {
 
             try {
 
@@ -73,7 +124,9 @@ public class OfferService extends Service{
                 SoapObject response = (SoapObject) envelope.bodyIn;
                 SoapObject array = (SoapObject) response.getProperty(0);
 
-                new addOffersByParseXML(array.toString().replace("anyType{offerString=","").replace("; }",""));
+             addOffersByParseXML addOffersByParseXML = new addOffersByParseXML();
+
+              return addOffersByParseXML.addOffers(array.toString().replace("anyType{offerString=","").replace("; }",""));
 
             }
             catch (Exception e) {
@@ -81,7 +134,9 @@ public class OfferService extends Service{
             }
             return null;
         }
+
     }
+
 
     private class AsyncGetEmpDetail extends AsyncTask<Void,Void,Integer> {
 
@@ -99,8 +154,7 @@ public class OfferService extends Service{
         @Override
         protected Integer doInBackground(Void... params) {
 
-            getEmployeeOffers.getOffers(1,0);
-            return 1;
+            return getEmployeeOffers.getOffers(1,0);
         }
 
 
