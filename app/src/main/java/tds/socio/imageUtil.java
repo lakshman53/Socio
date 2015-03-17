@@ -9,19 +9,109 @@ import android.media.ExifInterface;
 import android.os.Environment;
 import android.util.Log;
 
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.MarshalBase64;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by laks on 17-03-2015.
  */
+
 public class imageUtil {
 
-    public String compressImage(String imageUri) {
+    private String compressedImagePath;
+    private InputStream is=null;
+    private byte[] array;
+    
+    public Boolean CompressImageBeforeUpload = true;
+    public String NAMESPACE, URL, SOAP_ACTION, WSMethodName, WSFieldName, hiResImagePath ;
 
-        String filePath = imageUri;
+    public String getHiResImagePath() {
+        return hiResImagePath;
+    }
+
+    public void setHiResImagePath(String hiResImagePath) {
+        this.hiResImagePath = hiResImagePath;
+    }
+
+    public Boolean getCompressImageBeforeUpload() {
+        return CompressImageBeforeUpload;
+    }
+
+    public void setCompressImageBeforeUpload(Boolean compressImageBeforeUpload) {
+        CompressImageBeforeUpload = compressImageBeforeUpload;
+    }
+
+    public String getNAMESPACE() {
+        return NAMESPACE;
+    }
+
+    public void setNAMESPACE(String NAMESPACE) {
+        this.NAMESPACE = NAMESPACE;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
+    public void setURL(String URL) {
+        this.URL = URL;
+    }
+
+    public String getSOAP_ACTION() {
+        return SOAP_ACTION;
+    }
+
+    public void setSOAP_ACTION(String SOAP_ACTION) {
+        this.SOAP_ACTION = SOAP_ACTION;
+    }
+
+    public String getWSMethodName() {
+        return WSMethodName;
+    }
+
+    public void setWSMethodName(String WSMethodName) {
+        this.WSMethodName = WSMethodName;
+    }
+
+    public String getWSFieldName() {
+        return WSFieldName;
+    }
+
+    public void setWSFieldName(String WSFieldName) {
+        this.WSFieldName = WSFieldName;
+    }
+
+    public imageUtil() { }
+
+    private static byte[] streamToBytes(InputStream is) {
+        ByteArrayOutputStream os = new ByteArrayOutputStream(5120);
+        byte[] buffer = new byte[5120];
+        int len;
+        try {
+            while ((len = is.read(buffer)) >= 0) {
+                os.write(buffer, 0, len);
+            }
+        } catch (java.io.IOException e) {
+            Log.e("TAG", e.getMessage());
+        }
+        return os.toByteArray();
+    }
+
+    public boolean compressImage() {
+
+        String filePath = hiResImagePath;
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -132,8 +222,44 @@ public class imageUtil {
             e.printStackTrace();
         }
 
-        return filename;
+        compressedImagePath = filename;
 
+        return true;
+    }
+    
+    public String uploadImage() {
+    try{
+        is = new FileInputStream(CompressImageBeforeUpload?compressedImagePath:hiResImagePath);
+        try {
+            array=streamToBytes(is);
+        } finally {
+            is.close();
+        }
+
+    }catch (Exception e){
+        Log.i ("Upload Img", e.getMessage());
+    }
+        HttpTransportSE htse = new HttpTransportSE(URL);
+        SoapObject so=new SoapObject(NAMESPACE, WSMethodName);
+        so.addProperty(WSFieldName, array);
+        SoapSerializationEnvelope sse=new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        sse.dotNet=true;
+        sse.setOutputSoapObject(so);
+        new MarshalBase64().register(sse);
+        String responseMsg = "";
+        try {
+            htse.call(SOAP_ACTION + WSMethodName, sse);
+            SoapPrimitive response=(SoapPrimitive) sse.getResponse();
+            responseMsg = response.toString();
+        }
+        catch (Exception e) {
+            responseMsg = e.getMessage();
+        }
+        return responseMsg;
+    }
+
+    public boolean deleteImage() {
+        return true;
     }
 
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
