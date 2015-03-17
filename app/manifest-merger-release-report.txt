@@ -149,3 +149,9 @@ ADDED from AndroidManifest.xml:72:9
 		ADDED from AndroidManifest.xml:74:13
 	android:name
 		ADDED from AndroidManifest.xml:73:13
+service#tds.socio.OfferService
+ADDED from AndroidManifest.xml:76:9
+	android:enabled
+		ADDED from AndroidManifest.xml:76:18
+	android:name
+		ADDED from AndroidManifest.xml:76:41

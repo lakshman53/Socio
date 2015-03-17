@@ -25,7 +25,16 @@ public class Employee extends SugarRecord<Employee> {
     String StoreOpen;
     String StoreClose;
     String Designation;
-//    Long StoreLatitude;
+    Integer LastOrderId;
+
+    public Integer getLastOrderId() {
+        return LastOrderId;
+    }
+
+    public void setLastOrderId(Integer lastOrderId) {
+        LastOrderId = lastOrderId;
+    }
+    //    Long StoreLatitude;
 //    Long StoreLongitude;
 
 
@@ -192,6 +201,7 @@ public class Employee extends SugarRecord<Employee> {
         StoreOpen = storeOpen;
         StoreClose = storeClose;
         Designation = designation;
+        LastOrderId = 0;
     }
 
 }

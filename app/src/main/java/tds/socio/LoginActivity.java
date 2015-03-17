@@ -76,6 +76,7 @@ public class LoginActivity extends ActionBarActivity {
                        //TODO: In case of first login (password blank) redirect to change password screen
                        Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
                        LoginActivity.this.startActivity(mainIntent);
+                       startService(new Intent(LoginActivity.this, OfferService.class));
                        finish();
                    } else {
                        textPassword.setText("");
@@ -259,6 +260,8 @@ public class LoginActivity extends ActionBarActivity {
             Employee employee = new Employee(EmpId.toString(), MobileNo, Email, Password, internalEmpId.toString(), list.get(0), list.get(1), list.get(2), list.get(4), list.get(5), list.get(7), list.get(6), list.get(7), list.get(8), list.get(9));
             employee.save();
             progDailog.hide();
+            startService(new Intent(LoginActivity.this, OfferService.class));
+
 
         }
 

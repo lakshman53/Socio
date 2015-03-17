@@ -53,13 +53,11 @@ public class OfferService extends Service{
                         try {
                            Integer offerCount = new AsyncGetEmpDetail().execute().get();
                             if (offerCount > 0){
-                                Random randomGenerator = new Random();
-                                int randomInt = randomGenerator.nextInt(100);
                                 NotificationCompat.Builder mBuilder =
                                         new NotificationCompat.Builder(getApplicationContext())
                                                 .setSmallIcon(R.drawable.ic_launcher)
                                                 .setContentTitle("Socio")
-                                                .setContentText("You've got " + Integer.valueOf(randomInt).toString() + " messages");
+                                                .setContentText("You've got " + Integer.valueOf(offerCount) + " messages");
                                 Intent resultIntent = new Intent(getApplicationContext(),Messages.class);
                                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                                 stackBuilder.addParentStack(Messages.class);
@@ -72,7 +70,6 @@ public class OfferService extends Service{
                                 mBuilder.setContentIntent(resultPendingIntent);
                                 NotificationManager mNotificationManager =
                                         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
                                 mNotificationManager.notify(0, mBuilder.build());
                             }
 
@@ -126,7 +123,8 @@ public class OfferService extends Service{
 
              addOffersByParseXML addOffersByParseXML = new addOffersByParseXML();
 
-              return addOffersByParseXML.addOffers(array.toString().replace("anyType{offerString=","").replace("; }",""));
+                Log.d("array", array.toString());
+              return addOffersByParseXML.addOffers(array.toString().replace("anyType{}","").replace("anyType{offerString=","").replace("; }",""));
 
             }
             catch (Exception e) {
@@ -140,6 +138,7 @@ public class OfferService extends Service{
 
     private class AsyncGetEmpDetail extends AsyncTask<Void,Void,Integer> {
 
+            Employee emp = Employee.findById(Employee.class, 1L);
 
         protected AsyncGetEmpDetail( ) {
 
@@ -150,11 +149,11 @@ public class OfferService extends Service{
             super.onPreExecute();
         }
 
-
         @Override
         protected Integer doInBackground(Void... params) {
 
-            return getEmployeeOffers.getOffers(1,0);
+            return getEmployeeOffers.getOffers(Integer.parseInt(emp.getInternalEmpId()), emp.getLastOrderId());
+
         }
 
 
