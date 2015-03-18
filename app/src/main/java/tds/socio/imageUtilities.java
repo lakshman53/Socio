@@ -28,7 +28,7 @@ import java.io.InputStream;
  * Created by laks on 17-03-2015.
  */
 
-public class imageUtil {
+public class imageUtilities {
 
     private String compressedImagePath;
     private InputStream is=null;
@@ -93,7 +93,7 @@ public class imageUtil {
         this.WSFieldName = WSFieldName;
     }
 
-    public imageUtil() { }
+    public imageUtilities() { }
 
     private static byte[] streamToBytes(InputStream is) {
         ByteArrayOutputStream os = new ByteArrayOutputStream(5120);
@@ -281,7 +281,7 @@ public class imageUtil {
     }
 
     private String getFilename() {
-        File file = new File(Environment.getExternalStorageDirectory().getPath(), "MyFolder/Images");
+        File file = new File(Environment.getExternalStorageDirectory().getPath(), "Camera/Socio-Comp");
         if (!file.exists()) {
             file.mkdirs();
         }

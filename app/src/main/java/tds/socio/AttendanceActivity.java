@@ -56,9 +56,9 @@ public class AttendanceActivity extends BaseActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "Socio_" + timeStamp + "_";
 
-        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-        File storageDir =  Environment.getExternalStorageDirectory();
+        //File storageDir =  Environment.getExternalStorageDirectory();
 
         File image = File.createTempFile(
                 imageFileName,
@@ -72,30 +72,8 @@ public class AttendanceActivity extends BaseActivity {
         return image;
 
     }
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent;
-        File photoFile = null;
 
-        takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
 
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-
-            }
-        }
-    }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
             setPic();
@@ -124,6 +102,34 @@ public class AttendanceActivity extends BaseActivity {
         bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+    }
+
+    private String dispatchTakePictureIntent() {
+        Intent takePictureIntent;
+        File photoFile = null;
+
+        takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                return ex.getMessage();
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                return photoFile.getAbsolutePath();
+
+            }
+        }
+        return "";
     }
 
     @Override
@@ -189,7 +195,6 @@ public class AttendanceActivity extends BaseActivity {
                     markInButton.setEnabled(true);
                     markInButton.setText("Mark In");
                     markOutButton.setText("Mark Out");
-
                 }
             }
         });
@@ -444,7 +449,7 @@ public class AttendanceActivity extends BaseActivity {
 
   }
 
-    class RetrieveTimeWS extends AsyncTask<Void, Void, String> {
+    private class RetrieveTimeWS extends AsyncTask<Void, Void, String> {
 
         TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
         String datetime = "";
