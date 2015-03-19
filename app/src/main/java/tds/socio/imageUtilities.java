@@ -228,7 +228,12 @@ public class imageUtilities {
     }
     
     public String uploadImage() {
-    try{
+
+        if(CompressImageBeforeUpload) {
+            compressImage();
+        }
+
+        try{
         is = new FileInputStream(CompressImageBeforeUpload?compressedImagePath:hiResImagePath);
         try {
             array=streamToBytes(is);
@@ -289,4 +294,5 @@ public class imageUtilities {
         return uriSting;
 
     }
+
 }

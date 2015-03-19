@@ -5,10 +5,10 @@ package tds.socio;
  */
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -39,7 +40,7 @@ import tds.libs.MarshalDouble;
 public class AttendanceActivity extends BaseActivity {
 
     CalendarView calendar;
-    String Today = "2015-2-3";
+    String Today = "2015-19-3";
 
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
@@ -54,7 +55,7 @@ public class AttendanceActivity extends BaseActivity {
         // Create an image file name
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "Socio_" + timeStamp + "_";
+        String imageFileName = "S_" + timeStamp + "_";
 
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
@@ -74,35 +75,6 @@ public class AttendanceActivity extends BaseActivity {
     }
 
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
-            setPic();
-        }
-    }
-    private void setPic() {
-
-        // Get the dimensions of the View
-
-        int targetW = 50;
-        int targetH = 100;
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-    }
 
     private String dispatchTakePictureIntent() {
         Intent takePictureIntent;
@@ -122,19 +94,18 @@ public class AttendanceActivity extends BaseActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 return photoFile.getAbsolutePath();
-
             }
         }
-        return "";
+        return "NotTaken";
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_attendance);
 
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -221,23 +192,75 @@ public class AttendanceActivity extends BaseActivity {
           super.onDestroy();
     }
 
+    Uri mCapturedImageURI;
+
+    String capturedImageFilePath;
+
     public void MarkIn(View view) {
 
-        dispatchTakePictureIntent();
+        String fileName = "temp.jpg";
+        final int CAPTURE_PICTURE_INTENT = 1;
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
-        String time = TVcurrentTime.getText().toString();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+        startActivityForResult(intent, CAPTURE_PICTURE_INTENT);
 
-        LogAttendance LogAttendance = new LogAttendance(Today,time.substring(time.length()-7,time.length()),"A");
+        String imagePath = capturedImageFilePath;
 
-        LogAttendance.save();
+        if (!imagePath.equals("NotTaken")) {
 
-        Button MarkIn = (Button) findViewById(R.id.inButton);
-        MarkIn.setEnabled(false);
-        MarkIn.setText(time.substring(time.length()-7));
+            imageUtilities imageutil = new imageUtilities();
 
-//        Toast.makeText(getApplicationContext(),"Attendance logged succesfully @" + time.substring(time.length()-7), Toast.LENGTH_LONG).show();
+            imageutil.setNAMESPACE("http://tempuri.org/");
+            imageutil.setSOAP_ACTION("http://tempuri.org/");
+            imageutil.setURL("http://sociowebservice.azurewebsites.net/GenMethods.asmx");
+            imageutil.setWSMethodName("insertPicture");
+            imageutil.setWSFieldName("binPicture");
+            imageutil.setHiResImagePath(capturedImageFilePath);
+            imageutil.setCompressImageBeforeUpload(false);
+
+            try {
+                Toast.makeText(getApplicationContext(), new AsyncCallClass().execute(imageutil).get(), Toast.LENGTH_LONG).show();
+            }
+            catch (Exception ex){
+
+            }
+
+            TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
+            String time = TVcurrentTime.getText().toString();
+
+            LogAttendance LogAttendance = new LogAttendance(Today,time.substring(time.length()-7,time.length()),"A");
+
+            LogAttendance.save();
+
+            Button MarkIn = (Button) findViewById(R.id.inButton);
+            MarkIn.setEnabled(false);
+            MarkIn.setText(time.substring(time.length()-7));
+
+        }
+        else
+        {
+        Toast.makeText(getApplicationContext(), "Attendance logging cancelled", Toast.LENGTH_LONG).show();
+
+        }
+
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            String[] projection = { MediaStore.Images.Media.DATA };
+           Cursor cursor = null;
+
+           cursor = getApplicationContext().getContentResolver().query(mCapturedImageURI, projection, null, null, null);
+            int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            capturedImageFilePath = cursor.getString(column_index_data);
+        }
+    }
+
 
     public void MarkOut(View view) {
 
@@ -335,7 +358,15 @@ public class AttendanceActivity extends BaseActivity {
         }
     }
 
-    private static String NAMESPACE = "http://tempuri.org/";
+
+    private class AsyncCallClass extends AsyncTask<imageUtilities, Void, String> {
+
+        protected String doInBackground(imageUtilities... params) {
+            return params[0].uploadImage();
+        }
+    }
+
+        private static String NAMESPACE = "http://tempuri.org/";
     private static String URL = "http://sociowebservice.azurewebsites.net/GenMethods.asmx";
     private static String SOAP_ACTION = "http://tempuri.org/";
 
