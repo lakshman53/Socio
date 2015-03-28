@@ -6,9 +6,11 @@ package tds.socio;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -196,21 +199,81 @@ public class AttendanceActivity extends BaseActivity {
 
     String capturedImageFilePath;
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
     public void MarkIn(View view) {
 
         String fileName = "temp.jpg";
         final int CAPTURE_PICTURE_INTENT = 1;
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, fileName);
-        mCapturedImageURI = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//      intent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
         startActivityForResult(intent, CAPTURE_PICTURE_INTENT);
 
-        String imagePath = capturedImageFilePath;
+    //    String imagePath = capturedImageFilePath;
 
-        if (!imagePath.equals("NotTaken")) {
+     //   if (!imagePath.equals("NotTaken")) {
+
+//            imageUtilities imageutil = new imageUtilities();
+//
+//            imageutil.setNAMESPACE("http://tempuri.org/");
+//            imageutil.setSOAP_ACTION("http://tempuri.org/");
+//            imageutil.setURL("http://sociowebservice.azurewebsites.net/GenMethods.asmx");
+//            imageutil.setWSMethodName("insertPicture");
+//            imageutil.setWSFieldName("binPicture");
+//            imageutil.setHiResImagePath(capturedImageFilePath);
+//            imageutil.setCompressImageBeforeUpload(false);
+//
+//            try {
+//                Toast.makeText(getApplicationContext(), new AsyncCallClass().execute(imageutil).get(), Toast.LENGTH_LONG).show();
+//            }
+//            catch (Exception ex){
+//
+//            }
+//
+//            TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
+//            String time = TVcurrentTime.getText().toString();
+//
+//            LogAttendance LogAttendance = new LogAttendance(Today,time.substring(time.length()-7,time.length()),"A");
+//
+//            LogAttendance.save();
+//
+//            Button MarkIn = (Button) findViewById(R.id.inButton);
+//            MarkIn.setEnabled(false);
+//            MarkIn.setText(time.substring(time.length()-7));
+
+//        }
+//        else
+//        {
+//        Toast.makeText(getApplicationContext(), "Attendance logging cancelled", Toast.LENGTH_LONG).show();
+//
+//        }
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+
+            Bitmap inImage = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(getApplicationContext().getContentResolver(), inImage, "Title", null);
+
+            String[] projection = { MediaStore.Images.Media.DATA };
+            Cursor cursor = null;
+
+            cursor = getApplicationContext().getContentResolver().query(Uri.parse(path), projection, null, null, null);
+            int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String capturedImageFilePath = cursor.getString(column_index_data);
 
             imageUtilities imageutil = new imageUtilities();
 
@@ -220,7 +283,7 @@ public class AttendanceActivity extends BaseActivity {
             imageutil.setWSMethodName("insertPicture");
             imageutil.setWSFieldName("binPicture");
             imageutil.setHiResImagePath(capturedImageFilePath);
-            imageutil.setCompressImageBeforeUpload(false);
+            imageutil.setCompressImageBeforeUpload(true);
 
             try {
                 Toast.makeText(getApplicationContext(), new AsyncCallClass().execute(imageutil).get(), Toast.LENGTH_LONG).show();
@@ -228,36 +291,6 @@ public class AttendanceActivity extends BaseActivity {
             catch (Exception ex){
 
             }
-
-            TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
-            String time = TVcurrentTime.getText().toString();
-
-            LogAttendance LogAttendance = new LogAttendance(Today,time.substring(time.length()-7,time.length()),"A");
-
-            LogAttendance.save();
-
-            Button MarkIn = (Button) findViewById(R.id.inButton);
-            MarkIn.setEnabled(false);
-            MarkIn.setText(time.substring(time.length()-7));
-
-        }
-        else
-        {
-        Toast.makeText(getApplicationContext(), "Attendance logging cancelled", Toast.LENGTH_LONG).show();
-
-        }
-
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            String[] projection = { MediaStore.Images.Media.DATA };
-           Cursor cursor = null;
-
-           cursor = getApplicationContext().getContentResolver().query(mCapturedImageURI, projection, null, null, null);
-            int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            capturedImageFilePath = cursor.getString(column_index_data);
         }
     }
 

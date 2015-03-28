@@ -13,46 +13,32 @@
             android:orientation="vertical"
             android:weightSum="1">
 
-
-        <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-                <!--android:text="Employee Name"-->
-                <!--android:id="@+id/EmpName"-->
-                <!--android:layout_weight="0.19" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text="Store Name"-->
-            <!--android:layout_below="@+id/EmpName"-->
-            <!--android:id="@+id/EmpStore"-->
-            <!--android:layout_weight="1.00" />-->
-
-            <TextView
-                android:id="@+id/EmpName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_default_bg"
-                android:padding="20dp"
-                android:textSize="50px"
-                android:textColor="@color/darkgreen"
-                />
-
-            <TextView
-                android:id="@+id/EmpStore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edittext_default_bg"
-                android:padding="20dp"
-                android:textSize="50px"
-                android:textColor="@color/darkgreen"
-                />
-
-
-        </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/widget41"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <ImageView
+            android:id="@+id/widget33"
+            android:layout_width="93dp"
+            android:layout_height="97dp"
+            android:layout_x="0dp"
+            android:layout_y="0dp" />
+        <TextView
+            android:id="@+id/EmpName"
+            android:layout_width="194dp"
+            android:layout_height="wrap_content"
+            android:text="Full Name"
+            android:layout_x="103dp"
+            android:layout_y="9dp" />
+        <TextView
+            android:id="@+id/EmpStore"
+            android:layout_width="194dp"
+            android:layout_height="wrap_content"
+            android:text="Store Details"
+            android:layout_x="103dp"
+            android:layout_y="40dp" />
+    </RelativeLayout>
 
 
     <!-- The navigation drawer -->
@@ -64,5 +50,5 @@
         android:divider="#e5e5e5"
         android:dividerHeight="1dp"
         android:background="#d6d6d6"/>
-
+</LinearLayout>
 </android.support.v4.widget.DrawerLayout>
