@@ -58,7 +58,7 @@ public class OfferService extends Service{
                                                 .setSmallIcon(R.drawable.ic_launcher)
                                                 .setContentTitle("Socio")
                                                 .setContentText("You've got " + Integer.valueOf(offerCount) + " messages");
-                                Intent resultIntent = new Intent(getApplicationContext(),Messages.class);
+                                Intent resultIntent = new Intent(getApplicationContext(),CardsActivity.class);
                                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                                 stackBuilder.addParentStack(Messages.class);
                                 stackBuilder.addNextIntent(resultIntent);
@@ -123,7 +123,6 @@ public class OfferService extends Service{
 
              addOffersByParseXML addOffersByParseXML = new addOffersByParseXML();
 
-                Log.d("array", array.toString());
               return addOffersByParseXML.addOffers(array.toString().replace("anyType{}","").replace("anyType{offerString=","").replace("; }",""));
 
             }

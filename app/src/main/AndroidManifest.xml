@@ -45,13 +45,15 @@
             android:name=".SplashActivity"
             android:label="@string/app_name" >
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name=".AttendanceActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".MessagingActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
@@ -65,11 +67,7 @@
         <activity
             android:name=".CardsActivity"
             android:label="@string/title_activity_login" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:enabled="true" android:name=".OfferService" />

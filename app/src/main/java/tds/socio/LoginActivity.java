@@ -66,15 +66,16 @@ public class LoginActivity extends ActionBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String strEmpNum = textuserName.getText().toString();
+                String buttonText = button.getText().toString();
 
-               if (button.getText() == "Continue")
+               if (buttonText.equals("Continue"))
                {
                    //TODO: Password Encryption
                    String strPasswordencrypted = textPassword.getText().toString();
                    //TODO: UI validation for login
                    if (authenticateUser(strEmpNum, strPasswordencrypted)) {
                        //TODO: In case of first login (password blank) redirect to change password screen
-                       Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                       Intent mainIntent = new Intent(LoginActivity.this, CardsActivity.class);
                        LoginActivity.this.startActivity(mainIntent);
                        startService(new Intent(LoginActivity.this, OfferService.class));
                        finish();
@@ -85,7 +86,7 @@ public class LoginActivity extends ActionBarActivity {
 
                    }
                }
-                else if (button.getText() == "Register") {
+                else if (buttonText.equals("Register")) {
                    //TODO: UI validation for Registration fields entry
 
                    strMobileNumber = textMobileNumber.getText().toString();
@@ -116,7 +117,7 @@ public class LoginActivity extends ActionBarActivity {
                         Log.e("Employee Reg: ", e.getMessage());
                     }
                }
-               else if (button.getText() == "Verify")
+               else if (buttonText.equals("Verify"))
                {
                        //TODO: UI validation for verify text entry
 
@@ -136,7 +137,7 @@ public class LoginActivity extends ActionBarActivity {
                            Toast.makeText(getApplicationContext(),"Wrong verification code!!", Toast.LENGTH_SHORT).show();
                        }
                }
-               else if (button.getText() == "Save")
+               else if ( buttonText.equals("Save"))
                {
                        //TODO: UI validation for password & verify password entry
 
@@ -152,7 +153,7 @@ public class LoginActivity extends ActionBarActivity {
                        }   catch (Exception e){
 
                        }
-                           Intent mainIntent = new Intent(LoginActivity.this, AttendanceActivity.class);
+                           Intent mainIntent = new Intent(LoginActivity.this, CardsActivity.class);
                            LoginActivity.this.startActivity(mainIntent);
                            finish();
                        }

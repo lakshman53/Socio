@@ -5,24 +5,42 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="0dp"
     tools:ignore="overdraw">
 
     <TextView
         android:id="@+id/activity_googlecards_card_textview"
         style="@android:style/TextAppearance.DeviceDefault.Large"
+        android:background="@color/sociotheme_color"
+        android:paddingLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-dark"
+        android:paddingBottom="8dp"
+        android:paddingRight="8dp"
+        android:textColor="#000000"
+        tools:ignore="UnusedAttribute" />
+
+    <TextView
+        android:id="@+id/description"
+        style="@android:style/TextAppearance.DeviceDefault.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:paddingBottom="8dp"
-        android:textColor="?android:attr/textColorSecondary"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="8dp"
+
+        android:textColor="@color/purple_dark"
         tools:ignore="UnusedAttribute" />
 
     <ImageView
-        android:id="@+id/activity_googlecards_card_imageview"
-        android:layout_width="match_parent"
+        android:id="@+id/fav"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        tools:ignore="ContentDescription" />
+        android:scaleType="fitCenter"
+        tools:ignore="ContentDescription"
+        android:paddingBottom="0dp"
+        android:paddingLeft="10dp"/>
 
 </LinearLayout>

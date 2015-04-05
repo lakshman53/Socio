@@ -151,7 +151,7 @@ public class BaseActivity extends ActionBarActivity {
                 finish();
                 break;
             case 1:
-                Intent intent1 = new Intent(this, Messages.class);
+                Intent intent1 = new Intent(this, CardsActivity.class);
                 startActivity(intent1);
                 finish();
                 break;
