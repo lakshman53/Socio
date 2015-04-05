@@ -1,12 +1,14 @@
 package tds.socio;
 
+import com.orm.SugarRecord;
 import java.util.Date;
 
 /**
  * Created by laks on 05-04-2015.
  */
 
-public class Shift {
+public class Shift extends SugarRecord<Shift> {
+
     String shiftName;
     Date startTime, EndTime;
 
