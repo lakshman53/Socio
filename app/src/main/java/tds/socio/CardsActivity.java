@@ -24,6 +24,8 @@ public class CardsActivity extends BaseActivity implements OnDismissCallback {
 
     private CardsAdapter mCardsAdapter;
 
+    List<Offers> offers;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +46,11 @@ public class CardsActivity extends BaseActivity implements OnDismissCallback {
 
         listView.setAdapter(swingBottomInAnimationAdapter);
 
-        List<Offers> offers;
         offers = Offers.listAll(Offers.class);
-
 
         for (int i=0; i<offers.size(); i=i+1) {
             mCardsAdapter.add(i);
         }
-        
     }
 
     @Override
