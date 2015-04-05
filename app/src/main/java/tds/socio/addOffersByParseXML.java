@@ -59,7 +59,6 @@ public class addOffersByParseXML {
 
                     offers = new Offers(Integer.toString(randomGenerator.nextInt(1000)), R.drawable.ic_launcher, "Lakshman", Subject, message, formatter.parse(SentAt), false, false);
                     offers.save();
-
                 }
 
                 if (nodeLength > 0) {
