@@ -47,6 +47,8 @@ public class CardsActivity extends BaseActivity implements OnDismissCallback {
 
         List<Offers> offers;
         offers = Offers.listAll(Offers.class);
+       // Collections.reverse(offers);
+
 
         for (int i=0; i<offers.size(); i=i+1) {
             mCardsAdapter.add(i);
