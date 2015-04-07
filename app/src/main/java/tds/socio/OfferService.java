@@ -42,6 +42,7 @@ public class OfferService extends Service{
     public void onStart(Intent intent, int startId) {
 
     }
+
     public void callAsynchronousTask() {
         final Handler handler = new Handler();
         Timer timer = new Timer();

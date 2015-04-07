@@ -65,6 +65,14 @@
             android:label="@string/title_activity_login" >
         </activity>
         <activity
+            android:name=".MarkAttendance"
+            android:label="Attendance" >
+
+
+
+
+        </activity>
+        <activity
             android:name=".CardsActivity"
             android:label="@string/title_activity_login" >
 

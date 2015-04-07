@@ -146,7 +146,7 @@ public class BaseActivity extends ActionBarActivity {
         // update the main content by replacing fragments
         switch (position) {
             case 0:
-                Intent intent = new Intent(this, AttendanceActivity.class);
+                Intent intent = new Intent(this, MarkAttendance.class);
                 startActivity(intent);
                 finish();
                 break;

@@ -33,8 +33,6 @@ public class Messages extends BaseActivity {
     MessageDetails Detail;
     List<Offers> offers;
 
-
-
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -43,8 +41,6 @@ public class Messages extends BaseActivity {
             navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
             navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
             set(navMenuTitles, navMenuIcons);
-
-
 
             Toast.makeText(getApplicationContext(),"Long press the message for more features",Toast.LENGTH_LONG ).show();
 
@@ -75,8 +71,6 @@ public class Messages extends BaseActivity {
 			registerForContextMenu(msgList);
 			msgList.setOnItemClickListener(new OnItemClickListener() {
 				   public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-					  // String s =(String) ((TextView) v.findViewById(R.id.From)).getText();
-					  // Toast.makeText(Messages.this, s, Toast.LENGTH_LONG).show();
 				   }
 		   });	
 }
@@ -87,7 +81,6 @@ public class Messages extends BaseActivity {
 					
 				info = (AdapterContextMenuInfo) menuInfo;
 
-				//int id = (int) msgList.getAdapter().getItemId(info.position);
 
 			menu.setHeaderTitle(details.get(info.position).getSub());
 
