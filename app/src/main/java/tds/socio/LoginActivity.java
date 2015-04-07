@@ -75,7 +75,7 @@ public class LoginActivity extends ActionBarActivity {
                    //TODO: UI validation for login
                    if (authenticateUser(strEmpNum, strPasswordencrypted)) {
                        //TODO: In case of first login (password blank) redirect to change password screen
-                       Intent mainIntent = new Intent(LoginActivity.this, CardsActivity.class);
+                       Intent mainIntent = new Intent(LoginActivity.this, MarkAttendance.class);
                        LoginActivity.this.startActivity(mainIntent);
                        startService(new Intent(LoginActivity.this, OfferService.class));
                        finish();
@@ -153,7 +153,7 @@ public class LoginActivity extends ActionBarActivity {
                        }   catch (Exception e){
 
                        }
-                           Intent mainIntent = new Intent(LoginActivity.this, CardsActivity.class);
+                           Intent mainIntent = new Intent(LoginActivity.this, MarkAttendance.class);
                            LoginActivity.this.startActivity(mainIntent);
                            finish();
                        }
