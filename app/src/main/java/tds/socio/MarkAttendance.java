@@ -23,6 +23,7 @@ import java.util.TimerTask;
 /**
  * Created by laks on 06-04-2015.
  */
+
 public class MarkAttendance extends BaseActivity {
 
     private String[] navMenuTitles;
@@ -68,7 +69,6 @@ public class MarkAttendance extends BaseActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 //                Toast.makeText(getApplicationContext(), Long.toString(id) + " - " + parentView.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
             }
-
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
@@ -116,7 +116,6 @@ public class MarkAttendance extends BaseActivity {
                     public void run() {
                         try {
                             new RetrieveTimeWS().execute();
-
                         } catch (Exception e) {
                         }
                     }
