@@ -9,26 +9,266 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1">
+        android:layout_marginTop="10dp"
+        >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:padding="0dp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="overdraw">
+
+
+            <TextView
+                android:id="@+id/heading"
+                style="@android:style/TextAppearance.DeviceDefault.Large"
+                android:background="@color/sociotheme_color"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-dark"
+                android:paddingBottom="8dp"
+                android:paddingRight="8dp"
+                android:textColor="#000000"
+                android:text="Now"
+                tools:ignore="UnusedAttribute" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="232dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/Day"
+            android:textSize="40sp"
+            android:background="@drawable/button_default_bg_rev"
+            android:text="Loading..."
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="10dp"
+            android:gravity="center_horizontal"/>
+    <LinearLayout
+        android:id="@+id/content_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:gravity="center_horizontal"
+        >
 
-            android:id="@+id/DateTimeNow"
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:textSize="40sp"
+            android:background="@drawable/button_default_bg_rev"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/HH1"
+            android:text="-"
             android:gravity="center_horizontal"
-            android:textAlignment="gravity"
-            android:paddingBottom="50dp"/>
+            android:textAlignment="center"
+             />
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:textSize="40sp"
+            android:background="@drawable/button_default_bg_rev"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/HH2"
+            android:text="-"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            />
 
-        <Spinner
-            android:layout_width="wrap_content"
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:textSize="40sp"
+            android:background="@drawable/button_default_bg_rev"
+
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:paddingLeft="10dp"
+            android:id="@+id/MM1"
+            android:text="-"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:textSize="40sp"
+            android:background="@drawable/button_default_bg_rev"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/MM2"
+            android:text="-"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            />
+
+    </LinearLayout>
+
+        <!--android:background="@drawable/sociotheme_btn_toggle_on_focused_holo_light"-->
+        <!--android:style="@style/DefaultButtonText"-->
+
+        <TextView
+        android:layout_width="232dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/Date"
+        android:textSize="30sp"
+        android:background="@drawable/button_default_bg_rev"
+        android:text="--"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="10dp"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
-            android:id="@+id/shiftSpinner"
-            android:gravity="top"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-        />
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:padding="0dp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="overdraw"
+        android:layout_marginTop="10dp">
+
+
+            <TextView
+                android:id="@+id/activity_googlecards_card_textview"
+                style="@android:style/TextAppearance.DeviceDefault.Large"
+                android:background="@color/sociotheme_color"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-dark"
+                android:paddingBottom="8dp"
+                android:paddingRight="8dp"
+                android:textColor="#000000"
+                android:text="Today's Attendance"
+                tools:ignore="UnusedAttribute"
+                />
+
+            <Spinner
+                android:layout_width="320dp"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                style="@style/DefaultButtonText"
+                android:background="@drawable/button_default_bg_rev"
+                android:id="@+id/shiftSpinner"
+                android:gravity="center_horizontal"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="horizontal"
+                tools:ignore="overdraw">
+
+                <ImageView
+                    android:id="@+id/inImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    tools:ignore="ContentDescription"
+                    android:paddingBottom="5dp"
+                    android:src="@drawable/tds_logo"
+                    android:paddingLeft="10dp"/>
+
+                <ImageView
+                    android:id="@+id/outImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    tools:ignore="ContentDescription"
+                    android:paddingBottom="5dp"
+                    android:src="@drawable/tds_logo"
+                    android:paddingLeft="10dp"  />
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp">
+                    <TextView
+                        android:id="@+id/markedTime1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#000000"
+                        android:textStyle="italic"
+                        android:textSize="15sp"
+                        tools:ignore="UnusedAttribute"
+                        android:text="Entry: 09:45"/>
+                    <TextView
+                        android:id="@+id/AttStatus1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#FF0000"
+                        android:textStyle="italic"
+                        android:textSize="15sp"
+                        tools:ignore="UnusedAttribute"
+                        android:text="15 minutes late"/>
+
+                    <TextView
+                        android:id="@+id/markedTime2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#000000"
+                        android:textStyle="italic"
+                        android:textSize="15sp"
+                        tools:ignore="UnusedAttribute"
+                        android:text="Exit: 19:45"/>
+                    <TextView
+                        android:id="@+id/AttStatus2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#FF0000"
+                        android:textStyle="italic"
+                        android:textSize="15sp"
+                        tools:ignore="UnusedAttribute"
+                        android:text="..."/>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/markAttendance"
+            android:layout_width="320dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textColor="#000000"
+            android:enabled="true"
+            android:text="Punch Attendance"
+            style="@style/DefaultButtonText"
+            android:background="@drawable/button_default_bg_rev"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:onClick="markAttendance"
+
+            />
 
     </LinearLayout>
 

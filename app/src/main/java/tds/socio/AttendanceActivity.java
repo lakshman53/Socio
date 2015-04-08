@@ -151,7 +151,6 @@ public class AttendanceActivity extends BaseActivity {
                     markInButton.setEnabled(false);
                     markInButton.setText(findAttendanceIn.get(0).getMarkedtime().toString());
 
-
                     List<LogAttendance> findAttendanceOut =  LogAttendance.find(LogAttendance.class, "today = ? and logflag = ?", Today, "P");
                     if (findAttendanceOut.size() == 1)
                     {

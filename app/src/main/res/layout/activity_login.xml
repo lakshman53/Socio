@@ -52,7 +52,8 @@
         android:padding="10dp"
         android:hint="Employee Number"
         android:textColorHint="@color/darkgreen"
-        android:drawableLeft="@drawable/user"/>
+        android:drawableLeft="@drawable/user"
+        android:text="123"/>
 
     <EditText
         android:id="@+id/textPassword"
@@ -64,7 +65,8 @@
         android:hint="Password"
         android:textColorHint="@color/darkgreen"
         android:password="true"
-        android:drawableLeft="@drawable/password"/>
+        android:drawableLeft="@drawable/password"
+        android:text="q"/>
 
     <EditText
         android:id="@+id/textPasswordAgain"

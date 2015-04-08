@@ -7,6 +7,7 @@ import java.util.Date;
 /**
  * Created by laks on 05-04-2015.
  */
+
 public class Attendance extends SugarRecord<Attendance> {
 
     Date logDateTime;
@@ -45,4 +46,3 @@ public class Attendance extends SugarRecord<Attendance> {
         this.shift = shift;
     }
 }
-

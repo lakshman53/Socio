@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -31,8 +32,65 @@ public class MarkAttendance extends BaseActivity {
 
     Spinner spinnerShift;
 
+    public void markAttendance(View view)
+    {
+        TextView markedTime1 = (TextView) findViewById(R.id.markedTime1);
+        TextView AttStatus1 = (TextView) findViewById(R.id.AttStatus1);
+        TextView markedTime2 = (TextView) findViewById(R.id.markedTime2);
+        TextView AttStatus2 = (TextView) findViewById(R.id.AttStatus2);
+
+    if (true) {
+
+        List<Shift> st1 = Shift.listAll(Shift.class);
+        List<Attendance> attendances = Attendance.find(Attendance.class, null, null, null, "Log_Date_Time DESC","1");
+
+        Calendar calendar = Calendar.getInstance();
+
+    String[] dateTimeArray = new dateTimeClass().getDateTimeArray();
+
+    try {
+    Date date = new SimpleDateFormat("MMMM").parse("April");
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+
+    int year, month, datenow, hour, min;
+
+    year = Integer.parseInt(dateTimeArray[2].substring(dateTimeArray[2].lastIndexOf(' ') + 1));
+    month = cal.get(Calendar.MONTH);
+    int ll = dateTimeArray[2].indexOf(' ');
+    datenow = Integer.parseInt(dateTimeArray[2].substring(ll+1,ll+3));
+    hour = Integer.parseInt(dateTimeArray[1].substring(0, 2));
+    min = Integer.parseInt(dateTimeArray[1].substring(3, 5));
+
+
+    calendar.set(year, month, datenow, hour, min);
+}
+catch (Exception ex) {Toast.makeText(getApplicationContext(),Integer.toString(dateTimeArray.length),Toast.LENGTH_LONG).show();}
+
+
+
+        String flag = attendances.get(0).getFlag();
+
+        Attendance attendance = new Attendance();
+        attendance.setShift(st1.get((int)spinnerShift.getSelectedItemId()));
+        attendance.setFlag(flag.equals("I")?"O":"I");
+        attendance.setLogDateTime(calendar.getTime());
+        attendance.save();
+
+        TextView tv = flag.equals("I")?markedTime1:markedTime2;
+
+        tv.setText(String.format("%02d",calendar.get(calendar.HOUR_OF_DAY)) + " : " + String.format("%02d",calendar.get(calendar.MINUTE)) + " : " + String.format("%02d",calendar.get(calendar.SECOND)));
+
+
+    }
+
+
+
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_markattendance);
 
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
@@ -75,11 +133,21 @@ public class MarkAttendance extends BaseActivity {
                 Toast.makeText(getApplicationContext(), "Nothing Selected", Toast.LENGTH_LONG).show();
             }
         });
+
     }
 
-    private class RetrieveTimeWS extends AsyncTask<Void, Void, String> {
 
-        TextView TVcurrentTime = (TextView) findViewById(R.id.DateTimeNow);
+    private class RetrieveTimeWS extends AsyncTask<Void, Void, String>  {
+
+        TextView HH1 = (TextView) findViewById(R.id.HH1);
+        TextView HH2 = (TextView) findViewById(R.id.HH2);
+        TextView Day = (TextView) findViewById(R.id.Day);
+        TextView MM1 = (TextView) findViewById(R.id.MM1);
+        TextView MM2 = (TextView) findViewById(R.id.MM2);
+        TextView Date = (TextView) findViewById(R.id.Date);
+
+        dateTimeClass dtc = new dateTimeClass();
+
         String datetime = "";
 
         protected void onPreExecute() {
@@ -101,7 +169,21 @@ public class MarkAttendance extends BaseActivity {
             super.onPostExecute(s);
 
             if (s != null) {
-                TVcurrentTime.setText(datetime);
+
+                dtc.setDateTimeArray(datetime.split("\\-"));
+
+                String [] dateTimeArray = dtc.getDateTimeArray();
+
+              //  dateTimeArray =
+
+                Day.setText(dateTimeArray[0]);
+
+                HH1.setText(dateTimeArray[1].substring(0, 1));
+                HH2.setText(dateTimeArray[1].substring(1, 2));
+                MM1.setText(dateTimeArray[1].substring(3, 4));
+                MM2.setText(dateTimeArray[1].substring(4, 5));
+
+                Date.setText(dateTimeArray[2]);
             }
         }
     }
