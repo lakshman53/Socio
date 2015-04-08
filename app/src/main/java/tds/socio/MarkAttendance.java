@@ -32,58 +32,57 @@ public class MarkAttendance extends BaseActivity {
 
     Spinner spinnerShift;
 
-    public void markAttendance(View view)
-    {
+    public void markAttendance(View view) {
         TextView markedTime1 = (TextView) findViewById(R.id.markedTime1);
         TextView AttStatus1 = (TextView) findViewById(R.id.AttStatus1);
         TextView markedTime2 = (TextView) findViewById(R.id.markedTime2);
         TextView AttStatus2 = (TextView) findViewById(R.id.AttStatus2);
 
-    if (true) {
+        if (true) {
 
-        List<Shift> st1 = Shift.listAll(Shift.class);
-        List<Attendance> attendances = Attendance.find(Attendance.class, null, null, null, "Log_Date_Time DESC","1");
+            List<Shift> st1 = Shift.listAll(Shift.class);
+            List<Attendance> attendances = Attendance.find(Attendance.class, null, null, null, "Log_Date_Time DESC", "1");
 
-        Calendar calendar = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
 
-    String[] dateTimeArray = new dateTimeClass().getDateTimeArray();
+            String[] dateTimeArray = new dateTimeClass().getDateTimeArray();
 
-    try {
-    Date date = new SimpleDateFormat("MMMM").parse("April");
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
+            try {
+                String monthName = dateTimeArray[2].substring(0,dateTimeArray[2].indexOf(' '));
+                Date date = new SimpleDateFormat("MMMM").parse(monthName);
 
-    int year, month, datenow, hour, min;
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
 
-    year = Integer.parseInt(dateTimeArray[2].substring(dateTimeArray[2].lastIndexOf(' ') + 1));
-    month = cal.get(Calendar.MONTH);
-    int ll = dateTimeArray[2].indexOf(' ');
-    datenow = Integer.parseInt(dateTimeArray[2].substring(ll+1,ll+3));
-    hour = Integer.parseInt(dateTimeArray[1].substring(0, 2));
-    min = Integer.parseInt(dateTimeArray[1].substring(3, 5));
+                int year, month, datenow, hour, min;
 
-
-    calendar.set(year, month, datenow, hour, min);
-}
-catch (Exception ex) {Toast.makeText(getApplicationContext(),Integer.toString(dateTimeArray.length),Toast.LENGTH_LONG).show();}
+                year = Integer.parseInt(dateTimeArray[2].substring(dateTimeArray[2].lastIndexOf(' ') + 1));
+                month = cal.get(Calendar.MONTH);
+                int ll = dateTimeArray[2].indexOf(' ');
+                datenow = Integer.parseInt(dateTimeArray[2].substring(ll + 1, ll + 3));
+                hour = Integer.parseInt(dateTimeArray[1].substring(0, 2));
+                min = Integer.parseInt(dateTimeArray[1].substring(3, 5));
 
 
+                calendar.set(year, month, datenow, hour, min);
+            } catch (Exception ex) {
+                Toast.makeText(getApplicationContext(), Integer.toString(dateTimeArray.length), Toast.LENGTH_LONG).show();
+            }
 
-        String flag = attendances.get(0).getFlag();
+            String flag = attendances.get(0).getFlag();
 
-        Attendance attendance = new Attendance();
-        attendance.setShift(st1.get((int)spinnerShift.getSelectedItemId()));
-        attendance.setFlag(flag.equals("I")?"O":"I");
-        attendance.setLogDateTime(calendar.getTime());
-        attendance.save();
+            Attendance attendance = new Attendance();
+            attendance.setShift(st1.get((int) spinnerShift.getSelectedItemId()));
+            attendance.setFlag(flag.equals("I") ? "O" : "I");
+            attendance.setLogDateTime(calendar.getTime());
+            attendance.save();
 
-        TextView tv = flag.equals("I")?markedTime1:markedTime2;
+            TextView tv = flag.equals("I") ? markedTime1 : markedTime2;
 
-        tv.setText(String.format("%02d",calendar.get(calendar.HOUR_OF_DAY)) + " : " + String.format("%02d",calendar.get(calendar.MINUTE)) + " : " + String.format("%02d",calendar.get(calendar.SECOND)));
+            tv.setText(String.format("%02d", calendar.get(calendar.HOUR_OF_DAY)) + " : " + String.format("%02d", calendar.get(calendar.MINUTE)) + " : " + String.format("%02d", calendar.get(calendar.SECOND)));
 
 
-    }
-
+        }
 
 
     }
@@ -137,7 +136,7 @@ catch (Exception ex) {Toast.makeText(getApplicationContext(),Integer.toString(da
     }
 
 
-    private class RetrieveTimeWS extends AsyncTask<Void, Void, String>  {
+    private class RetrieveTimeWS extends AsyncTask<Void, Void, String> {
 
         TextView HH1 = (TextView) findViewById(R.id.HH1);
         TextView HH2 = (TextView) findViewById(R.id.HH2);
@@ -172,9 +171,9 @@ catch (Exception ex) {Toast.makeText(getApplicationContext(),Integer.toString(da
 
                 dtc.setDateTimeArray(datetime.split("\\-"));
 
-                String [] dateTimeArray = dtc.getDateTimeArray();
+                String[] dateTimeArray = dtc.getDateTimeArray();
 
-              //  dateTimeArray =
+                //  dateTimeArray =
 
                 Day.setText(dateTimeArray[0]);
 
@@ -202,7 +201,9 @@ catch (Exception ex) {Toast.makeText(getApplicationContext(),Integer.toString(da
                         }
                     }
                 });
-            };
+            }
+
+            ;
         };
         timer.schedule(showTime, 0, 30000); //execute in every 30000 ms
     }
