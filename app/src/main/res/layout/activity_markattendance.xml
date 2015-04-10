@@ -213,7 +213,7 @@
                         android:textStyle="italic"
                         android:textSize="15sp"
                         tools:ignore="UnusedAttribute"
-                        android:text="Entry: 09:45"/>
+                        />
                     <TextView
                         android:id="@+id/AttStatus1"
                         android:layout_width="match_parent"
@@ -223,7 +223,7 @@
                         android:textStyle="italic"
                         android:textSize="15sp"
                         tools:ignore="UnusedAttribute"
-                        android:text="15 minutes late"/>
+                        />
 
                     <TextView
                         android:id="@+id/markedTime2"
@@ -234,7 +234,7 @@
                         android:textStyle="italic"
                         android:textSize="15sp"
                         tools:ignore="UnusedAttribute"
-                        android:text="Exit: 19:45"/>
+                        />
                     <TextView
                         android:id="@+id/AttStatus2"
                         android:layout_width="match_parent"
@@ -244,7 +244,7 @@
                         android:textStyle="italic"
                         android:textSize="15sp"
                         tools:ignore="UnusedAttribute"
-                        android:text="..."/>
+                        />
 
 
                 </LinearLayout>

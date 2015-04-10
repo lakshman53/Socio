@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,74 +31,140 @@ public class MarkAttendance extends BaseActivity {
     private TypedArray navMenuIcons;
 
     Spinner spinnerShift;
+    TextView markedTime1, markedTime2;
 
     public void markAttendance(View view) {
-        TextView markedTime1 = (TextView) findViewById(R.id.markedTime1);
-        TextView AttStatus1 = (TextView) findViewById(R.id.AttStatus1);
-        TextView markedTime2 = (TextView) findViewById(R.id.markedTime2);
-        TextView AttStatus2 = (TextView) findViewById(R.id.AttStatus2);
 
-        if (true) {
+        try {
 
             List<Shift> st1 = Shift.listAll(Shift.class);
-            List<Attendance> attendances = Attendance.find(Attendance.class, null, null, null, "Log_Date_Time DESC", "1");
-
-            Calendar calendar = Calendar.getInstance();
 
             String[] dateTimeArray = new dateTimeClass().getDateTimeArray();
 
-            try {
-                String monthName = dateTimeArray[2].substring(0,dateTimeArray[2].indexOf(' '));
-                Date date = new SimpleDateFormat("MMMM").parse(monthName);
+            Calendar calendar = setCalendarFromArrayString(dateTimeArray);
 
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-
-                int year, month, datenow, hour, min;
-
-                year = Integer.parseInt(dateTimeArray[2].substring(dateTimeArray[2].lastIndexOf(' ') + 1));
-                month = cal.get(Calendar.MONTH);
-                int ll = dateTimeArray[2].indexOf(' ');
-                datenow = Integer.parseInt(dateTimeArray[2].substring(ll + 1, ll + 3));
-                hour = Integer.parseInt(dateTimeArray[1].substring(0, 2));
-                min = Integer.parseInt(dateTimeArray[1].substring(3, 5));
+            String setFlag, prefix;
+            TextView tv;
 
 
-                calendar.set(year, month, datenow, hour, min);
-            } catch (Exception ex) {
-                Toast.makeText(getApplicationContext(), Integer.toString(dateTimeArray.length), Toast.LENGTH_LONG).show();
+            CharSequence charSequence = "";
+            if((markedTime1.getText()+"L").equals("L") ) {
+
+                setFlag = "I";
+                tv = markedTime1;
+                prefix = "Entry - ";
+
+            } else {
+
+                setFlag = "O";
+                tv = markedTime2;
+                prefix = "Exit - ";
+
             }
 
-            String flag = attendances.get(0).getFlag();
-
             Attendance attendance = new Attendance();
-            attendance.setShift(st1.get((int) spinnerShift.getSelectedItemId()));
-            attendance.setFlag(flag.equals("I") ? "O" : "I");
+            //attendance.setShift(st1.get((int) spinnerShift.getSelectedItemId()));
+            attendance.setFlag(setFlag);
             attendance.setLogDateTime(calendar.getTime());
             attendance.save();
 
-            TextView tv = flag.equals("I") ? markedTime1 : markedTime2;
+            setTime(tv, prefix, getTimeFromCalendar(calendar));
 
-            tv.setText(String.format("%02d", calendar.get(calendar.HOUR_OF_DAY)) + " : " + String.format("%02d", calendar.get(calendar.MINUTE)) + " : " + String.format("%02d", calendar.get(calendar.SECOND)));
-
-
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
 
+    private Calendar setCalendarFromArrayString(String[] dateTimeArray) {
+        Calendar cal = Calendar.getInstance();
+
+        try {
+            String monthName = dateTimeArray[2].substring(0, dateTimeArray[2].indexOf(' '));
+            Date date = new SimpleDateFormat("MMMM").parse(monthName);
+
+            cal.setTime(date);
+
+            int year, month, datenow, hour, min;
+
+            year = Integer.parseInt(dateTimeArray[2].substring(dateTimeArray[2].lastIndexOf(' ') + 1));
+            month = cal.get(Calendar.MONTH);
+            int ll = dateTimeArray[2].indexOf(' ');
+            datenow = Integer.parseInt(dateTimeArray[2].substring(ll + 1, ll + 3));
+            hour = Integer.parseInt(dateTimeArray[1].substring(0, 2));
+            min = Integer.parseInt(dateTimeArray[1].substring(3, 5));
+
+            cal.set(year, month, datenow, hour, min);
+
+        } catch (Exception ex) {
+        }
+        return cal;
 
     }
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private String getTimeFromCalendar(Calendar calendar) {
+        return String.format("%02d", calendar.get(calendar.HOUR_OF_DAY)) + " : " + String.format("%02d", calendar.get(calendar.MINUTE)) + " : " + String.format("%02d", calendar.get(calendar.SECOND));
+    }
 
-        setContentView(R.layout.activity_markattendance);
+    private String getDateFromCalendar(Calendar calendar) {
+        return calendar.get(calendar.DAY_OF_MONTH) + "-" +  calendar.get(calendar.MONTH) + "-" + calendar.get(calendar.YEAR);
+    }
 
-        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
-        set(navMenuTitles, navMenuIcons);
+    private void setTime(TextView tv, String prefix, String time) {
+        tv.setText(prefix + time);
 
-        showTime();
+    }
 
+
+    private void setupScreen() {
+
+        String[] dateTimeString = new dateTimeClass().getDateTimeArray();
         spinnerShift = (Spinner) findViewById(R.id.shiftSpinner);
+
+        if (dateTimeString.length == 0) {
+            setupScreen();
+        }
+
+        List<Attendance> attendances = Attendance.find(Attendance.class, null, null, null, "Id DESC", "2");
+
+        if (attendances.size() == 0) {
+            return;
+        }
+
+        Calendar todayDate = setCalendarFromArrayString(dateTimeString);
+        Calendar markedDate = Calendar.getInstance();
+
+        if (attendances.size() == 2) {
+            markedDate.setTime(attendances.get(0).getLogDateTime());
+
+            if (getDateFromCalendar(markedDate).equals(getDateFromCalendar(todayDate))) { //today's attendance is marked
+
+                String flag = attendances.get(0).getFlag();
+
+                if (flag.equals("O")) { // In and Out are marked. Set text box values of both in and out.
+
+                    setTime(markedTime1, "Entry - ", getTimeFromCalendar(markedDate));
+                    markedDate.setTime(attendances.get(1).getLogDateTime());
+                    setTime(markedTime2, "Exit -", getTimeFromCalendar(markedDate));
+
+                    Button punch = (Button) findViewById(R.id.markAttendance);
+
+                    punch.setVisibility(View.INVISIBLE);
+
+                } else { // Only In is marked
+
+                    markedDate.setTime(attendances.get(0).getLogDateTime());
+                    setTime(markedTime1, "Entry - ", getTimeFromCalendar(markedDate));
+                }
+            }
+
+        } else {
+            if (getDateFromCalendar(markedDate).equals(getDateFromCalendar(todayDate))) { //today's attendance is marked
+
+               markedDate.setTime(attendances.get(0).getLogDateTime());
+               setTime(markedTime1, "Entry - ", getTimeFromCalendar(markedDate));
+            }
+        }
+
         List<Shift> shiftList = Shift.listAll(Shift.class);
         String[] state = new String[shiftList.size()];
         for (int i = 0; i < shiftList.size(); i = i + 1) {
@@ -121,17 +187,22 @@ public class MarkAttendance extends BaseActivity {
 
         ArrayAdapter<String> adapter_state = new ArrayAdapter<>(this, R.layout.simple_spinner_dropdown_item, state);
         spinnerShift.setAdapter(adapter_state);
-        spinnerShift.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                Toast.makeText(getApplicationContext(), Long.toString(id) + " - " + parentView.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                Toast.makeText(getApplicationContext(), "Nothing Selected", Toast.LENGTH_LONG).show();
-            }
-        });
+    }
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_markattendance);
+
+        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
+        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+        set(navMenuTitles, navMenuIcons);
+
+        markedTime1 = (TextView) findViewById(R.id.markedTime1);
+        markedTime2 = (TextView) findViewById(R.id.markedTime2);
+
+        showTime();
 
     }
 
@@ -173,8 +244,6 @@ public class MarkAttendance extends BaseActivity {
 
                 String[] dateTimeArray = dtc.getDateTimeArray();
 
-                //  dateTimeArray =
-
                 Day.setText(dateTimeArray[0]);
 
                 HH1.setText(dateTimeArray[1].substring(0, 1));
@@ -183,6 +252,8 @@ public class MarkAttendance extends BaseActivity {
                 MM2.setText(dateTimeArray[1].substring(4, 5));
 
                 Date.setText(dateTimeArray[2]);
+
+                setupScreen();
             }
         }
     }
